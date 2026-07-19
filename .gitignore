@@ -1,0 +1,51 @@
+# 系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# macOS 打包副产物（解压时已清理，防再次混入）
+__MACOSX/
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.local
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json.bak
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+.cache/
+
+# 用户配置（不同人不同）
+config.yaml
+config.json
+config.local.*
+
+# 报告产物
+daily/
+weekly/
+reports/
+output/
+*.html.bak

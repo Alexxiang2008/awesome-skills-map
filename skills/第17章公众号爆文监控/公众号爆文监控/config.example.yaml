@@ -1,0 +1,38 @@
+# 公众号爆文监控配置文件
+# 复制此文件为 config.yaml 并填入你的配置
+
+api:
+  # 大家啦API密钥 (必填)
+  key: "your-api-key-here"
+  base_url: "https://dajiala.com/fbmain/monitor/v3"
+
+# 监控关键词列表
+keywords:
+  - "AI"
+  - "Claude"
+  - "ChatGPT"
+  - "n8n"
+  - "工作流"
+  - "自动化"
+  - "Cursor"
+  - "AI编程"
+  - "公众号"
+  - "小红书"
+
+# 筛选条件
+filters:
+  min_read: 5000          # 最低阅读量
+  time_range: "today"     # today/week/month
+  sort_by: "interaction"  # read/like/interaction
+
+# 成本控制
+cost_control:
+  max_articles_per_day: 50      # 每日最多采集文章数
+  max_interaction_queries: 35   # 每日最多查询互动数据数
+  max_wx_index_queries: 10      # 每日最多查询微信指数数
+  daily_budget: 10.0            # 每日预算上限(元)
+
+# 输出配置
+output:
+  daily_dir: "daily"            # 日报目录
+  analysis_dir: "analysis"      # 分析报告目录

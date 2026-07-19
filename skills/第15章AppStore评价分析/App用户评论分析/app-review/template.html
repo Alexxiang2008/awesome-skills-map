@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{APP_NAME}} 评价分析报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --positive: #10b981;
+            --negative: #ef4444;
+            --neutral: #6b7280;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .header {
+            padding: 1.5rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .app-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .app-title h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .app-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.25rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        .sentiment-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .sentiment-item {
+            text-align: center;
+        }
+
+        .sentiment-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sentiment-value.positive { color: var(--positive); }
+        .sentiment-value.negative { color: var(--negative); }
+        .sentiment-value.neutral { color: var(--neutral); }
+
+        .sentiment-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .reviews-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .review-item {
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .review-item:hover {
+            border-color: var(--accent);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 1px;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 0.875rem;
+        }
+
+        .star.empty { color: #e2e8f0; }
+
+        .review-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .review-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .badge-positive { background: #dcfce7; color: var(--positive); }
+        .badge-negative { background: #fee2e2; color: var(--negative); }
+        .badge-neutral { background: #f3f4f6; color: var(--neutral); }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 320px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .reviews-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .reviews-table th {
+            text-align: left;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .reviews-table td {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .reviews-table tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        .table-content {
+            max-width: 300px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: var(--text-secondary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .page-btn:hover, .page-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .insight-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .insight-icon {
+            font-size: 1.25rem;
+        }
+
+        .insight-content h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .insight-content p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .priority-tag {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .priority-high { background: #fee2e2; color: var(--negative); }
+        .priority-medium { background: #fef3c7; color: #d97706; }
+        .priority-low { background: #dcfce7; color: var(--positive); }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .charts-grid, .reviews-section, .insights-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="app-info">
+                <div class="app-icon">📱</div>
+                <div class="app-title">
+                    <h1>{{APP_NAME}}</h1>
+                    <div class="app-meta">
+                        应用ID: {{APP_ID}} · 地区: {{REGION}} · 共 <span id="totalReviews">0</span> 条评论
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn" onclick="exportCSV()">📥 导出 CSV</button>
+                <button class="btn btn-primary" onclick="location.reload()">🔄 刷新</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="stats-grid">
+            <div class="card stat-card">
+                <div class="stat-value" id="avgRating">-</div>
+                <div class="stat-label">平均评分</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value" id="positivePercent">-</div>
+                <div class="stat-label">好评率</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value" id="reviewCount">-</div>
+                <div class="stat-label">评论总数</div>
+            </div>
+            <div class="card stat-card">
+                <div class="stat-value" id="issueCount">-</div>
+                <div class="stat-label">发现问题</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="card">
+                <div class="card-title">📊 情感分布</div>
+                <div class="chart-container">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+                <div class="sentiment-stats">
+                    <div class="sentiment-item">
+                        <div class="sentiment-value positive" id="positiveCount">-</div>
+                        <div class="sentiment-label">正面评价</div>
+                    </div>
+                    <div class="sentiment-item">
+                        <div class="sentiment-value neutral" id="neutralCount">-</div>
+                        <div class="sentiment-label">中性评价</div>
+                    </div>
+                    <div class="sentiment-item">
+                        <div class="sentiment-value negative" id="negativeCount">-</div>
+                        <div class="sentiment-label">负面评价</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">⭐ 评分分布</div>
+                <div class="chart-container">
+                    <canvas id="ratingChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-title">📈 时间趋势</div>
+            <div class="chart-container" style="height: 220px;">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <div class="card">
+                <div class="card-title">👍 Top 5 好评</div>
+                <div class="review-list" id="positiveReviews"></div>
+            </div>
+            <div class="card">
+                <div class="card-title">👎 Top 5 差评</div>
+                <div class="review-list" id="negativeReviews"></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="card-title">💡 改进建议</div>
+            <div class="insights-grid" id="insights"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📋 全部评论</div>
+            <div class="table-controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索评论..." oninput="filterReviews()">
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">全部</button>
+                    <button class="filter-btn" data-filter="5" onclick="setFilter('5')">5星</button>
+                    <button class="filter-btn" data-filter="4" onclick="setFilter('4')">4星</button>
+                    <button class="filter-btn" data-filter="3" onclick="setFilter('3')">3星</button>
+                    <button class="filter-btn" data-filter="2" onclick="setFilter('2')">2星</button>
+                    <button class="filter-btn" data-filter="1" onclick="setFilter('1')">1星</button>
+                </div>
+            </div>
+            <table class="reviews-table">
+                <thead>
+                    <tr>
+                        <th>评分</th>
+                        <th>标题</th>
+                        <th>内容</th>
+                        <th>用户</th>
+                        <th>版本</th>
+                        <th>日期</th>
+                        <th>情感</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewsTableBody"></tbody>
+            </table>
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </main>
+
+    <script>
+        // ===== 数据区域 - 由 AI 动态填充 =====
+        const APP_ID = '{{APP_ID}}';
+        const REGION = '{{REGION}}';
+
+        // 评论数据 - AI 填充
+        let reviewsData = {{REVIEWS_DATA}};
+
+        // 改进建议 - AI 根据评论内容动态生成
+        const insightsData = {{INSIGHTS_DATA}};
+
+        // ===== 以下为固定逻辑 =====
+        let currentFilter = 'all';
+        let currentPage = 1;
+        const pageSize = 20;
+        let filteredData = [...reviewsData];
+
+        function initCharts() {
+            const positive = reviewsData.filter(r => r.sentiment === 'positive').length;
+            const negative = reviewsData.filter(r => r.sentiment === 'negative').length;
+            const neutral = reviewsData.filter(r => r.sentiment === 'neutral').length;
+
+            new Chart(document.getElementById('sentimentChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['正面', '负面', '中性'],
+                    datasets: [{
+                        data: [positive, negative, neutral],
+                        backgroundColor: ['#10b981', '#ef4444', '#6b7280'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#64748b', padding: 16 } }
+                    }
+                }
+            });
+
+            document.getElementById('positiveCount').textContent = positive;
+            document.getElementById('negativeCount').textContent = negative;
+            document.getElementById('neutralCount').textContent = neutral;
+            document.getElementById('positivePercent').textContent = Math.round(positive / reviewsData.length * 100) + '%';
+
+            const ratingCounts = [1, 2, 3, 4, 5].map(r => reviewsData.filter(rev => rev.rating === r).length);
+            new Chart(document.getElementById('ratingChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['1星', '2星', '3星', '4星', '5星'],
+                    datasets: [{
+                        data: ratingCounts,
+                        backgroundColor: ['#ef4444', '#f97316', '#eab308', '#84cc16', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#64748b' } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+
+            const dates = [...new Set(reviewsData.map(r => r.date))].sort().slice(-14);
+            new Chart(document.getElementById('trendChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: dates.map(d => d.slice(5)),
+                    datasets: [
+                        { label: '正面', data: dates.map(d => reviewsData.filter(r => r.date === d && r.sentiment === 'positive').length), borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', fill: true, tension: 0.3 },
+                        { label: '负面', data: dates.map(d => reviewsData.filter(r => r.date === d && r.sentiment === 'negative').length), borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { color: '#64748b' } } },
+                    scales: {
+                        x: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }
+                    }
+                }
+            });
+
+            document.getElementById('avgRating').textContent = (reviewsData.reduce((s, r) => s + r.rating, 0) / reviewsData.length).toFixed(1);
+            document.getElementById('reviewCount').textContent = reviewsData.length;
+            document.getElementById('totalReviews').textContent = reviewsData.length;
+        }
+
+        function renderStars(rating) {
+            return Array(5).fill(0).map((_, i) => '<span class="star ' + (i < rating ? '' : 'empty') + '">★</span>').join('');
+        }
+
+        function renderTopReviews() {
+            const pos = reviewsData.filter(r => r.sentiment === 'positive').slice(0, 5);
+            const neg = reviewsData.filter(r => r.sentiment === 'negative').slice(0, 5);
+
+            document.getElementById('positiveReviews').innerHTML = pos.map(r =>
+                '<div class="review-item"><div class="review-header"><span class="review-title">' + r.title + '</span><div class="review-rating">' + renderStars(r.rating) + '</div></div><div class="review-content">' + r.content + '</div><div class="review-meta"><span>👤 ' + r.author + '</span><span>📅 ' + r.date + '</span></div></div>'
+            ).join('');
+
+            document.getElementById('negativeReviews').innerHTML = neg.map(r =>
+                '<div class="review-item"><div class="review-header"><span class="review-title">' + r.title + '</span><div class="review-rating">' + renderStars(r.rating) + '</div></div><div class="review-content">' + r.content + '</div><div class="review-meta"><span>👤 ' + r.author + '</span><span>📅 ' + r.date + '</span></div></div>'
+            ).join('');
+        }
+
+        function renderInsights() {
+            document.getElementById('insights').innerHTML = insightsData.map(i =>
+                '<div class="insight-item"><div class="insight-icon">' + i.icon + '</div><div class="insight-content"><h4>' + i.title + '</h4><p>' + i.desc + '</p><span class="priority-tag priority-' + i.priority + '">' + (i.priority === 'high' ? 'P0' : i.priority === 'medium' ? 'P1' : 'P2') + '</span><span style="margin-left:0.5rem;font-size:0.7rem;color:#94a3b8;">' + i.count + '人提及</span></div></div>'
+            ).join('');
+            document.getElementById('issueCount').textContent = insightsData.length;
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            currentPage = 1;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter));
+            filterReviews();
+        }
+
+        function filterReviews() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            filteredData = reviewsData.filter(r => {
+                const matchFilter = currentFilter === 'all' || r.rating.toString() === currentFilter;
+                const matchSearch = !term || r.title.toLowerCase().includes(term) || r.content.toLowerCase().includes(term) || r.author.toLowerCase().includes(term);
+                return matchFilter && matchSearch;
+            });
+            renderTable();
+        }
+
+        function renderTable() {
+            const start = (currentPage - 1) * pageSize;
+            const pageData = filteredData.slice(start, start + pageSize);
+            document.getElementById('reviewsTableBody').innerHTML = pageData.map(r =>
+                '<tr><td>' + renderStars(r.rating) + '</td><td><strong>' + r.title + '</strong></td><td><div class="table-content">' + r.content + '</div></td><td>' + r.author + '</td><td>' + r.version + '</td><td>' + r.date + '</td><td><span class="badge badge-' + r.sentiment + '">' + (r.sentiment === 'positive' ? '正面' : r.sentiment === 'negative' ? '负面' : '中性') + '</span></td></tr>'
+            ).join('');
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const total = Math.ceil(filteredData.length / pageSize);
+            let html = '';
+            if (currentPage > 1) html += '<button class="page-btn" onclick="goToPage(' + (currentPage - 1) + ')">‹</button>';
+            for (let i = 1; i <= Math.min(total, 7); i++) html += '<button class="page-btn ' + (i === currentPage ? 'active' : '') + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+            if (currentPage < total) html += '<button class="page-btn" onclick="goToPage(' + (currentPage + 1) + ')">›</button>';
+            document.getElementById('pagination').innerHTML = html;
+        }
+
+        function goToPage(p) { currentPage = p; renderTable(); }
+
+        function exportCSV() {
+            const headers = ['ID', '作者', '评分', '版本', '标题', '内容', '日期', '情感'];
+            const rows = reviewsData.map(r => [r.id, r.author, r.rating, r.version, '"' + r.title.replace(/"/g, '""') + '"', '"' + r.content.replace(/"/g, '""') + '"', r.date, r.sentiment]);
+            const csv = [headers.join(',')].concat(rows.map(r => r.join(','))).join('\n');
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'app_reviews_' + APP_ID + '_' + REGION + '_' + new Date().toISOString().slice(0,10) + '.csv';
+            link.click();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            renderTopReviews();
+            renderInsights();
+            renderTable();
+        });
+    </script>
+</body>
+</html>
