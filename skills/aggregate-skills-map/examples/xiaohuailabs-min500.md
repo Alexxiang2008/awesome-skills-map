@@ -20,8 +20,21 @@
 
 | ⭐ | 仓库 | 简介 |
 |----|------|------|
-| **660** | [**xiaohu-wechat-format**](https://github.com/xiaohuailabs/xiaohu-wechat-format) | Claude Code 公众号一键排版+发布技能——Markdown → 微信兼容 HTML → 推送草稿箱，**30 套主题** + 可视化画廊 |
+| **660** | [**xiaohu-wechat-format**](https://github.com/xiaohuailabs/xiaohu-wechat-format) | Claude Code 公众号一键排版+发布**技能**——Markdown → 微信兼容 HTML → 推送草稿箱，**30 套主题** + 可视化画廊 |
 | **618** | [**xiaohu-video-translate**](https://github.com/xiaohuailabs/xiaohu-video-translate) | 对 AI 说一句话，把外语视频自动配上中文字幕——下载 / 转写 / 翻译 / 润色 / 烧录 一条龙，**全程本地**，**转写零 API 费** |
+
+---
+
+## 🎯 --skill-only 关键词修复
+
+**问题**：旧关键词 `skill|nuwa|darwin` 无法识别 `xiaohu-wechat-format`（描述用"技能"中文）
+**修复**：扩展为 `skill|skills|nuwa|darwin|技能`
+**结果**：xiaohuailabs 从 0 → 1 个匹配（新增 xiaohu-wechat-format）
+
+实测命令：
+```bash
+./aggregate.sh xiaohuailabs --skill-only
+```
 
 ---
 
@@ -45,11 +58,7 @@
 - 要做**视频翻译**：小虎 xiaohu-video-translate（零成本）vs 歸藏 Youtube-clipper-skill（更多功能）
 - 要做**视觉设计**：歸藏是绝对首选
 
-## 💡 隐藏发现：aggregate.sh 关键词盲区
-
-`xiaohu-wechat-format` 和 `xiaohu-video-translate` 都**不含 skill/nuwa/darwin 关键词**，但显然是 Claude Code 技能。
-**这暴露了 aggregate.sh 的盲区**：关键词需要扩展（候选："技能"、claude、format、translate、render）。
-
 ## 🔗 相关文件
 
+- 关键词对比分析：`./keyword-comparison.md`
 - 实测脚本：`../aggregate.sh`

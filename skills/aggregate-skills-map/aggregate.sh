@@ -33,7 +33,7 @@ while [[ $# -gt 0 ]]; do
 用法: aggregate.sh <users...> [options]
   --min-stars N       最小 star 数 (默认 500)
   --include-forks     包含 fork 仓库
-  --skill-only        只保留 name/desc 含 skill/nuwa/darwin 关键词
+  --skill-only        只保留 name/desc 含 skill|skills|nuwa|darwin|技能 关键词
   --topic TAG         限定主题（如 claude-skill）
   --json              输出 JSON 而非 Markdown
   --output PATH       写入文件
@@ -71,7 +71,8 @@ filter_repos() {
     f+=" | select(.topics | index(\"$topic_filter\"))"
   fi
   if [[ "$skill_only" == "true" ]]; then
-    f+=" | select((.name + \" \" + .desc) | test(\"skill|nuwa|darwin\"; \"i\"))"
+    # 扩展关键词：skill/skills（英文，复数）、nuwa/darwin（花叔特有）、技能（中文）
+    f+=" | select((.name + \" \" + .desc) | test(\"skill|skills|nuwa|darwin|技能\"; \"i\"))"
   fi
   jq -c "$f"
 }
