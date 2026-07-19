@@ -18,9 +18,10 @@ license: MIT
 
 ## 🚀 触发方式
 
-- `/aggregate-skills-map alchaincyf` —— 单博主
+- `/aggregate-skills-map alchaincyf` —— 单博主（默认只看 star≥500）
+- `/aggregate-skills-map alchaincyf --skill-only` —— 进一步筛 skills 关键词
 - `/aggregate-skills-map alchaincyf,davepoon,mrgoonie` —— 多博主
-- `/aggregate-skills-map --json --min-stars 50 alchaincyf` —— 输出 JSON + 提高阈值
+- `/aggregate-skills-map --json alchaincyf` —— 输出 JSON
 - `/aggregate-skills-map --topic claude-skill alchaincyf` —— 只看相关主题
 
 ## 📦 依赖
@@ -35,13 +36,36 @@ jq --version    # JSON 解析（可选，用于 --json 输出）
 | 参数 | 默认 | 说明 |
 |------|------|------|
 | `USERS`（位置参数） | （必填） | GitHub 用户名列表，逗号分隔 |
-| `--min-stars N` | 10 | 最小 star 数阈值（过滤低质仓库） |
+| `--min-stars N` | **500** | 最小 star 数阈值（默认只看 500+ 的高质量项目） |
 | `--include-forks` | false | 是否包含 fork 的仓库（默认排除） |
+| `--skill-only` | false | 只保留 name/desc 含 skill/nuwa/darwin 关键词的仓库 |
 | `--topic TAG` | 无 | 限定主题（如 `claude-skill`、`claude-code`） |
 | `--json` | false | 输出 JSON 而非 Markdown |
 | `--output PATH` | stdout | 写入文件路径 |
 | `--sort` | stars | stars / updated / name |
 | `--limit N` | 0 | 单博主最多显示几个（0=全部） |
+
+## 🎯 常用调用速查
+
+```bash
+# 默认：star≥500（推荐起点）
+./aggregate.sh alchaincyf
+
+# 高质量 skills 清单（star≥500 + 仅 skills 关键词）
+./aggregate.sh alchaincyf --skill-only
+
+# 放宽到 100 星，看更多候选
+./aggregate.sh alchaincyf --min-stars 100
+
+# 多博主批量
+./aggregate.sh alchaincyf,davepoon,mrgoonie
+
+# 主题筛选 + JSON 输出
+./aggregate.sh alchaincyf --topic claude-skill --json --output map.json
+
+# 完整画像（含 fork、低星）— 调试用
+./aggregate.sh alchaincyf --min-stars 0 --include-forks
+```
 
 ## ⚙️ 工作流程
 
