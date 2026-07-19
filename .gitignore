@@ -49,3 +49,6 @@ weekly/
 reports/
 output/
 *.html.bak
+
+# dedup.py 缓存（自动生成）
+.dedup_cache.json

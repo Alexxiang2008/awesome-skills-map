@@ -1,0 +1,278 @@
+# Skills Taxonomy v0.1
+# 维护日期: 2026-07-19
+# 覆盖范围: 5 博主全部 ≥500 ⭐ skill（24 个）+ 22 章原始技能中的内容创作相关
+#
+# 设计依据:
+#   - 业界实践: GitHub 官方 awesome-list 模板推荐 3-4 级分类
+#   - 认知科学: 乔治·米勒 "魔力数字 7±2"——每层节点不超过 7±2
+#   - 软件架构: 单一职责原则——每个 skill 边界清晰
+#   - 重复类型: A/B/C/D 类分级处理（高重复/中重复/低重复/同作者迭代）
+#
+# 节点结构:
+#   name: 中文显示名
+#   skills: 该节点的 skill 列表（叶子）
+#   description: 节点描述（可选，用于自动输出）
+
+skills:
+
+  # ============================================================
+  # 一级: 内容创作 (Content Creation)
+  # ============================================================
+  content_creation:
+    name: 内容创作
+    description: 文章/图文/PPT/视频/配图等内容生成与分发
+
+    wechat:
+      name: 公众号
+      formatting:
+        name: 排版 / 发布
+        description: Markdown → 公众号兼容 HTML → 推送草稿箱
+        skills:
+          - id: baoyu-post-to-wechat
+            author: jimliu
+            repo: JimLiu/baoyu-skills
+            skill_path: skills/baoyu-post-to-wechat
+            note: 完整工作流，主题内置
+          - id: xiaohu-wechat-format
+            author: xiaohuailabs
+            repo: xiaohuailabs/xiaohu-wechat-format
+            note: 30 主题 + 可视化画廊
+      cover:
+        name: 封面生成
+        description: 公众号/小红书封面图
+        skills:
+          - id: guizang-social-card-skill
+            author: op7418
+            repo: op7418/guizang-social-card-skill
+            note: 小红书+公众号 21:9+1:1，Swiss 设计系统
+
+    xiaohongshu:
+      name: 小红书
+      images:
+        name: 图文生成
+        description: 3:4 卡片图文
+        skills:
+          - id: xiaohongshu-images-local
+            author: 一人课程
+            repo: 一人/第11章小红书爆款图文生成器
+            note: 本地 22 章技能合集
+          - id: guizang-social-card-skill-xhs
+            author: op7418
+            repo: op7418/guizang-social-card-skill
+            note: 同 guizang-social-card-skill，支持 xhs
+
+    ppt:
+      name: PPT / 演示
+      html_slides:
+        name: HTML Slides
+        description: 浏览器演示，单文件 HTML
+        skills:
+          - id: guizang-ppt-skill
+            author: op7418
+            repo: op7418/guizang-ppt-skill
+            note: Swiss/Editorial 版式，WebGL runtime
+          - id: NanoBanana-PPT-Skills
+            author: op7418
+            repo: op7418/NanoBanana-PPT-Skills
+            note: 视频转场 PPT
+          - id: huashu-md-html
+            author: alchaincyf
+            repo: alchaincyf/huashu-md-html
+            note: md↔html 双向，4 反 AI slop 主题
+          - id: huashu-design
+            author: alchaincyf
+            repo: alchaincyf/huashu-design
+            note: HTML 原生设计，20 设计哲学
+
+    video:
+      name: 视频
+      translate:
+        name: 翻译 / 字幕
+        description: 自动加字幕、翻译、烧录
+        skills:
+          - id: xiaohu-video-translate
+            author: xiaohuailabs
+            repo: xiaohuailabs/xiaohu-video-translate
+            note: 全程本地，零 API 费
+          - id: Youtube-clipper-skill
+            author: op7418
+            repo: op7418/Youtube-clipper-skill
+            note: YouTube 视频剪辑
+          - id: baocut
+            author: jimliu
+            repo: jimliu/baocut
+            note: macOS app 集成，需 BaoCut
+
+  # ============================================================
+  # 一级: 设计 / 视觉 (Design & Visual)
+  # ============================================================
+  design_visual:
+    name: 设计 / 视觉
+    description: UI / Logo / 插图 / 配图
+
+    ui_design:
+      name: UI 设计
+      skills:
+        - id: baoyu-design
+          author: jimliu
+          repo: jimliu/baoyu-design
+          note: Claude Design 本地版
+        - id: huashu-design-ui
+          author: alchaincyf
+          repo: alchaincyf/huashu-design
+          note: 同 huashu-design，UI 视角
+
+    logo:
+      name: Logo 设计
+      skills:
+        - id: logo-generator-skill
+          author: op7418
+          repo: op7418/logo-generator-skill
+
+    illustration:
+      name: 解释图 / 配图
+      skills:
+        - id: guizang-material-illustration
+          author: op7418
+          repo: op7418/guizang-material-illustration
+          note: 带字解释图、图表美化
+        - id: Document-illustrator-skill
+          author: op7418
+          repo: op7418/Document-illustrator-skill
+          note: 16:9 / 3:4 文档配图
+
+  # ============================================================
+  # 一级: 元能力 (Meta Skills)
+  # ============================================================
+  meta_skills:
+    name: 元能力
+    description: 自我进化、人物蒸馏、任务规范化——做 skill 的 skill
+
+    distill_person:
+      name: 人物思维蒸馏
+      description: 蒸馏某个人的思维模型
+      skills:
+        - id: nuwa-skill
+          author: alchaincyf
+          repo: alchaincyf/nuwa-skill
+          note: 蒸馏引擎（meta-skill）
+        - id: x-mentor-skill
+          author: alchaincyf
+          repo: alchaincyf/x-mentor-skill
+          note: 6 位 X 创作者合集
+        - id: zhangxuefeng-skill
+          author: alchaincyf
+          repo: alchaincyf/zhangxuefeng-skill
+        - id: steve-jobs-skill
+          author: alchaincyf
+          repo: alchaincyf/steve-jobs-skill
+
+    self_evolve:
+      name: 自我进化
+      skills:
+        - id: darwin-skill
+          author: alchaincyf
+          repo: alchaincyf/darwin-skill
+          note: 评估→改进→测试→保留/回滚
+
+    task_normalization:
+      name: 任务规范化
+      skills:
+        - id: qiaomu-goal-meta-skill
+          author: joeseesun
+          repo: joeseesun/qiaomu-goal-meta-skill
+          note: 模糊任务转强 /goal 命令
+
+    de_slop:
+      name: 去 AI 痕迹
+      skills:
+        - id: Humanizer-zh
+          author: op7418
+          repo: op7418/Humanizer-zh
+        - id: tramstop-skill
+          author: alchaincyf
+          repo: alchaincyf/tramstop-skill
+
+  # ============================================================
+  # 一级: 内容汇聚 (Content Aggregation)
+  # ============================================================
+  content_aggregation:
+    name: 内容汇聚
+    notebooklm_workflow:
+      name: NotebookLM 工作流
+      description: 多源内容 → NotebookLM（Podcast/PPT/MindMap）
+      skills:
+        - id: qiaomu-anything-to-notebooklm
+          author: joeseesun
+          repo: joeseesun/qiaomu-anything-to-notebooklm
+          note: 6+ 来源聚合
+
+  # ============================================================
+  # 一级: 开发工具 (Dev Tools)
+  # ============================================================
+  dev_tools:
+    name: 开发工具
+    desktop_client:
+      name: 桌面客户端
+      skills:
+        - id: CodePilot
+          author: op7418
+          repo: op7418/CodePilot
+          note: Electron + Next.js + MCP + skills
+    im_bridge:
+      name: IM 桥接
+      skills:
+        - id: Claude-to-IM-skill
+          author: op7418
+          repo: op7418/Claude-to-IM-skill
+          note: Telegram/Discord/飞书/Lark
+
+  # ============================================================
+  # 一级: 合集 / 教程 (Collections & Tutorials)
+  # ============================================================
+  collections:
+    name: 合集 / 教程
+    skill_collections:
+      name: Skills 合集
+      description: 多个 skills 打包
+      skills:
+        - id: baoyu-skills
+          author: jimliu
+          repo: jimliu/baoyu-skills
+          note: 20+ skills，npx skills add
+        - id: huashu-skills
+          author: alchaincyf
+          repo: alchaincyf/huashu-skills
+          note: 内容创作 11 个 skills
+    books:
+      name: 书籍 / 教程
+      skills:
+        - id: Illustrated-Agent-Skills
+          author: jimliu
+          repo: jimliu/Illustrated-Agent-Skills
+          note: 《图解Skill——AI 提效实战指南》
+        - id: claude-code-orange-book
+          author: alchaincyf
+          repo: alchaincyf/claude-code-orange-book
+        - id: obsidian-ai-orange-book
+          author: alchaincyf
+          repo: alchaincyf/obsidian-ai-orange-book
+
+# ============================================================
+# 元数据
+# ============================================================
+meta:
+  version: 0.1
+  date: 2026-07-19
+  authors:
+    - alchaincyf: 花叔
+    - jimliu: 宝玉
+    - op7418: 歸藏
+    - xiaohuailabs: 小虎
+    - joeseesun: 向阳乔木
+  total_skills: 24
+  duplicate_clusters:
+    - wechat.formatting: 2  # A 类高重复
+    - ppt.html_slides: 4    # B 类中重复（切入点不同）
+    - video.translate: 3    # A 类高重复
+    - meta_skills.de_slop: 2 # A 类高重复
