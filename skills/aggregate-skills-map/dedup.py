@@ -73,13 +73,19 @@ def fetch_repo_data(owner_repo):
         return None
 
 
-def enrich_skills(skills, cache, use_cache=True):
-    """为 skill 拉最新 stars（本地 skill 跳过）"""
+def enrich_skills(skills, cache, use_cache=True, awesome_repo='Alexxiang2008/awesome-skills-map'):
+    """为 skill 拉最新 stars + 处理本地 skill URL"""
     enriched = []
     for skill in skills:
-        repo = skill.get('repo', '')
-        if repo and not repo.startswith('一人/'):
-            # 5 博主 skill：通过 gh API 拉最新数据
+        is_local = skill.get('type') == 'local_skill' or not skill.get('repo')
+
+        if is_local:
+            # 本地 skill：用 path 字段构造 awesome-skills-map 仓库 URL
+            path = skill.get('path', '')
+            url = f"https://github.com/{awesome_repo}/tree/main/{path}" if path else f"https://github.com/{awesome_repo}"
+            skill = {**skill, 'live_stars': 0, 'is_local': True, 'live_url': url, 'stars_display': '📍 本地'}
+        else:
+            repo = skill.get('repo', '')
             if use_cache and repo in cache:
                 data = cache[repo]
             else:
@@ -87,12 +93,14 @@ def enrich_skills(skills, cache, use_cache=True):
                 if data:
                     cache[repo] = data
             if data:
-                skill = {**skill, 'live': data, 'live_stars': data.get('stars', skill.get('stars', 0))}
+                stars = data.get('stars', 0)
+                skill = {**skill, 'live': data, 'live_stars': stars,
+                         'live_url': data.get('html_url', f"https://github.com/{repo}"),
+                         'stars_display': f"{stars:,}"}
             else:
-                skill = {**skill, 'live_stars': skill.get('stars', 0)}
-        else:
-            # 本地 skill（一人/xxx）没有 GitHub 数据
-            skill = {**skill, 'live_stars': skill.get('stars', 0), 'is_local': True}
+                skill = {**skill, 'live_stars': skill.get('stars', 0),
+                         'live_url': f"https://github.com/{repo}",
+                         'stars_display': f"{skill.get('stars', 0):,}"}
         enriched.append(skill)
     return enriched
 
@@ -150,28 +158,34 @@ def render_repeat_table(skills_in_cat, by_tag_count):
     """A 类高重复：出对比表"""
     out = []
     sorted_skills = sorted(skills_in_cat, key=lambda x: -x.get('live_stars', 0))
-    out.append("| ⭐ | 作者 | 仓库 | 简介 | 标签 |")
-    out.append("|----|------|------|------|------|")
+    out.append("| ⭐ | 类型 | 作者 | 仓库 | 简介 | 标签 |")
+    out.append("|----|------|------|------|------|------|")
     for s in sorted_skills:
-        stars = s.get('live_stars', 0)
+        stars_disp = s.get('stars_display', '0')
         author = s.get('author', '?')
-        repo = s.get('repo', '?')
-        repo_url = f"https://github.com/{repo}" if '/' in repo else repo
+        type_ = s.get('type', '?')
+        if s.get('is_local'):
+            path = s.get('path', '')
+            repo_name = path or 'awesome-skills-map'
+        else:
+            repo_name = s.get('repo', '?')
+        url = s.get('live_url', '')
         live = s.get('live', {})
         desc = (live.get('desc') if live else s.get('note', '')) or ''
-        desc = desc[:80].replace('|', '\\|')
+        desc = desc[:70].replace('|', '\\|').replace('\n', ' ')
         tags_str = ', '.join(s.get('tags', []))
-        out.append(f"| {stars:,} | {author} | [{repo}]({repo_url}) | {desc} | `{tags_str}` |")
+        out.append(f"| {stars_disp} | {type_} | {author} | [{repo_name}]({url}) | {desc} | `{tags_str}` |")
     out.append("")
     # 场景化推荐
     if sorted_skills:
-        out.append("**🎯 场景化推荐**（基于 stars + 标签）：")
+        out.append("**🎯 场景化推荐**（基于 stars + 类型 + 标签）：")
         out.append("")
         for s in sorted_skills[:2]:
             sid = s.get('id', '?')
-            stars = s.get('live_stars', 0)
+            stars_disp = s.get('stars_display', '0')
             note = s.get('note', '')[:60]
-            out.append(f"- **{sid}**（{stars:,} ⭐）：{note}")
+            type_ = s.get('type', '?')
+            out.append(f"- **{sid}**（{stars_disp} ⭐ · {type_}）：{note}")
         out.append("")
     return '\n'.join(out)
 
@@ -221,14 +235,15 @@ def render_tree(categories, skills_by_primary, skills_by_tag, depth=0):
                     # 列出每个 skill
                     for s in sorted(all_skills, key=lambda x: -x.get('live_stars', 0)):
                         sid = s.get('id', '?')
-                        stars = s.get('live_stars', 0)
+                        stars_disp = s.get('stars_display', '0')
                         note = s.get('note', '')[:50]
                         author = s.get('author', '?')
+                        type_ = s.get('type', '?')
                         # 标记主分类外的额外分类
                         extra_tags = [t for t in s.get('tags', []) if t != tag]
                         extra_str = f" · 还属于: {', '.join(extra_tags)}" if extra_tags else ""
                         indent2 = "  " * (depth + 2)
-                        out.append(f"{indent2}- `{sid}` · {stars:,} ⭐ · @{author} — {note}{extra_str}")
+                        out.append(f"{indent2}- `{sid}` · {stars_disp} ⭐ · [{type_}] · @{author} — {note}{extra_str}")
                     out.append("")
                 else:
                     # 中间节点：递归
@@ -357,6 +372,99 @@ def main():
     out.append("|------|------|")
     for t, n in sorted(by_type.items(), key=lambda x: -x[1]):
         out.append(f"| {t} | {n} |")
+    out.append("")
+
+    # 类型维度第二视图（v0.3 新增）
+    out.append("---")
+    out.append("")
+    out.append("## 🧩 按类型第二视图")
+    out.append("")
+    out.append("> 第一维度是 `primary_category`（职能），第二维度是 `type`（形态）。同一 skill 可同时跨两维。")
+    out.append("")
+
+    type_descriptions = {
+        'skill': '独立 skill',
+        'sub_skill': '合集下的子技能',
+        'collection': '多 skill 合集',
+        'book': '书籍/教程',
+        'tool': '工具/脚本/服务',
+        'meta': '元能力',
+        'local_skill': '本地 22 章',
+    }
+
+    for t in ['meta', 'collection', 'book', 'sub_skill', 'skill', 'tool', 'local_skill']:
+        skills_of_type = [s for s in skills if s.get('type') == t]
+        if not skills_of_type:
+            continue
+        desc = type_descriptions.get(t, t)
+        out.append(f"### 🏷️ `{t}` · {desc}（{len(skills_of_type)} 个）")
+        out.append("")
+        out.append("| ⭐ | skill | 作者 | 主分类 | 标签 |")
+        out.append("|----|-------|------|--------|------|")
+        for s in sorted(skills_of_type, key=lambda x: -x.get('live_stars', 0)):
+            stars_disp = s.get('stars_display', '0')
+            sid = s.get('id', '?')
+            url = s.get('live_url', '')
+            author = s.get('author', '?')
+            pc = s.get('primary_category', '?')
+            tags_str = ', '.join(s.get('tags', []))
+            out.append(f"| {stars_disp} | [{sid}]({url}) | {author} | `{pc}` | `{tags_str}` |")
+        out.append("")
+
+    # v0.3 主动审查区块
+    out.append("---")
+    out.append("")
+    out.append("## 🔍 v0.3 主动审查（自我 spot check）")
+    out.append("")
+    out.append("> 这是 dedup.py 自动生成的自我审查清单，标出可能需要你确认的边缘 case。")
+    out.append("")
+
+    # 问题 1：distill_person 全是花叔
+    distill_person = skills_by_tag.get('distill_person', [])
+    alchaincyf_distill = [s for s in distill_person if s.get('author') == 'alchaincyf']
+    if len(alchaincyf_distill) >= 3:
+        out.append(f"### ⚠️ 问题 1：distill_person 4 个里 {len(alchaincyf_distill)} 个全是花叔（nuwa 衍生品）")
+        out.append("")
+        out.append("- **现状**：花叔的 nuwa-skill 是 meta-skill，其他 3 个（zhangxuefeng/steve-jobs/x-mentor）是 nuwa 衍生的具体人物")
+        out.append("- **判断**：是合理的——它们就是同一作者的子产品")
+        out.append("- **建议**：保留现状，但在 docs 里说明 \"nuwa 生态\" 子分支")
+        out.append("")
+
+    # 问题 2：本地 skill 跨多个 A 类
+    local_a_class = []
+    for path, ss in duplicates.items():
+        for s in ss:
+            if s.get('is_local'):
+                local_a_class.append((path, s))
+    if local_a_class:
+        out.append(f"### ⚠️ 问题 2：{len(local_a_class)} 个本地 skill 出现在 A 类聚类里")
+        out.append("")
+        out.append("- **现状**：本地 skill（一人课程）和 5 博主 skill 在同一分类下")
+        out.append("- **判断**：合理——同一职能下多家实现，对比表有价值")
+        out.append("- **建议**：保留，但本地 skill 在对比表中加 📍 标记")
+        out.append("")
+
+    # 问题 3：跨分类 skill 是否有过度跨类
+    cross_count = sum(1 for s in skills if len(s.get('tags', [])) >= 3)
+    if cross_count:
+        out.append(f"### ⚠️ 问题 3：{cross_count} 个 skill 有 ≥3 个 tags（跨多类）")
+        out.append("")
+        out.append("- **判断**：tags 多不等于分类错误，但要警惕\"什么都做\"的 skill")
+        out.append("- **建议**：人工 review 每个跨类 skill，确认 primary_category 是否准确")
+        out.append("")
+
+    # 问题 4：单点分类
+    single_categories = []
+    for path, ss in skills_by_primary.items():
+        if len(ss) == 1 and path:
+            single_categories.append(path)
+    out.append(f"### 💡 问题 4：{len(single_categories)} 个分类是单点（只有 1 个 skill）")
+    out.append("")
+    out.append("- **判断**：单点分类不一定是错（有些就是 unique 领域），但提示可能合并或扩类")
+    if len(single_categories) <= 10:
+        out.append("- **单点分类清单**：")
+        for p in single_categories:
+            out.append(f"  - `{p}`")
     out.append("")
 
     output = '\n'.join(out)

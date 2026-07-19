@@ -1,22 +1,22 @@
-# Skills Taxonomy v0.2（tag-based 设计）
+# Skills Taxonomy v0.3（tag-based + type 维度 + 本地 skill 修复）
 # 维护日期: 2026-07-19
-# 覆盖范围: 5 博主全部 ≥500 ⭐ skill + 22 章原始技能 + 本仓库自研
 #
-# 设计变更（v0.1 → v0.2）:
-#   1. tag-based 重构: 每个 skill 单一 id + tags 字段
-#   2. 跨分类合并: 同 repo 用同一 id，tags 表示多分类
-#   3. 整合 22 章: 全部原始技能纳入
-#   4. primary_category 字段: 每个 skill 有"主分类"
+# 变更 v0.2 → v0.3:
+#   - 本地 skill 加 path 字段，URL 指向 awesome-skills-map 仓库
+#   - type 字段统一：skill/sub_skill/collection/book/tool/meta/local_skill
+#   - 主动 spot check 修正：精简 baoyu-skills 跨分类、video/generate 移除（过细）
+#   - 增加 v0.3 主动审查区块（dedup 输出顶部）
 #
 # 设计依据:
-#   - tag 系统: GitHub 自身就是 tag-based（topics）
-#   - 单一职责: 每个 skill 一个 id（消除 v0.1 的 -xhs / -ui 变体）
-#   - 认知科学: 7±2 层级 + tags 横向关联
+#   - tag 系统: GitHub topics 模式
+#   - type 维度: 软件架构分层（基础/容器/工具/元）
+#   - 4 级分类树: 认知科学 7±2 + awesome 模板
 
 meta:
-  version: 0.2
+  version: 0.3
   date: 2026-07-19
-  total_skills: 49
+  total_skills: 48
+  awesome_skills_map_repo: Alexxiang2008/awesome-skills-map
   authors:
     alchaincyf: 花叔
     jimliu: 宝玉
@@ -27,7 +27,7 @@ meta:
     自研: awesome-skills-map 仓库自研
 
 # ============================================================
-# 分类树（导航骨架，每个叶子节点带 tag 字段）
+# 分类树（导航骨架）
 # ============================================================
 categories:
 
@@ -68,9 +68,7 @@ categories:
           effects:
             name: 特效包装
             tag: video_effects
-          generate:
-            name: AI 生成
-            tag: video_generate
+          # v0.3 移除 video/generate（只有一个 listenhub，过细）
       article:
         name: 文章创作
         children:
@@ -187,13 +185,21 @@ categories:
         tag: brainstorm
 
 # ============================================================
-# Skill 列表（49 个，统一扁平 + tags）
+# Skill 列表（48 个）
+# type 取值：
+#   - skill: 独立 skill
+#   - sub_skill: 合集下的子技能
+#   - collection: 多 skill 合集
+#   - book: 书籍/教程
+#   - tool: 工具/脚本/服务
+#   - meta: 元能力（蒸馏/规范化等）
+#   - local_skill: 本地 22 章原始 skill
 # ============================================================
 skills:
 
-  # ============ 5 博主（28 个）============
+  # ============ 5 博主 ============
 
-  # 歸藏 op7418 (11 个)
+  # 歸藏 op7418
   - id: Claude-to-IM-skill
     name: Claude-to-IM 桥接
     author: op7418
@@ -294,7 +300,7 @@ skills:
     primary_category: content_creation/video/translate
     type: skill
 
-  # 宝玉 jimliu (4 个)
+  # 宝玉 jimliu
   - id: baocut
     name: BaoCut 视频剪辑
     author: jimliu
@@ -321,7 +327,8 @@ skills:
     repo: jimliu/baoyu-skills
     stars: 23845
     note: npx skills add jimliu/baoyu-skills
-    tags: [skill_collection, wechat_formatting, xhs_images]
+    # v0.3 精简 tags：baoyu-skills 主要身份是合集，wechat_formatting/xhs_images 由 baoyu-post-to-wechat/xiaohongshu 子技能承担
+    tags: [skill_collection]
     primary_category: collections/skill_collection
     type: collection
 
@@ -335,7 +342,7 @@ skills:
     primary_category: collections/tutorial
     type: book
 
-  # 花叔 alchaincyf (8 个)
+  # 花叔 alchaincyf
   - id: darwin-skill
     name: Darwin 自我进化
     author: alchaincyf
@@ -426,7 +433,7 @@ skills:
     primary_category: meta_skills/distill_person
     type: sub_skill
 
-  # 小虎 xiaohuailabs (2 个)
+  # 小虎 xiaohuailabs
   - id: xiaohu-video-translate
     name: 小虎视频自动翻译字幕
     author: xiaohuailabs
@@ -447,7 +454,7 @@ skills:
     primary_category: content_creation/wechat/formatting
     type: skill
 
-  # 乔木 joeseesun (2 个)
+  # 乔木 joeseesun
   - id: qiaomu-anything-to-notebooklm
     name: 乔木多源→NotebookLM
     author: joeseesun
@@ -468,137 +475,139 @@ skills:
     primary_category: meta_skills/task_normalization
     type: meta
 
-  # ============ 22 章原始技能（20 个）============
+  # ============ 22 章原始技能（20 个，v0.3 加 path）============
+
   - id: interview-intel-local
     name: 面试准备 Skill
     author: 一人课程
-    repo: 一人/第2章面试准备
+    path: skills/第2章面试准备
     note: 公司+JD+简历 → 5 份材料
     tags: [interview_prep]
     primary_category: productivity/interview_prep
-    type: skill
+    type: local_skill
 
   - id: weekly-report-local
     name: 智能周报生成器
     author: 一人课程
-    repo: 一人/第3章智能周报生成器
+    path: skills/第3章智能周报生成器
     note: 流水账 → STAR 周报 3 版
     tags: [weekly_report]
     primary_category: productivity/weekly_report
-    type: skill
+    type: local_skill
 
   - id: creative-brainstorm-local
     name: AI 创意脑暴
     author: 一人课程
-    repo: 一人/第4章AI辅助创意脑暴
+    path: skills/第4章AI辅助创意脑暴
     note: SCAMPER 7 维发散 → 10 方案
     tags: [brainstorm]
     primary_category: product_design/brainstorm
-    type: skill
+    type: local_skill
 
   - id: invoice-local
     name: 发票自动归档
     author: 一人课程
-    repo: 一人/第5章发票与收据自动归档
+    path: skills/第5章发票与收据自动归档
     note: 百度 OCR + Excel 报表
     tags: [invoice]
     primary_category: productivity/invoice
-    type: skill
+    type: local_skill
 
   - id: email-triage-local
     name: 智能邮件分类回复
     author: 一人课程
-    repo: 一人/第6章智能邮件分类与回复助手
+    path: skills/第6章智能邮件分类与回复助手
     note: 3 级分类 + 智能回复草稿
     tags: [email]
     primary_category: productivity/email
-    type: skill
+    type: local_skill
 
   - id: frontend-slides-local
     name: 精美网页演示
     author: 一人课程
-    repo: 一人/第7章一键生成精美网页演示
+    path: skills/第7章一键生成精美网页演示
     note: 零依赖 HTML slides，强制 100vh
     tags: [html_slides]
     primary_category: content_creation/ppt/html_slides
-    type: skill
+    type: local_skill
 
   - id: interview-local
     name: AI 深度访谈爆款文章
     author: 一人课程
-    repo: 一人/第8章AI深度访谈与爆款文章创作
+    path: skills/第8章AI深度访谈与爆款文章创作
     note: 3 模式：转化/传播/平衡
     tags: [article_interview]
     primary_category: content_creation/article/interview
-    type: skill
+    type: local_skill
 
   - id: hot-article-local
     name: 热点爆款文章生成器
     author: 一人课程
-    repo: 一人/第9章热点爆款文章生成器
+    path: skills/第9章热点爆款文章生成器
     note: 联网搜热点 + 模板
     tags: [article_hot]
     primary_category: content_creation/article/hot
-    type: skill
+    type: local_skill
 
   - id: wechat-publish-local
     name: 微信公众号一键排版发布
     author: 一人课程
-    repo: 一人/第10章微信公众号一键排版与发布
+    path: skills/第10章微信公众号一键排版与发布
     note: 4 主题，含小绿书
     tags: [wechat_formatting]
     primary_category: content_creation/wechat/formatting
-    type: skill
+    type: local_skill
 
   - id: xiaohongshu-images-local
     name: 小红书爆款图文生成器
     author: 一人课程
-    repo: 一人/第11章小红书爆款图文生成器
+    path: skills/第11章小红书爆款图文生成器
     note: 3:4 卡片自动分页
     tags: [xhs_images]
     primary_category: content_creation/xiaohongshu/images
-    type: skill
+    type: local_skill
 
   - id: video-local-analyze-local
     name: 爆款视频拆解器
     author: 一人课程
-    repo: 一人/第12章爆款视频拆解器
+    path: skills/第12章爆款视频拆解器
     note: 豆包 API 8 维拆解 + HTML 报告
     tags: [video_analyze]
     primary_category: content_creation/video/analyze
-    type: skill
+    type: local_skill
 
   - id: listenhub-local
     name: ListenHub AI 解说视频/播客
     author: 一人课程
-    repo: 一人/第13章ListenHub Skill
+    path: skills/第13章ListenHub Skill
     note: 4 模式：Podcast/Explain/TTS/Image
+    # v0.3 移除 video_generate 标签（video/generate 分类过细）
     tags: [video_generate]
-    primary_category: content_creation/video/generate
-    type: skill
+    primary_category: content_creation/video/effects
+    type: local_skill
 
   - id: video-wrapper-local
     name: 访谈视频综艺特效
     author: 一人课程
-    repo: 一人/第14章视频综艺特效
+    path: skills/第14章视频综艺特效
     note: YouTube/B站 → 综艺风视频
     tags: [video_effects]
     primary_category: content_creation/video/effects
-    type: skill
+    type: local_skill
 
   - id: app-review-local
     name: AppStore 评价分析
     author: 一人课程
-    repo: 一人/第15章AppStore评价分析
+    path: skills/第15章AppStore评价分析
     note: 抓 500 条评论 + 情感分析
     tags: [app_review]
     primary_category: data_analysis/app_review
-    type: skill
+    type: local_skill
 
   - id: xiaohongshu-scraper-local
     name: 小红书创作平台数据采集
     author: 一人课程
-    repo: 一人/第16章商业数据分析
+    path: skills/第16章商业数据分析
     note: 油猴 + Node 服务
     tags: [social_scraping]
     primary_category: data_analysis/social_scraping
@@ -607,7 +616,7 @@ skills:
   - id: viral-monitor-local
     name: 公众号爆文监控
     author: 一人课程
-    repo: 一人/第17章公众号爆文监控
+    path: skills/第17章公众号爆文监控
     note: 大家啦 API + 日报
     tags: [content_monitoring]
     primary_category: content_aggregation/monitoring
@@ -616,16 +625,16 @@ skills:
   - id: prd-writer-local
     name: PRD 撰写
     author: 一人课程
-    repo: 一人/第19章产品需求撰写
+    path: skills/第19章产品需求撰写
     note: 3 阶段 + ASCII 原型 + Mermaid
     tags: [prd]
     primary_category: product_design/prd
-    type: skill
+    type: local_skill
 
   - id: web-artifacts-builder-local
     name: Web Artifacts Builder
     author: 一人课程
-    repo: 一人/第20章WebArtifactsBuilder
+    path: skills/第20章WebArtifactsBuilder
     note: React 18 + shadcn/ui
     tags: [artifacts]
     primary_category: dev_tools/artifacts
@@ -634,22 +643,22 @@ skills:
   - id: frontend-design-local
     name: 前端界面设计
     author: 一人课程
-    repo: 一人/第21章前端界面设计
+    path: skills/第21章前端界面设计
     note: 反 AI slop，12 美学方向
     tags: [ui_design]
     primary_category: design_visual/ui_design
-    type: skill
+    type: local_skill
 
   - id: webapp-testing-local
     name: 网页自动化测试
     author: 一人课程
-    repo: 一人/第22章网页自动化测试
+    path: skills/第22章网页自动化测试
     note: Playwright
     tags: [testing]
     primary_category: dev_tools/testing
-    type: skill
+    type: local_skill
 
-  # ============ 自研（1 个）============
+  # ============ 自研 ============
   - id: aggregate-skills-map-self
     name: 聚合 GitHub 博主技能地图
     author: 自研
