@@ -1,14 +1,35 @@
 # 🗺️ Awesome Skills Map
 
-> **22 章节 Claude Skills 全景图 + 完整源码** —— 按职能分类、自带作战矩阵、含一键部署指南。
+> **三层技能地图体系** · 22 章原始 Claude Skill 源码 + 5 位高产博主聚合 + 48 skill 自动分类（taxonomy v0.3）
+>
+> [![Skills](https://img.shields.io/badge/Skills-48-blue)]()
+> [![Version](https://img.shields.io/badge/taxonomy-v0.3-green)]()
+> [![License](https://img.shields.io/badge/License-MIT-green)]()
+> [![Claude](https://img.shields.io/badge/Claude_Code-Skills-purple)]()
+> [![Topics](https://img.shields.io/badge/topics-15-orange)]()
 
-[![Skills](https://img.shields.io/badge/Skills-22-blue)]()
-[![License](https://img.shields.io/badge/License-MIT-green)]()
-[![Claude](https://img.shields.io/badge/Claude_Code-Skills-purple)]()
+## 🎯 速读（100 字）
 
-## 🎯 速读（100字）
+本仓库 = **3 层技能地图**：
+1. **第一层 · 22 章原始 Skill 源码**（解压即用，含 SKILL.md）
+2. **第二层 · 5 博主聚合**（花叔 / 宝玉 / 歸藏 / 小虎 / 乔木，共 28 个 ≥500⭐ skill）
+3. **第三层 · taxonomy v0.3 dedup 体系**（48 skill 跨博主 + 22 章统一分类，9 个 A 类重复聚类自动对比）
 
-6 大类、22 个技能、2.5MB 源码。**内容生产铁三角**：9 追热点 → 8 写爆款 → 10/11 分发（公众号+小红书），17 闭环监控。**最强单兵**：12 爆款视频拆解（豆包 8 维度）。**最大坑**：13 ListenHub 严禁直接 API 调用（脚本是唯一接口）。所有 zip 原档存于 `archives/`，解压源码在 `skills/`。
+**核心元能力**：`aggregate-skills-map` skill（gh CLI + dedup.py + taxonomy.yaml）让你随时拉新博主、加新 skill，自动归类。
+
+---
+
+## 🆕 v0.3 最新更新（2026-07-19）
+
+| 变更 | 内容 |
+|------|------|
+| **taxonomy.yaml v0.3** | tag-based 重构 + 整合 5 博主 + 22 章 = **48 skill** |
+| **dedup.py v0.3** | 加 type 第二维度（meta/collection/book/skill/tool/local_skill）+ 主动 spot check |
+| **本地 skill 修复** | URL 指向 awesome-skills-map 仓库 + stars 显示「📍 本地」 |
+| **跨分类 skill** | tags ≥ 2 自动识别（如 `huashu-design`: ui_design + html_slides） |
+| **主动审查** | dedup 自动列出 4 个潜在问题（distill_person 全花叔、24 个单点分类等） |
+
+详见 [CHANGELOG](#-changelog) 和 `examples/dedup-map.md`。
 
 ---
 
@@ -16,100 +37,141 @@
 
 ```
 awesome-skills-map/
-├── README.md                  ← 你正在看的技能地图
-├── LICENSE                    ← MIT
-├── archives/                  ← 21 个原始 zip（按章节编号 ch02.zip ~ ch22.zip）
-│   ├── ch02.zip  ~  ch22.zip
-└── skills/                    ← 解压后的完整源码（按章节中文名分目录）
-    ├── 第2章面试准备/
-    ├── 第3章智能周报生成器/
-    ├── ...（共 21 个）
-    └── 第22章网页自动化测试/
+├── README.md                          ← 你正在看的（三层技能地图）
+├── LICENSE                            ← MIT
+├── .gitignore
+│
+├── archives/                          ← 第一层 · 22 章原始 zip（ch02.zip ~ ch22.zip）
+│   └── ch02.zip ~ ch22.zip            原始压缩包，方便分发
+│
+├── skills/                            ← 第一层 · 22 章解压源码 + 第二层 aggregate skill
+│   ├── 第2章面试准备/                 ← 一人一课程原始 skill
+│   ├── 第3章智能周报生成器/
+│   ├── ...
+│   ├── 第22章网页自动化测试/
+│   └── aggregate-skills-map/          ← 第二层 · 元能力（本仓库自研）
+│       ├── SKILL.md                   skill 定义
+│       ├── aggregate.sh               Bash 拉数据 + Markdown 渲染
+│       ├── dedup.py                   Python 聚合 + 重复检测
+│       ├── taxonomy.yaml              🆕 v0.3 分类树（48 skill）
+│       └── examples/                  第三层 · dedup 输出
+│           ├── alchaincyf-min500-skills.md
+│           ├── jimliu-min500-skills.md
+│           ├── op7418-min500.md
+│           ├── xiaohuailabs-min500.md
+│           ├── joeseesun-min500.md
+│           ├── keyword-comparison.md
+│           └── dedup-map.md            🆕 48 skill 聚合视图
+│
+└── (GitHub Topics: claude, claude-skills, awesome-list, skills-aggregator 等 15 个)
 ```
-
-**为什么同时保留 archives 和 skills？**
-- `archives/`：原 zip 形态，方便下载分发（共享给团队）
-- `skills/`：解压源码，便于直接 `cp` 到 `~/.claude/skills/` 启用
 
 ---
 
 ## 🚀 一键部署
 
-### 方式 A：部署全部（21 个技能）
+### 方式 A：部署全部 22 章原始 skill
 
 ```bash
 git clone https://github.com/Alexxiang2008/awesome-skills-map.git
 cd awesome-skills-map
 
-# 复制所有 skill 源码到 Claude 全局 skills 目录
-cp -r skills/*/* ~/.claude/skills/    # 注意每章内层才是 skill 目录
+# 复制每个 skill 源码到 Claude 全局 skills 目录
+cp -r "skills/第2章面试准备/interview-intel" ~/.claude/skills/
+cp -r "skills/第10章微信公众号一键排版与发布/一键发布到公众号/skills/wechat-publish" ~/.claude/skills/
+# ... 共 22 个
 ```
 
-### 方式 B：按需挑用
+### 方式 B：只部署本仓库自研的元能力
 
-每个技能独立可用，进入对应目录查看 `SKILL.md`（或 `README.md`）了解触发命令。
+```bash
+cp -r skills/aggregate-skills-map ~/.claude/skills/
+```
+
+启用后在 Claude Code 中：
+
+```bash
+/aggregate-skills-map alchaincyf                   # 单博主技能地图
+/aggregate-skills-map alchaincyf --skill-only      # 仅 skills
+/aggregate-skills-map --dedup                      # 用 taxonomy v0.3 聚合
+```
+
+### 方式 C：查看文档不部署
+
+直接浏览 `examples/` 下的 6 个 markdown 文件即可看效果。
 
 ---
 
-## 🗂 技能地图（按职能分类）
+## 🗂 三层技能地图架构
 
-### 1️⃣ 内容创作与发布（6 个）—— 自媒体 IP 主战场
+### 第一层 · 22 章原始技能（本地源码）
 
-| # | 技能 | 触发命令 | 输入 → 输出 | 技术依赖/坑 |
-|---|------|---------|------------|-----------|
-| **8** | **interview**（商业访谈写作） | `/interview` `/访谈` `/interview-转化` `/interview-传播` | 风格参考 + 多轮问答 → 爆款公众号长文 | 强制风格参考文件夹 `./风格参考/`；3 模式（销量/阅读/平衡） |
-| **9** | **hot-article**（热点爆款） | `/hot` `/热点` `/爆款` | 热点主题 + 模板 → 公众号/小红书文 | 强制爆款模板文件夹 `./爆款模板/`；联网搜热点 |
-| **10** | **wechat-publish**（公众号一键排版发布） | `/publish-wechat` | Markdown → 公众号草稿（4 主题，含小绿书） | 需配置微信 AppID/Secret；首次 `isInitialized()` 引导 |
-| **11** | **xiaohongshu-images**（小红书图文） | `/xiaohongshu-images` | MD/HTML/文本 → 3:4 卡片图集 | 首次需 `.xiaohongshu-images/config.yaml` |
-| **14** | **video-wrapper**（访谈视频综艺特效） | `/video-wrapper` | YouTube/B站链接或本地 → 综艺风视频 | 需 ffmpeg + Playwright + MoviePy；4 主题；分析→审批→渲染 |
-| **17** | **公众号爆文监控** | `/爆文监控` `/viral-monitor` | 关键词 + 大家啦 API → 日报/周报 HTML | 依赖外部 API（dajiala.com）；`viral_monitor.py --setup` 向导 |
+来自「一人」课程的 22 章节 Claude Skills 完整源码（缺第 1、18 章）：
 
-🔗 **内容铁三角**：9（选题）→ 8（深度）→ 10/11（分发），17（复盘）闭环。
+| 章节 | skill | 触发命令 |
+|------|-------|---------|
+| 第 2 章 | 面试准备 | `/jobprep` |
+| 第 3 章 | 智能周报生成器 | `/weekly-report` |
+| 第 4 章 | AI 辅助创意脑暴 | `/brainstorm` |
+| 第 5 章 | 发票与收据自动归档 | `/invoice` |
+| 第 6 章 | 智能邮件分类与回复 | `/email-triage` |
+| 第 7 章 | 一键生成精美网页演示 | `/frontend-slides` |
+| 第 8 章 | AI 深度访谈与爆款文章 | `/interview` |
+| 第 9 章 | 热点爆款文章生成器 | `/hot` |
+| 第 10 章 | 微信公众号一键排版 | `/publish-wechat` |
+| 第 11 章 | 小红书爆款图文生成器 | `/xiaohongshu-images` |
+| 第 12 章 | 爆款视频拆解器 | `/video-local` |
+| 第 13 章 | ListenHub AI 解说视频 | (脚本调用) |
+| 第 14 章 | 视频综艺特效 | `/video-wrapper` |
+| 第 15 章 | AppStore 评价分析 | `/app-review` |
+| 第 16 章 | 小红书数据采集 | (CLI) |
+| 第 17 章 | 公众号爆文监控 | `/爆文监控` |
+| 第 19 章 | PRD 撰写 | `/prd` |
+| 第 20 章 | WebArtifactsBuilder | (脚本调用) |
+| 第 21 章 | 前端界面设计 | (Skill 触发) |
+| 第 22 章 | 网页自动化测试 | `/webapp-test` |
 
-### 2️⃣ 视频与多媒体（3 个）—— 短视频工业化
+详见 `archives/` 和 `skills/` 对应目录。
 
-| # | 技能 | 触发命令 | 输入 → 输出 | 技术栈 |
-|---|------|---------|------------|--------|
-| **12** | **video-local-analyze**（爆款视频拆解 v3） | `/video-local` `/本地视频分析` | 本地视频 → HTML 报告 + 可复制模板 | ffmpeg + 豆包原生视频理解；**8 维拆解 + 5 进阶模块** |
-| **13** | **listenhub**（AI 解说视频/播客） | 脚本调用 | 文本/URL/图片 → 播客/解说视频/TTS/图片 | ⚠️ **必须通过 scripts/*.sh 调用**；4 模式：Podcast/Explain/TTS/Image |
-| **14** | video-wrapper（见上） | — | — | — |
+### 第二层 · 5 博主聚合（GitHub stars 监控）
 
-🔗 **视频流水线**：13 造素材 → 12 拆解对标 → 14 加特效。
+| 博主 | 核心作品 | 生态 | ≥500⭐ skill 数 |
+|------|---------|------|---------------|
+| 🌸 **花叔** alchaincyf | nuwa-skill (28K) | `nuwa-*` | 8 |
+| 📕 **宝玉** JimLiu | baoyu-skills (24K) | `baoyu-*` | 3 |
+| 🎨 **歸藏** op7418 | guizang-ppt-skill (22K) | `guizang-*` | **10** |
+| 🐯 **小虎** xiaohuailabs | xiaohu-wechat-format (660) | `xiaohu-*` | 1 |
+| 🌳 **乔木** joeseesun | qiaomu-anything-to-notebooklm (5.6K) | `qiaomu-*` | 2 |
 
-### 3️⃣ 求职与办公效率（4 个）
+**详细地图**：[alchaincyf](skills/aggregate-skills-map/examples/alchaincyf-min500-skills.md) · [JimLiu](skills/aggregate-skills-map/examples/jimliu-min500-skills.md) · [op7418](skills/aggregate-skills-map/examples/op7418-min500.md) · [xiaohuailabs](skills/aggregate-skills-map/examples/xiaohuailabs-min500.md) · [joeseesun](skills/aggregate-skills-map/examples/joeseesun-min500.md)
 
-| # | 技能 | 触发命令 | 输入 → 输出 | 关键点 |
-|---|------|---------|------------|--------|
-| **2** | **interview-intel**（面试准备） | `/jobprep` | 公司+职位+JD+简历 → 5 份材料 | 强依赖真实简历（绝不编造）；`all_in_one_v6.1.py` 生成框架 |
-| **3** | **智能周报生成器** | `/weekly-report`（推测） | 流水账 → STAR 周报（简洁/详细/汇报 3 版） | **无 SKILL.md**，用 command 文件实现；自动学习 `weekly-reports/` |
-| **5** | **invoice**（发票自动归档） | `/invoice` `/发票` | 发票图片/PDF → Excel（明细+分类+月汇总） | 依赖百度 OCR API；7 类自动分类 |
-| **6** | **email-triage**（邮件分类回复） | `/email-triage` `/邮件分类` `/收件箱` | 邮件源 → 3 级分类 + 回复草稿 + 待办 | 首次需 `~/.email-triage/config.json` |
+### 第三层 · 48 skill 分类树（taxonomy v0.3）
 
-### 4️⃣ 数据采集与分析（2 个）
+`taxonomy.yaml` 是聚合 5 博主 + 22 章 = 48 skill 的统一分类树，按职能 + tag + type 三维度：
 
-| # | 技能 | 触发命令 | 输入 → 输出 | 部署形态 |
-|---|------|---------|------------|---------|
-| **15** | **app-review**（App Store 评价分析） | `/app-review` `/评价分析` | App ID → 简洁风 HTML 报告 + CSV | 抓取 ≤500 条评论 + 情感分析 |
-| **16** | **小红书创作平台数据采集** | CLI（无 slash 命令） | 油猴脚本 → JSON/CSV 同步到本地 | ⚠️ **特殊形态**：Tampermonkey + Node 服务（`server.js` + `npm install`） |
+```
+9 大职能分类:
+├── 内容创作 (content_creation)      ← 公众号/小红书/PPT/视频/文章
+├── 设计/视觉 (design_visual)        ← UI/Logo/插图
+├── 元能力 (meta_skills)              ← 蒸馏/进化/规范化/去 slop
+├── 内容汇聚 (content_aggregation)   ← NotebookLM/监控
+├── 开发工具 (dev_tools)             ← 客户端/IM/MCP/测试/构件
+├── 合集/教程 (collections)          ← skill 合集 + 教程书
+├── 效率办公 (productivity)          ← 周报/邮件/发票/面试
+├── 数据分析 (data_analysis)         ← App 评论/社交数据
+└── 产品设计 (product_design)        ← PRD/脑暴
 
-### 5️⃣ 前端与设计（4 个）—— 设计师友好
+7 个 type 维度:
+├── meta (4): 元能力（蒸馏/规范化等）
+├── collection (2): 多 skill 合集
+├── book (1): 书籍/教程
+├── sub_skill (3): 合集下的子技能
+├── skill (18): 独立 skill（5 博主）
+├── tool (5): 工具/脚本/服务
+└── local_skill (20): 本地 22 章
+```
 
-| # | 技能 | 触发命令 | 输入 → 输出 | 技术栈/特点 |
-|---|------|---------|------------|-----------|
-| **7** | **frontend-slides**（精美网页演示） | Skill 触发 | 主题/PPT → 零依赖 HTML 演示文稿 | **强制 100vh 不滚动**；反 AI slop；支持 PPTX→HTML |
-| **20** | **web-artifacts-builder** | `scripts/init-artifact.sh` | 项目名 → Claude.ai 多组件 Artifact | React 18 + TS + Vite + Parcel + Tailwind + shadcn/ui；40+ 组件 |
-| **21** | **frontend-design**（前端界面设计） | Skill 触发 | UI 需求 → 创意前端代码 | **BOLD 美学 12 方向**；HTML/CSS/JS, React, Vue |
-| **22** | **webapp-testing**（网页自动化测试） | `/webapp-test` `/测试网页` | URL/任务 → 截图 + 日志 + 验证 | Playwright Python；`scripts/with_server.py` 服务生命周期 |
-
-🔗 **设计链路**：21 定美学 → 7 做演示 / 20 做复杂 Artifact → 22 自动化验证。
-
-### 6️⃣ 产品与创意（3 个）
-
-| # | 技能 | 触发命令 | 输入 → 输出 | 关键点 |
-|---|------|---------|------------|--------|
-| **4** | **creative-brainstorm**（AI 创意脑暴） | `/brainstorm` `/脑暴` | 模糊想法 → 10 个可执行方案 + 评分 + 资源估算 | 联网搜竞品 + SCAMPER 7 维发散 |
-| **19** | **prd-writer / 产品需求** | `/prd` `/产品需求` | 产品想法 → PRD 路线图 + 3 个 ASCII 原型 | **3 阶段**：需求澄清 → 路线图 → ASCII 原型 |
-| **20** | web-artifacts-builder（见上） | — | — | — |
+**完整视图**：见 `examples/dedup-map.md`（287 行，含 9 个 A 类聚类 + 跨分类 + type 第二视图 + 主动审查）
 
 ---
 
@@ -125,41 +187,7 @@ cp -r skills/*/* ~/.claude/skills/    # 注意每章内层才是 skill 目录
 | 📊 **数据驱动决策** | 15（竞品 App 分析）+ 16（小红书数据采集）+ 17（公众号监控） |
 | 🎤 **B 端路演/汇报** | 7（演示文稿）+ 20/21（视觉资产） |
 
----
-
-## 🌟 跟踪的 GitHub 大牛（5 位核心 Skills 作者）
-
-> 本仓库通过 `aggregate-skills-map` Skill（见 `skills/aggregate-skills-map/`）持续聚合高产作者的技能地图。
-> **聚合规则**：star ≥ 500 · topics 优先（claude-skill/skills/codex、agent-skill/s）+ name/desc 关键词 fallback（skill|skills|nuwa|darwin|技能）
-
-### 📊 大牛速览
-
-| 博主 | 核心作品 | 生态 | 方向 | ≥500⭐ 数 | 身份 |
-|------|---------|------|------|-----------|------|
-| 🌸 [**花叔**](https://github.com/alchaincyf) alchaincyf | nuwa-skill (28K) | `nuwa-*` | 人物思维蒸馏 | 8 skills | AI Native Coder |
-| 📕 [**宝玉**](https://github.com/JimLiu) JimLiu | baoyu-skills (24K) | `baoyu-*` | 内容创作工作流 | 3 skills | 博主 |
-| 🎨 [**歸藏**](https://github.com/op7418) op7418 | guizang-ppt-skill (22K) | `guizang-*` | **设计/视觉/PPT** | **10 skills** ⭐ | 产品设计师 |
-| 🐯 [**小虎**](https://github.com/xiaohuailabs) XiaoHu | xiaohu-wechat-format (660) | `xiaohu-*` | 公众号+视频本地化 | 1 skill | 独立开发者 |
-| 🌳 [**乔木**](https://github.com/joeseesun) 向阳乔木 | qiaomu-anything-to-notebooklm (5.6K) | `qiaomu-*` | 工作流输入聚合 + 任务规范化 | 2 skills | PM |
-
-### 📚 详细地图
-
-- 🌸 [**花叔 (alchaincyf)**](skills/aggregate-skills-map/examples/alchaincyf-min500-skills.md) — 47 个原创项目 · 8 个高质量 skills
-- 📕 [**宝玉 (JimLiu)**](skills/aggregate-skills-map/examples/jimliu-min500-skills.md) — 230 仓库 · 3 个核心 skills
-- 🎨 [**歸藏 (op7418)**](skills/aggregate-skills-map/examples/op7418-min500.md) — **11 个 ≥500⭐（39% 密度，5 博主冠军）**
-- 🐯 [**小虎 (xiaohuailabs)**](skills/aggregate-skills-map/examples/xiaohuailabs-min500.md) — 2 个精品
-- 🌳 [**乔木 (joeseesun)**](skills/aggregate-skills-map/examples/joeseesun-min500.md) — 2 个 PM 视角 skills
-
-### 🔬 关键词扩展研究
-
-见 [keyword-comparison.md](skills/aggregate-skills-map/examples/keyword-comparison.md)：
-- 5 博主关键词匹配对比矩阵
-- jq test() 子串匹配特性分析（`skill` 已自动覆盖 `skills`）
-- 中文"技能"扩展的真实价值（修复小虎 0→1 增量）
-- 进一步优化建议（白名单 / LLM 后处理 / topics 优先）
-
-### ⚡ 终极内容工作流（5 博主组合）
-
+**终极内容工作流**（跨博主）：
 ```
 输入素材
   ↓
@@ -180,25 +208,127 @@ cp -r skills/*/* ~/.claude/skills/    # 注意每章内层才是 skill 目录
 
 ---
 
+## 🌟 跟踪的 GitHub 大牛（5 位核心作者）
+
+通过 `aggregate-skills-map` skill 持续聚合，**star ≥ 500 · topics 优先 + name/desc 关键词 fallback**。
+
+| 博主 | 核心作品 | 方向 | ≥500⭐ |
+|------|---------|------|--------|
+| 🌸 [**花叔**](https://github.com/alchaincyf) alchaincyf | nuwa-skill (28K) | 人物思维蒸馏 | 8 skills |
+| 📕 [**宝玉**](https://github.com/JimLiu) JimLiu | baoyu-skills (24K) | 内容创作工作流 | 3 skills |
+| 🎨 [**歸藏**](https://github.com/op7418) op7418 | guizang-ppt-skill (22K) | 设计/视觉/PPT | **10 skills** ⭐ |
+| 🐯 [**小虎**](https://github.com/xiaohuailabs) XiaoHu | xiaohu-wechat-format (660) | 公众号+视频本地化 | 1 skill |
+| 🌳 [**乔木**](https://github.com/joeseesun) 向阳乔木 | qiaomu-anything-to-notebooklm (5.6K) | 工作流输入聚合 | 2 skills |
+
+**互补组合**：花叔做"AI 懂人"，宝玉做"AI 干活"，歸藏做"AI 漂亮"，小虎做"AI 省钱"，乔木做"AI 流程化"。
+
+---
+
+## 🔬 Dedup 系统（taxonomy v0.3 + dedup.py）
+
+### 设计思想
+
+**为什么需要 dedup？** 5 博主之间存在显著功能重复：
+
+| 功能 | 重复次数 | 涉及 skill |
+|------|---------|-----------|
+| 公众号排版 | 3 家 | baoyu / xiaohu / guizang |
+| 视频翻译/剪辑 | 3 家 | xiaohu / 歸藏 / baocut |
+| PPT 生成 | 2 家 | guizang-ppt / NanoBanana-PPT |
+| 设计/UI | 4 家 | baoyu-design / huashu-design / 歸藏 / 一人 |
+
+**判定机制**（3 层）：
+1. **重复类型分级** A/B/C/D（A 高重复 → 出对比表）
+2. **tag-based 分类**（跨分类用 tags 表示，避免变体 id）
+3. **type 第二维度**（meta/collection/book/skill/tool/local_skill）
+
+### 9 个 A 类高重复聚类
+
+dedup 自动识别出 9 个 A 类聚类（每类 ≥2 skill）：
+
+| # | 分类 | 数量 | 主导 ⭐ |
+|---|------|------|---------|
+| 1 | `ppt/html_slides` | **4** | guizang-ppt-skill (21.8K) |
+| 2 | `meta_skills/distill_person` | **4** | nuwa-skill (28.3K) |
+| 3 | `video/translate` | **3** | Youtube-clipper (2.1K) |
+| 4 | `design_visual/ui_design` | **3** | huashu-design (21.7K) |
+| 5 | `design_visual/illustration` | **2** | guizang-material (715) |
+| 6 | `meta_skills/de_slop` | **2** | Humanizer-zh (13.5K) |
+| 7 | `collections/skill_collection` | **2** | baoyu-skills (23.8K) |
+| 8 | `wechat/formatting` | **2** | baoyu-skills (23.8K) |
+| 9 | `video/effects` | **2** | (本地 skill) |
+
+详见 [examples/dedup-map.md](skills/aggregate-skills-map/examples/dedup-map.md) 完整对比表。
+
+### 设计依据
+
+| 维度 | 依据 |
+|------|------|
+| 4 级分类树 | GitHub awesome-list 模板 + 认知科学乔治·米勒 7±2 |
+| tag 系统 | GitHub 自身用 topics，跨维度自然表达 |
+| type 维度 | 软件架构单一职责 + 分层（基础/容器/工具/元） |
+| 关键词过滤 | jq test() 子串匹配（`skill` 自动覆盖 `skills`） |
+| 中文支持 | 加"技能"关键词，xiaohu-wechat-format 修复 0→1 增量 |
+
+### 主动 Spot Check（dedup 自动生成）
+
+dedup 自动列出 4 个潜在问题供人工 review：
+
+1. **distill_person 4 个全是花叔**（nuwa 衍生品）→ 合理，建议说明"nuwa 生态"
+2. **5 个本地 skill 出现在 A 类** → 合理，加 📍 标记（已实现）
+3. **24 个分类是单点**（仅 1 个 skill）→ 提示合并/扩类
+4. tags ≥ 3 的 skill（暂无）→ 待 review
+
+---
+
 ## ⚠️ 风险与踩坑清单
 
-1. **第 3 章智能周报无 SKILL.md**——只有 command 文件，启用时用 command 而非 Skill。
-2. **第 13 章 ListenHub 强约束**——直接 curl API 会报错（端点不公开），**必须通过 scripts/*.sh**。
-3. **第 16 章非标准技能**——是「Tampermonkey + Node 服务」复合部署，无斜杠命令。
-4. **第 19 章是别名**——`/产品需求` 是 `/prd` 的中文别名，真正干活的是 `prd-writer`。
-5. **所有 zip 含 `__MACOSX/` 垃圾**——Mac 打包副产物，部署前要清理（仓库内已清理）。
-6. **首启引导繁琐**——第 10/11/17 章需先配置文件（API 密钥/微信凭据/大家啦 key），首次预留 5 分钟。
+1. **第 3 章智能周报无 SKILL.md**——只有 command 文件
+2. **第 13 章 ListenHub 强约束**——直接 curl API 会报错（端点不公开），**必须通过 scripts/*.sh**
+3. **第 16 章非标准技能**——是「Tampermonkey + Node 服务」复合部署，无斜杠命令
+4. **第 19 章是别名**——`/产品需求` 是 `/prd` 的中文别名，真正干活的是 `prd-writer`
+5. **所有 zip 含 `__MACOSX/` 垃圾**——Mac 打包副产物（仓库内已清理）
+6. **首启引导繁琐**——第 10/11/17 章需先配置文件（API 密钥/微信凭据/大家啦 key）
+7. **ListenHub 不开源**——Marswave API 私有，端点不公开（详 SKILL.md 警告）
+8. **taxonomy.yaml 是手动维护**——新博主进来要更新分类树（社区 PR）
 
 ---
 
 ## 📊 全局统计
 
-- **总计**：22 章节 → 21 个 SKILL.md + 1 个 command-only（第 3 章）
-- **需付费 API**：5（百度 OCR）、10（微信公众号）、12（豆包）、13（ListenHub/Marswave）、17（大家啦）、11（可选 AI 配图）
-- **完全离线可用**：2/3/4/6/7/8/9/19/20/21/22
-- **混合模式**：14（本地+可选联网）、15（公开 API）
-- **非 Skill 形态**：16（油猴+Node）
-- **仓库体积**：2.5 MB（解压源码 1.9 MB + 原始 zip 544 KB）
+| 指标 | 数值 |
+|------|------|
+| 22 章原始技能 | 20 个 SKILL.md + 1 个 command-only + 1 个别名 |
+| 5 博主聚合 | 28 个 ≥500⭐ skill |
+| taxonomy v0.3 | **48 个 skill** 跨 9 大类 |
+| A 类重复聚类 | 9 个（dedup 自动识别） |
+| 跨分类 skill | 4 个（tags ≥ 2） |
+| 仓库 commits | 13 |
+| GitHub Topics | 15 个 |
+| 仓库体积 | 2.5 MB |
+
+### Type 分布（v0.3）
+
+| type | 数量 | 代表 |
+|------|------|------|
+| meta | 4 | nuwa-skill, darwin-skill, qiaomu-goal, aggregate-skills-map |
+| collection | 2 | baoyu-skills (23.8K), huashu-skills (1.2K) |
+| book | 1 | Illustrated-Agent-Skills |
+| sub_skill | 3 | steve-jobs, zhangxuefeng, x-mentor |
+| skill | 18 | 5 博主独立 skill |
+| tool | 5 | CodePilot, viral-monitor, web-artifacts-builder 等 |
+| local_skill | 20 | 一人课程 22 章 |
+
+### 作者分布
+
+| 作者 | skill 数 | ⭐ 总和 | 平均 ⭐ |
+|------|---------|--------|---------|
+| alchaincyf (花叔) | 8 | 76,985 | 9,623 |
+| jimliu (宝玉) | 4 | 26,873 | 6,718 |
+| op7418 (歸藏) | 11 | 58,748 | 5,341 |
+| 一人课程 | 20 | (本地) | - |
+| xiaohuailabs (小虎) | 2 | 1,278 | 639 |
+| joeseesun (乔木) | 2 | 6,372 | 3,186 |
 
 ---
 
@@ -208,9 +338,37 @@ cp -r skills/*/* ~/.claude/skills/    # 注意每章内层才是 skill 目录
 - 📝 补充各技能的最佳实践与避坑指南
 - 🐛 报告 SKILL.md 与实际行为不符的 bug
 - ✨ 提交新技能到 `skills/`（按相同结构组织）
+- 🔬 扩展 taxonomy.yaml（加新博主、新分类、新 tags）
+- 🔄 提交 dedup.py bug 修复（Python 3.13 + Windows 兼容）
 
 请通过 Issue / PR 参与。
 
 ## 📜 License
 
 MIT License —— 自由使用、修改、分发。原始技能版权归各原作者所有。
+
+## 📚 CHANGELOG
+
+### v0.3（2026-07-19）
+- taxonomy.yaml tag-based 重构 + 整合 22 章 = 48 skill
+- dedup.py 加 type 维度第二视图 + 主动 spot check
+- 修本地 skill URL + stars 显示
+- 跨分类 skill 自动识别
+
+### v0.2（2026-07-19）
+- 5 博主聚合（花叔/宝玉/歸藏/小虎/乔木）
+- aggregate.sh 默认 min-stars=500 + --skill-only 开关
+- aggregate-skills-map skill 上线
+
+### v0.1（2026-07-19）
+- 22 章原始技能整理 + 技能地图 v1
+- awesome-skills-map 仓库初始化
+
+---
+
+## 🔗 相关链接
+
+- **GitHub**：https://github.com/Alexxiang2008/awesome-skills-map
+- **ComposioHQ/awesome-claude-skills**：https://github.com/ComposioHQ/awesome-claude-skills（社区旗舰）
+- **anthropics/skills**：https://github.com/anthropics/skills（官方）
+- **Claude Code 文档**：https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview
