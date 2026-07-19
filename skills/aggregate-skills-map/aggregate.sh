@@ -71,8 +71,14 @@ filter_repos() {
     f+=" | select(.topics | index(\"$topic_filter\"))"
   fi
   if [[ "$skill_only" == "true" ]]; then
-    # 扩展关键词：skill/skills（英文，复数）、nuwa/darwin（花叔特有）、技能（中文）
-    f+=" | select((.name + \" \" + .desc) | test(\"skill|skills|nuwa|darwin|技能\"; \"i\"))"
+    # Topics 优先（精确）+ name/desc 关键词 fallback（兜底）
+    # 命中规则：repo.topics 含 claude-skill/skills/codex 或 agent-skill/s
+    #          OR name/desc 含 skill|skills|nuwa|darwin|技能 关键词
+    f+=" | select(
+          (.topics | any(. == \"claude-skill\" or . == \"claude-skills\" or . == \"claude-code\" or . == \"agent-skill\" or . == \"agent-skills\"))
+          or
+          ((.name + \" \" + .desc) | test(\"skill|skills|nuwa|darwin|技能\"; \"i\"))
+        )"
   fi
   jq -c "$f"
 }

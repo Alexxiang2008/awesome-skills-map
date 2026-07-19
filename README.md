@@ -127,6 +127,59 @@ cp -r skills/*/* ~/.claude/skills/    # 注意每章内层才是 skill 目录
 
 ---
 
+## 🌟 跟踪的 GitHub 大牛（5 位核心 Skills 作者）
+
+> 本仓库通过 `aggregate-skills-map` Skill（见 `skills/aggregate-skills-map/`）持续聚合高产作者的技能地图。
+> **聚合规则**：star ≥ 500 · topics 优先（claude-skill/skills/codex、agent-skill/s）+ name/desc 关键词 fallback（skill|skills|nuwa|darwin|技能）
+
+### 📊 大牛速览
+
+| 博主 | 核心作品 | 生态 | 方向 | ≥500⭐ 数 | 身份 |
+|------|---------|------|------|-----------|------|
+| 🌸 [**花叔**](https://github.com/alchaincyf) alchaincyf | nuwa-skill (28K) | `nuwa-*` | 人物思维蒸馏 | 8 skills | AI Native Coder |
+| 📕 [**宝玉**](https://github.com/JimLiu) JimLiu | baoyu-skills (24K) | `baoyu-*` | 内容创作工作流 | 3 skills | 博主 |
+| 🎨 [**歸藏**](https://github.com/op7418) op7418 | guizang-ppt-skill (22K) | `guizang-*` | **设计/视觉/PPT** | **10 skills** ⭐ | 产品设计师 |
+| 🐯 [**小虎**](https://github.com/xiaohuailabs) XiaoHu | xiaohu-wechat-format (660) | `xiaohu-*` | 公众号+视频本地化 | 1 skill | 独立开发者 |
+| 🌳 [**乔木**](https://github.com/joeseesun) 向阳乔木 | qiaomu-anything-to-notebooklm (5.6K) | `qiaomu-*` | 工作流输入聚合 + 任务规范化 | 2 skills | PM |
+
+### 📚 详细地图
+
+- 🌸 [**花叔 (alchaincyf)**](skills/aggregate-skills-map/examples/alchaincyf-min500-skills.md) — 47 个原创项目 · 8 个高质量 skills
+- 📕 [**宝玉 (JimLiu)**](skills/aggregate-skills-map/examples/jimliu-min500-skills.md) — 230 仓库 · 3 个核心 skills
+- 🎨 [**歸藏 (op7418)**](skills/aggregate-skills-map/examples/op7418-min500.md) — **11 个 ≥500⭐（39% 密度，5 博主冠军）**
+- 🐯 [**小虎 (xiaohuailabs)**](skills/aggregate-skills-map/examples/xiaohuailabs-min500.md) — 2 个精品
+- 🌳 [**乔木 (joeseesun)**](skills/aggregate-skills-map/examples/joeseesun-min500.md) — 2 个 PM 视角 skills
+
+### 🔬 关键词扩展研究
+
+见 [keyword-comparison.md](skills/aggregate-skills-map/examples/keyword-comparison.md)：
+- 5 博主关键词匹配对比矩阵
+- jq test() 子串匹配特性分析（`skill` 已自动覆盖 `skills`）
+- 中文"技能"扩展的真实价值（修复小虎 0→1 增量）
+- 进一步优化建议（白名单 / LLM 后处理 / topics 优先）
+
+### ⚡ 终极内容工作流（5 博主组合）
+
+```
+输入素材
+  ↓
+[歸藏 Document-illustrator-skill] → 配图
+  ↓
+[乔木 qiaomu-anything-to-notebooklm] → 汇总到 NotebookLM
+  ↓
+[花叔 nuwa-skill 蒸馏你的写作风格] → 风格统一
+  ↓
+[歸藏 Humanizer-zh] → 去除 AI 痕迹
+  ↓
+[宝玉 baoyu-post-to-wechat] 或 [小虎 xiaohu-wechat-format] → 发布公众号
+  ↓
+[歸藏 guizang-social-card-skill] → 生成封面
+  ↓
+[乔木 qiaomu-goal-meta-skill] → 任务规范化复盘
+```
+
+---
+
 ## ⚠️ 风险与踩坑清单
 
 1. **第 3 章智能周报无 SKILL.md**——只有 command 文件，启用时用 command 而非 Skill。
