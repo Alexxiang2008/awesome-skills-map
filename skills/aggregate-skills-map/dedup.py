@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 """
-dedup.py - 按 taxonomy.yaml 自动聚合 GitHub skills，输出分类视图 + 重复聚类对比表
+dedup.py v0.2 - tag-based 聚合 + 跨分类 skill 去重
 
 用法:
-    ./dedup.py                                  # 用默认 taxonomy
-    ./dedup.py --no-cache                       # 跳过缓存
-    ./dedup.py --min-stars 100                  # 自定义阈值
-    ./dedup.py --output dedup-map.md            # 写入文件
+    ./dedup.py
+    ./dedup.py --no-cache
+    ./dedup.py --output dedup-map.md
 
 设计依据:
-    - A 类高重复（≥2 skill 同分类）→ 出对比表
-    - B 类中重复 → 出"分工建议"
-    - C 类低重复（仅 1 个）→ 普通列表
-    - taxonomy 4 级层级来自认知科学 7±2 + GitHub awesome 模板
+    - 单一 id: 跨分类 skill 用 tags 表示多分类（消除 v0.1 的 -xhs/-ui 变体）
+    - primary_category: 主分类用于直接聚合
+    - tags: 次要分类用于跨视角展示
+    - 4 级分类树: 认知科学 7±2 + GitHub awesome 模板
 
 依赖: gh CLI 已登录、PyYAML
 """
@@ -20,7 +19,7 @@ import yaml, sys, json, subprocess, argparse
 from pathlib import Path
 from collections import defaultdict
 
-# Windows 编码修复：stdout 强制 utf-8，支持 emoji + 中文
+# Windows 编码修复
 if sys.platform == 'win32':
     try:
         sys.stdout.reconfigure(encoding='utf-8')
@@ -30,6 +29,7 @@ if sys.platform == 'win32':
 
 TAXONOMY_FILE = Path(__file__).parent / 'taxonomy.yaml'
 CACHE_FILE = Path(__file__).parent / '.dedup_cache.json'
+
 
 # ============================================================
 # 数据加载
@@ -44,7 +44,7 @@ def load_cache():
     if CACHE_FILE.exists():
         try:
             return json.loads(CACHE_FILE.read_text(encoding='utf-8'))
-        except json.JSONDecodeError:
+        except (json.JSONDecodeError, OSError):
             return {}
     return {}
 
@@ -57,7 +57,7 @@ def save_cache(cache):
 
 
 def fetch_repo_data(owner_repo):
-    """通过 gh API 拉仓库最新数据"""
+    """通过 gh API 拉仓库最新数据（用于 stars 字段更新）"""
     result = subprocess.run(
         ['gh', 'api', f'repos/{owner_repo}', '--jq',
          '{name: .name, full_name: .full_name, stars: .stargazers_count, '
@@ -65,9 +65,7 @@ def fetch_repo_data(owner_repo):
          'updated_at: .updated_at, fork: .fork}'],
         capture_output=True, text=True, encoding='utf-8', errors='replace'
     )
-    if result.returncode != 0:
-        return None
-    if not result.stdout.strip():
+    if result.returncode != 0 or not result.stdout.strip():
         return None
     try:
         return json.loads(result.stdout)
@@ -75,96 +73,170 @@ def fetch_repo_data(owner_repo):
         return None
 
 
-def find_all_skills(node, path=''):
-    """递归找 taxonomy 中所有 skill 节点，返回 [(path, skill), ...]"""
-    skills = []
-    if isinstance(node, dict):
-        if 'skills' in node and isinstance(node['skills'], list):
-            for skill in node['skills']:
-                if isinstance(skill, dict):
-                    skills.append((path, skill))
-        for k, v in node.items():
-            if k in ('skills', 'name', 'description'):
-                continue
-            if isinstance(v, dict):
-                skills.extend(find_all_skills(v, f"{path}/{k}" if path else k))
-    return skills
-
-
-def collect_skills_data(taxonomy, cache, use_cache=True):
-    """为每个 skill 拉最新数据"""
+def enrich_skills(skills, cache, use_cache=True):
+    """为 skill 拉最新 stars（本地 skill 跳过）"""
     enriched = []
-    for path, skill in find_all_skills(taxonomy.get('skills', {})):
-        repo = skill.get('repo')
-        if not repo:
-            continue
-        if use_cache and repo in cache:
-            data = cache[repo]
-        else:
-            data = fetch_repo_data(repo)
+    for skill in skills:
+        repo = skill.get('repo', '')
+        if repo and not repo.startswith('一人/'):
+            # 5 博主 skill：通过 gh API 拉最新数据
+            if use_cache and repo in cache:
+                data = cache[repo]
+            else:
+                data = fetch_repo_data(repo)
+                if data:
+                    cache[repo] = data
             if data:
-                cache[repo] = data
-        if data:
-            enriched.append({**skill, 'data': data, '_path': path})
+                skill = {**skill, 'live': data, 'live_stars': data.get('stars', skill.get('stars', 0))}
+            else:
+                skill = {**skill, 'live_stars': skill.get('stars', 0)}
+        else:
+            # 本地 skill（一人/xxx）没有 GitHub 数据
+            skill = {**skill, 'live_stars': skill.get('stars', 0), 'is_local': True}
+        enriched.append(skill)
     return enriched
+
+
+# ============================================================
+# 分类树遍历
+# ============================================================
+
+def find_leaves_with_tags(categories, path=''):
+    """递归找所有叶子节点（带 tag 字段），返回 [(path, name, tag), ...]"""
+    leaves = []
+    if not isinstance(categories, dict):
+        return leaves
+    for k, v in categories.items():
+        if k in ('name', 'description', 'children'):
+            continue
+        if isinstance(v, dict):
+            current_path = f"{path}/{k}" if path else k
+            if 'tag' in v:
+                leaves.append((current_path, v.get('name', k), v['tag']))
+            if 'children' in v:
+                leaves.extend(find_leaves_with_tags(v['children'], current_path))
+    return leaves
+
+
+def find_category_nodes(categories, path=''):
+    """找所有一级和二级节点（用于分类树显示）"""
+    nodes = []
+    if not isinstance(categories, dict):
+        return nodes
+    name = categories.get('name', '')
+    desc = categories.get('description', '')
+    if name:
+        nodes.append((path or '(root)', name, desc, 'top'))
+    for k, v in categories.items():
+        if k in ('name', 'description', 'children'):
+            continue
+        if isinstance(v, dict):
+            current_path = f"{path}/{k}" if path else k
+            node_name = v.get('name', k)
+            node_desc = v.get('description', '')
+            tag = v.get('tag', '')
+            kind = 'leaf' if tag else 'branch'
+            nodes.append((current_path, node_name, node_desc, kind, tag))
+            if 'children' in v:
+                nodes.extend(find_category_nodes(v['children'], current_path))
+    return nodes
 
 
 # ============================================================
 # 渲染
 # ============================================================
 
-def render_repeat_table(path, skills):
-    """A 类高重复：出对比表 + 场景推荐"""
+def render_repeat_table(skills_in_cat, by_tag_count):
+    """A 类高重复：出对比表"""
     out = []
-    sorted_skills = sorted(skills, key=lambda x: -x['data']['stars'])
-    out.append(f"### 🔴 A 类高重复 · `{path}`（{len(skills)} 个 skill）\n")
-    out.append("| ⭐ | 作者 | 仓库 | 简介 | 备注 |")
+    sorted_skills = sorted(skills_in_cat, key=lambda x: -x.get('live_stars', 0))
+    out.append("| ⭐ | 作者 | 仓库 | 简介 | 标签 |")
     out.append("|----|------|------|------|------|")
     for s in sorted_skills:
-        stars = s['data']['stars']
-        desc = (s['data'].get('desc') or '')[:100]
-        note = s.get('note', '')
-        out.append(f"| {stars:,} | {s['author']} | "
-                   f"[{s['data']['full_name']}]({s['data']['html_url']}) | "
-                   f"{desc} | {note} |")
+        stars = s.get('live_stars', 0)
+        author = s.get('author', '?')
+        repo = s.get('repo', '?')
+        repo_url = f"https://github.com/{repo}" if '/' in repo else repo
+        live = s.get('live', {})
+        desc = (live.get('desc') if live else s.get('note', '')) or ''
+        desc = desc[:80].replace('|', '\\|')
+        tags_str = ', '.join(s.get('tags', []))
+        out.append(f"| {stars:,} | {author} | [{repo}]({repo_url}) | {desc} | `{tags_str}` |")
     out.append("")
-    out.append("**🎯 场景化推荐**（基于 stars + 备注启发）：")
-    out.append("")
-    for s in sorted_skills[:2]:  # top 2 简述
-        out.append(f"- **{s['data']['full_name']}**（{s['data']['stars']:,} ⭐）"
-                   f"：{(s.get('note') or s['data'].get('desc') or '（无描述）')[:80]}")
-    out.append("")
+    # 场景化推荐
+    if sorted_skills:
+        out.append("**🎯 场景化推荐**（基于 stars + 标签）：")
+        out.append("")
+        for s in sorted_skills[:2]:
+            sid = s.get('id', '?')
+            stars = s.get('live_stars', 0)
+            note = s.get('note', '')[:60]
+            out.append(f"- **{sid}**（{stars:,} ⭐）：{note}")
+        out.append("")
     return '\n'.join(out)
 
 
-def render_tree(node, out, indent=0, skills_by_path=None):
-    """递归渲染分类树"""
-    name = node.get('name', '')
-    desc = node.get('description', '')
+def render_tree(categories, skills_by_primary, skills_by_tag, depth=0):
+    """递归渲染分类树 + skill 列表"""
+    out = []
+    if not isinstance(categories, dict):
+        return out
+
+    name = categories.get('name', '')
+    desc = categories.get('description', '')
     if name:
-        prefix = "  " * indent + "- "
-        suffix = f" — {desc}" if desc else ""
+        prefix = "  " * depth
+        suffix = f"  *# {desc}*" if desc else ""
         out.append(f"{prefix}**{name}**{suffix}")
+        out.append("")
 
-    if 'skills' in node and isinstance(node['skills'], list):
-        for skill in node['skills']:
-            prefix = "  " * (indent + 1) + "- "
-            sid = skill.get('id', '?')
-            note = skill.get('note', '')
-            author = skill.get('author', '?')
-            star_str = ''
-            if skills_by_path is not None:
-                path_key = skill.get('_lookup_path', '')
-                if path_key in skills_by_path:
-                    star_str = f" ({skills_by_path[path_key]['data']['stars']:,} ⭐)"
-            extra = f" — {note}" if note else ""
-            out.append(f"{prefix}`{sid}`{star_str} · @{author}{extra}")
+    if 'children' in categories:
+        for k, v in categories['children'].items():
+            if isinstance(v, dict):
+                current_path = k
+                tag = v.get('tag')
+                node_name = v.get('name', k)
 
-    for k, v in node.items():
-        if k in ('skills', 'name', 'description'):
-            continue
-        if isinstance(v, dict):
-            render_tree(v, out, indent + 1, skills_by_path)
+                if tag:
+                    # 叶子节点：通过 tag 聚合 skill
+                    primary_skills = skills_by_primary.get(current_path, [])
+                    tag_skills = skills_by_tag.get(tag, [])
+                    # 合并去重（避免重复显示）
+                    seen = set()
+                    all_skills = []
+                    for s in primary_skills + tag_skills:
+                        sid = s.get('id')
+                        if sid not in seen:
+                            seen.add(sid)
+                            all_skills.append(s)
+
+                    indent = "  " * (depth + 1)
+                    if len(all_skills) >= 2:
+                        out.append(f"{indent}🔴 **{node_name}**（{len(all_skills)} 个 skill，A 类重复）")
+                    elif len(all_skills) == 1:
+                        out.append(f"{indent}📦 **{node_name}**（{len(all_skills)} 个 skill）")
+                    else:
+                        out.append(f"{indent}⭕ **{node_name}**（暂无）")
+
+                    # 列出每个 skill
+                    for s in sorted(all_skills, key=lambda x: -x.get('live_stars', 0)):
+                        sid = s.get('id', '?')
+                        stars = s.get('live_stars', 0)
+                        note = s.get('note', '')[:50]
+                        author = s.get('author', '?')
+                        # 标记主分类外的额外分类
+                        extra_tags = [t for t in s.get('tags', []) if t != tag]
+                        extra_str = f" · 还属于: {', '.join(extra_tags)}" if extra_tags else ""
+                        indent2 = "  " * (depth + 2)
+                        out.append(f"{indent2}- `{sid}` · {stars:,} ⭐ · @{author} — {note}{extra_str}")
+                    out.append("")
+                else:
+                    # 中间节点：递归
+                    out.append(f"{indent}**{node_name}**")
+                    out.append("")
+                    out.extend(render_tree({'children': v}, skills_by_primary, skills_by_tag, depth + 1).split('\n'))
+
+    return '\n'.join(line for line in out if line is not None)
 
 
 # ============================================================
@@ -172,7 +244,7 @@ def render_tree(node, out, indent=0, skills_by_path=None):
 # ============================================================
 
 def main():
-    parser = argparse.ArgumentParser(description='按 taxonomy 聚合 GitHub skills')
+    parser = argparse.ArgumentParser(description='按 taxonomy 聚合 GitHub skills (v0.2)')
     parser.add_argument('--no-cache', action='store_true', help='跳过缓存，强制重新拉数据')
     parser.add_argument('--output', '-o', help='输出文件路径（默认 stdout）')
     parser.add_argument('--taxonomy', default=str(TAXONOMY_FILE), help='taxonomy.yaml 路径')
@@ -180,77 +252,111 @@ def main():
 
     taxonomy = load_taxonomy(args.taxonomy)
     cache = {} if args.no_cache else load_cache()
-    skills_data = collect_skills_data(taxonomy, cache, use_cache=not args.no_cache)
+    skills = enrich_skills(taxonomy.get('skills', []), cache, use_cache=not args.no_cache)
     save_cache(cache)
 
-    # 按 path 聚合
-    by_path = defaultdict(list)
-    for skill in skills_data:
-        by_path[skill['_path']].append(skill)
+    # 索引
+    skills_by_primary = defaultdict(list)
+    skills_by_tag = defaultdict(list)
+    for s in skills:
+        pc = s.get('primary_category', '')
+        if pc:
+            skills_by_primary[pc].append(s)
+        for t in s.get('tags', []):
+            skills_by_tag[t].append(s)
 
-    # 找出 A 类（≥2 同 path）
-    duplicates = {p: ss for p, ss in by_path.items() if len(ss) >= 2}
-    singles = {p: ss for p, ss in by_path.items() if len(ss) == 1}
+    # A 类检测（同一 primary_category ≥2 个）
+    duplicates = {p: ss for p, ss in skills_by_primary.items() if len(ss) >= 2}
 
     out = []
-    out.append("# 🎯 Skills Dedup Map（按 taxonomy 聚合）\n")
     meta = taxonomy.get('meta', {})
+    out.append(f"# 🎯 Skills Dedup Map v0.2（tag-based 聚合）\n")
     out.append(f"> taxonomy 版本: v{meta.get('version', '?')} ({meta.get('date', '?')})"
-               f" · 总 skill 数: **{len(skills_data)}**"
-               f" · 覆盖博主: {len(meta.get('authors', {}))} 位")
+               f" · 总 skill 数: **{len(skills)}**"
+               f" · 覆盖博主/来源: {len(meta.get('authors', {}))} 个")
     out.append("")
-    out.append(f"**聚合结果**：{len(duplicates)} 个重复聚类（A 类）+ "
-               f"{len(singles)} 个独立 skill")
+    out.append("**设计变更（v0.1 → v0.2）**：")
+    out.append("- tag-based 重构：每个 skill 单一 id + tags 字段")
+    out.append("- 跨分类合并：同 repo 用同 id，tags 表示多分类")
+    out.append("- 整合 22 章原始技能")
+    out.append("- 自研 1 个元能力")
+    out.append("")
+    out.append(f"**聚合结果**：{len(duplicates)} 个 A 类重复聚类"
+               f" + {len(skills) - sum(len(ss) for ss in duplicates.values()) + len(duplicates)} 个独立 skill")
     out.append("")
     out.append("---")
     out.append("")
 
     # A 类高重复
     if duplicates:
-        out.append("## 🔴 重复聚类（A 类 · 高重复）")
+        out.append("## 🔴 A 类高重复聚类")
         out.append("")
-        out.append("> 判定标准：同一分类下 ≥2 个 skill 候选。基于 stars + 备注给场景化推荐。")
+        out.append("> 判定标准：同一 `primary_category` 下 ≥2 个 skill。需用户做场景化决策。")
         out.append("")
+        # 按聚类大小排序
         for path in sorted(duplicates.keys(), key=lambda p: -len(duplicates[p])):
-            out.append(render_repeat_table(path, duplicates[path]))
+            skills_in = duplicates[path]
+            out.append(f"### `{path}` ({len(skills_in)} 个)")
+            out.append("")
+            out.append(render_repeat_table(skills_in, defaultdict(int)))
+        out.append("---")
+        out.append("")
 
-    # 完整分类树（含 stars）
-    out.append("---")
-    out.append("")
+    # 跨分类 skill（tags 多个的）
+    multi_tag_skills = [s for s in skills if len(s.get('tags', [])) >= 2]
+    if multi_tag_skills:
+        out.append("## 🌐 跨分类 skill（tags ≥ 2）")
+        out.append("")
+        out.append("> 这些 skill 同时属于多个分类，是 dedup 的核心价值。")
+        out.append("")
+        out.append("| ⭐ | skill | 作者 | 标签 |")
+        out.append("|----|-------|------|------|")
+        for s in sorted(multi_tag_skills, key=lambda x: -x.get('live_stars', 0)):
+            stars = s.get('live_stars', 0)
+            sid = s.get('id', '?')
+            author = s.get('author', '?')
+            tags_str = ' / '.join(s.get('tags', []))
+            out.append(f"| {stars:,} | `{sid}` | {author} | {tags_str} |")
+        out.append("")
+        out.append("---")
+        out.append("")
+
+    # 完整分类树
     out.append("## 📂 完整分类树")
     out.append("")
-    out.append("> 4 级层级：内容创作 / 设计视觉 / 元能力 / 内容汇聚 / 开发工具 / 合集教程")
-    out.append("")
-    out.append("### 关键指标速览")
-    out.append("")
-    out.append("| 分类 | skill 数 | 总 ⭐ | 作者数 |")
-    out.append("|------|---------|-------|--------|")
-    for path, ss in sorted(by_path.items()):
-        authors = set(s['author'] for s in ss)
-        total_stars = sum(s['data']['stars'] for s in ss)
-        out.append(f"| `{path}` | {len(ss)} | {total_stars:,} | {len(authors)} |")
-    out.append("")
-    out.append("### 层级结构")
-    out.append("")
-    render_tree(taxonomy.get('skills', {}), out, indent=0)
+    out.append(render_tree(taxonomy['categories'], skills_by_primary, skills_by_tag, depth=0))
 
     # 隐藏洞察
-    out.append("")
     out.append("---")
     out.append("")
-    out.append("## 🔍 隐藏洞察（数据说话）")
+    out.append("## 🔍 隐藏洞察")
     out.append("")
-    if duplicates:
-        largest = max(duplicates.items(), key=lambda x: len(x[1]))
-        out.append(f"- **最大重复聚类**：`{largest[0]}` 有 {len(largest[1])} 个 skill 候选")
-        out.append(f"  → 用户面临 **{len(largest[1])} 选 1** 的决策，对比表价值最高")
-    top_author = defaultdict(int)
-    for s in skills_data:
-        top_author[s['author']] += s['data']['stars']
-    if top_author:
-        king = max(top_author.items(), key=lambda x: x[1])
-        out.append(f"- **⭐ 之王**：{king[0]}（{king[1]:,} ⭐ 总和）")
-    out.append(f"- **唯一性**：{len(singles)}/{len(skills_data)} 个分类是单作者独占（{len(singles)*100//max(len(skills_data),1)}%）")
+
+    # 作者维度
+    by_author = defaultdict(lambda: {'count': 0, 'stars': 0})
+    for s in skills:
+        by_author[s.get('author', '?')]['count'] += 1
+        by_author[s.get('author', '?')]['stars'] += s.get('live_stars', 0)
+
+    out.append("### 👥 作者分布")
+    out.append("")
+    out.append("| 作者 | skill 数 | ⭐ 总和 | 平均 ⭐ |")
+    out.append("|------|---------|--------|---------|")
+    for author, stats in sorted(by_author.items(), key=lambda x: -x[1]['stars']):
+        avg = stats['stars'] // max(stats['count'], 1)
+        out.append(f"| {author} | {stats['count']} | {stats['stars']:,} | {avg:,} |")
+    out.append("")
+
+    # 类型分布
+    by_type = defaultdict(int)
+    for s in skills:
+        by_type[s.get('type', 'skill')] += 1
+    out.append("### 🏷️ 类型分布")
+    out.append("")
+    out.append("| type | 数量 |")
+    out.append("|------|------|")
+    for t, n in sorted(by_type.items(), key=lambda x: -x[1]):
+        out.append(f"| {t} | {n} |")
     out.append("")
 
     output = '\n'.join(out)

@@ -1,278 +1,660 @@
-# Skills Taxonomy v0.1
+# Skills Taxonomy v0.2（tag-based 设计）
 # 维护日期: 2026-07-19
-# 覆盖范围: 5 博主全部 ≥500 ⭐ skill（24 个）+ 22 章原始技能中的内容创作相关
+# 覆盖范围: 5 博主全部 ≥500 ⭐ skill + 22 章原始技能 + 本仓库自研
+#
+# 设计变更（v0.1 → v0.2）:
+#   1. tag-based 重构: 每个 skill 单一 id + tags 字段
+#   2. 跨分类合并: 同 repo 用同一 id，tags 表示多分类
+#   3. 整合 22 章: 全部原始技能纳入
+#   4. primary_category 字段: 每个 skill 有"主分类"
 #
 # 设计依据:
-#   - 业界实践: GitHub 官方 awesome-list 模板推荐 3-4 级分类
-#   - 认知科学: 乔治·米勒 "魔力数字 7±2"——每层节点不超过 7±2
-#   - 软件架构: 单一职责原则——每个 skill 边界清晰
-#   - 重复类型: A/B/C/D 类分级处理（高重复/中重复/低重复/同作者迭代）
-#
-# 节点结构:
-#   name: 中文显示名
-#   skills: 该节点的 skill 列表（叶子）
-#   description: 节点描述（可选，用于自动输出）
+#   - tag 系统: GitHub 自身就是 tag-based（topics）
+#   - 单一职责: 每个 skill 一个 id（消除 v0.1 的 -xhs / -ui 变体）
+#   - 认知科学: 7±2 层级 + tags 横向关联
 
-skills:
+meta:
+  version: 0.2
+  date: 2026-07-19
+  total_skills: 49
+  authors:
+    alchaincyf: 花叔
+    jimliu: 宝玉
+    op7418: 歸藏
+    xiaohuailabs: 小虎
+    joeseesun: 向阳乔木
+    一人课程: 一人 22 章原始技能
+    自研: awesome-skills-map 仓库自研
 
-  # ============================================================
-  # 一级: 内容创作 (Content Creation)
-  # ============================================================
+# ============================================================
+# 分类树（导航骨架，每个叶子节点带 tag 字段）
+# ============================================================
+categories:
+
   content_creation:
     name: 内容创作
     description: 文章/图文/PPT/视频/配图等内容生成与分发
+    children:
+      wechat:
+        name: 公众号
+        children:
+          formatting:
+            name: 排版/发布
+            tag: wechat_formatting
+          cover:
+            name: 封面生成
+            tag: wechat_cover
+      xiaohongshu:
+        name: 小红书
+        children:
+          images:
+            name: 图文生成
+            tag: xhs_images
+      ppt:
+        name: PPT / 演示
+        children:
+          html_slides:
+            name: HTML Slides
+            tag: html_slides
+      video:
+        name: 视频
+        children:
+          translate:
+            name: 翻译/字幕
+            tag: video_translate
+          analyze:
+            name: 拆解分析
+            tag: video_analyze
+          effects:
+            name: 特效包装
+            tag: video_effects
+          generate:
+            name: AI 生成
+            tag: video_generate
+      article:
+        name: 文章创作
+        children:
+          interview:
+            name: 深度访谈
+            tag: article_interview
+          hot:
+            name: 热点爆款
+            tag: article_hot
 
-    wechat:
-      name: 公众号
-      formatting:
-        name: 排版 / 发布
-        description: Markdown → 公众号兼容 HTML → 推送草稿箱
-        skills:
-          - id: baoyu-post-to-wechat
-            author: jimliu
-            repo: JimLiu/baoyu-skills
-            skill_path: skills/baoyu-post-to-wechat
-            note: 完整工作流，主题内置
-          - id: xiaohu-wechat-format
-            author: xiaohuailabs
-            repo: xiaohuailabs/xiaohu-wechat-format
-            note: 30 主题 + 可视化画廊
-      cover:
-        name: 封面生成
-        description: 公众号/小红书封面图
-        skills:
-          - id: guizang-social-card-skill
-            author: op7418
-            repo: op7418/guizang-social-card-skill
-            note: 小红书+公众号 21:9+1:1，Swiss 设计系统
-
-    xiaohongshu:
-      name: 小红书
-      images:
-        name: 图文生成
-        description: 3:4 卡片图文
-        skills:
-          - id: xiaohongshu-images-local
-            author: 一人课程
-            repo: 一人/第11章小红书爆款图文生成器
-            note: 本地 22 章技能合集
-          - id: guizang-social-card-skill-xhs
-            author: op7418
-            repo: op7418/guizang-social-card-skill
-            note: 同 guizang-social-card-skill，支持 xhs
-
-    ppt:
-      name: PPT / 演示
-      html_slides:
-        name: HTML Slides
-        description: 浏览器演示，单文件 HTML
-        skills:
-          - id: guizang-ppt-skill
-            author: op7418
-            repo: op7418/guizang-ppt-skill
-            note: Swiss/Editorial 版式，WebGL runtime
-          - id: NanoBanana-PPT-Skills
-            author: op7418
-            repo: op7418/NanoBanana-PPT-Skills
-            note: 视频转场 PPT
-          - id: huashu-md-html
-            author: alchaincyf
-            repo: alchaincyf/huashu-md-html
-            note: md↔html 双向，4 反 AI slop 主题
-          - id: huashu-design
-            author: alchaincyf
-            repo: alchaincyf/huashu-design
-            note: HTML 原生设计，20 设计哲学
-
-    video:
-      name: 视频
-      translate:
-        name: 翻译 / 字幕
-        description: 自动加字幕、翻译、烧录
-        skills:
-          - id: xiaohu-video-translate
-            author: xiaohuailabs
-            repo: xiaohuailabs/xiaohu-video-translate
-            note: 全程本地，零 API 费
-          - id: Youtube-clipper-skill
-            author: op7418
-            repo: op7418/Youtube-clipper-skill
-            note: YouTube 视频剪辑
-          - id: baocut
-            author: jimliu
-            repo: jimliu/baocut
-            note: macOS app 集成，需 BaoCut
-
-  # ============================================================
-  # 一级: 设计 / 视觉 (Design & Visual)
-  # ============================================================
   design_visual:
     name: 设计 / 视觉
-    description: UI / Logo / 插图 / 配图
+    children:
+      ui_design:
+        name: UI 设计
+        tag: ui_design
+      logo:
+        name: Logo 设计
+        tag: logo_design
+      illustration:
+        name: 解释图/配图
+        tag: illustration
 
-    ui_design:
-      name: UI 设计
-      skills:
-        - id: baoyu-design
-          author: jimliu
-          repo: jimliu/baoyu-design
-          note: Claude Design 本地版
-        - id: huashu-design-ui
-          author: alchaincyf
-          repo: alchaincyf/huashu-design
-          note: 同 huashu-design，UI 视角
-
-    logo:
-      name: Logo 设计
-      skills:
-        - id: logo-generator-skill
-          author: op7418
-          repo: op7418/logo-generator-skill
-
-    illustration:
-      name: 解释图 / 配图
-      skills:
-        - id: guizang-material-illustration
-          author: op7418
-          repo: op7418/guizang-material-illustration
-          note: 带字解释图、图表美化
-        - id: Document-illustrator-skill
-          author: op7418
-          repo: op7418/Document-illustrator-skill
-          note: 16:9 / 3:4 文档配图
-
-  # ============================================================
-  # 一级: 元能力 (Meta Skills)
-  # ============================================================
   meta_skills:
     name: 元能力
-    description: 自我进化、人物蒸馏、任务规范化——做 skill 的 skill
+    description: 自我进化、人物蒸馏、任务规范化
+    children:
+      distill_person:
+        name: 人物思维蒸馏
+        tag: distill_person
+      self_evolve:
+        name: 自我进化
+        tag: self_evolve
+      task_normalization:
+        name: 任务规范化
+        tag: task_normalization
+      de_slop:
+        name: 去 AI 痕迹
+        tag: de_slop
 
-    distill_person:
-      name: 人物思维蒸馏
-      description: 蒸馏某个人的思维模型
-      skills:
-        - id: nuwa-skill
-          author: alchaincyf
-          repo: alchaincyf/nuwa-skill
-          note: 蒸馏引擎（meta-skill）
-        - id: x-mentor-skill
-          author: alchaincyf
-          repo: alchaincyf/x-mentor-skill
-          note: 6 位 X 创作者合集
-        - id: zhangxuefeng-skill
-          author: alchaincyf
-          repo: alchaincyf/zhangxuefeng-skill
-        - id: steve-jobs-skill
-          author: alchaincyf
-          repo: alchaincyf/steve-jobs-skill
-
-    self_evolve:
-      name: 自我进化
-      skills:
-        - id: darwin-skill
-          author: alchaincyf
-          repo: alchaincyf/darwin-skill
-          note: 评估→改进→测试→保留/回滚
-
-    task_normalization:
-      name: 任务规范化
-      skills:
-        - id: qiaomu-goal-meta-skill
-          author: joeseesun
-          repo: joeseesun/qiaomu-goal-meta-skill
-          note: 模糊任务转强 /goal 命令
-
-    de_slop:
-      name: 去 AI 痕迹
-      skills:
-        - id: Humanizer-zh
-          author: op7418
-          repo: op7418/Humanizer-zh
-        - id: tramstop-skill
-          author: alchaincyf
-          repo: alchaincyf/tramstop-skill
-
-  # ============================================================
-  # 一级: 内容汇聚 (Content Aggregation)
-  # ============================================================
   content_aggregation:
     name: 内容汇聚
-    notebooklm_workflow:
-      name: NotebookLM 工作流
-      description: 多源内容 → NotebookLM（Podcast/PPT/MindMap）
-      skills:
-        - id: qiaomu-anything-to-notebooklm
-          author: joeseesun
-          repo: joeseesun/qiaomu-anything-to-notebooklm
-          note: 6+ 来源聚合
+    children:
+      notebooklm:
+        name: NotebookLM
+        tag: notebooklm
+      monitoring:
+        name: 内容监控
+        tag: content_monitoring
 
-  # ============================================================
-  # 一级: 开发工具 (Dev Tools)
-  # ============================================================
   dev_tools:
     name: 开发工具
-    desktop_client:
-      name: 桌面客户端
-      skills:
-        - id: CodePilot
-          author: op7418
-          repo: op7418/CodePilot
-          note: Electron + Next.js + MCP + skills
-    im_bridge:
-      name: IM 桥接
-      skills:
-        - id: Claude-to-IM-skill
-          author: op7418
-          repo: op7418/Claude-to-IM-skill
-          note: Telegram/Discord/飞书/Lark
+    children:
+      desktop_client:
+        name: 桌面客户端
+        tag: desktop_client
+      im_bridge:
+        name: IM 桥接
+        tag: im_bridge
+      mcp:
+        name: MCP 服务器
+        tag: mcp_server
+      testing:
+        name: 测试
+        tag: testing
+      artifacts:
+        name: 构件构建
+        tag: artifacts
 
-  # ============================================================
-  # 一级: 合集 / 教程 (Collections & Tutorials)
-  # ============================================================
   collections:
     name: 合集 / 教程
-    skill_collections:
-      name: Skills 合集
-      description: 多个 skills 打包
-      skills:
-        - id: baoyu-skills
-          author: jimliu
-          repo: jimliu/baoyu-skills
-          note: 20+ skills，npx skills add
-        - id: huashu-skills
-          author: alchaincyf
-          repo: alchaincyf/huashu-skills
-          note: 内容创作 11 个 skills
-    books:
-      name: 书籍 / 教程
-      skills:
-        - id: Illustrated-Agent-Skills
-          author: jimliu
-          repo: jimliu/Illustrated-Agent-Skills
-          note: 《图解Skill——AI 提效实战指南》
-        - id: claude-code-orange-book
-          author: alchaincyf
-          repo: alchaincyf/claude-code-orange-book
-        - id: obsidian-ai-orange-book
-          author: alchaincyf
-          repo: alchaincyf/obsidian-ai-orange-book
+    children:
+      skill_collection:
+        name: Skills 合集
+        tag: skill_collection
+      tutorial:
+        name: 书籍/教程
+        tag: tutorial
+
+  productivity:
+    name: 效率办公
+    children:
+      weekly_report:
+        name: 周报生成
+        tag: weekly_report
+      email:
+        name: 邮件管理
+        tag: email
+      invoice:
+        name: 发票归档
+        tag: invoice
+      interview_prep:
+        name: 面试准备
+        tag: interview_prep
+
+  data_analysis:
+    name: 数据分析
+    children:
+      app_review:
+        name: App 评论分析
+        tag: app_review
+      social_scraping:
+        name: 社交数据采集
+        tag: social_scraping
+
+  product_design:
+    name: 产品设计
+    children:
+      prd:
+        name: PRD 撰写
+        tag: prd
+      brainstorm:
+        name: 创意脑暴
+        tag: brainstorm
 
 # ============================================================
-# 元数据
+# Skill 列表（49 个，统一扁平 + tags）
 # ============================================================
-meta:
-  version: 0.1
-  date: 2026-07-19
-  authors:
-    - alchaincyf: 花叔
-    - jimliu: 宝玉
-    - op7418: 歸藏
-    - xiaohuailabs: 小虎
-    - joeseesun: 向阳乔木
-  total_skills: 24
-  duplicate_clusters:
-    - wechat.formatting: 2  # A 类高重复
-    - ppt.html_slides: 4    # B 类中重复（切入点不同）
-    - video.translate: 3    # A 类高重复
-    - meta_skills.de_slop: 2 # A 类高重复
+skills:
+
+  # ============ 5 博主（28 个）============
+
+  # 歸藏 op7418 (11 个)
+  - id: Claude-to-IM-skill
+    name: Claude-to-IM 桥接
+    author: op7418
+    repo: op7418/Claude-to-IM-skill
+    stars: 2822
+    note: Telegram/Discord/飞书/Lark
+    tags: [im_bridge]
+    primary_category: dev_tools/im_bridge
+    type: skill
+
+  - id: CodePilot
+    name: CodePilot 桌面客户端
+    author: op7418
+    repo: op7418/CodePilot
+    stars: 6141
+    note: Electron + Next.js + MCP + skills
+    tags: [desktop_client]
+    primary_category: dev_tools/desktop_client
+    type: tool
+
+  - id: Document-illustrator-skill
+    name: 文档配图生成
+    author: op7418
+    repo: op7418/Document-illustrator-skill
+    stars: 572
+    note: 16:9 / 3:4 文档配图
+    tags: [illustration]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: guizang-material-illustration
+    name: 归藏材质插图
+    author: op7418
+    repo: op7418/guizang-material-illustration
+    stars: 715
+    note: 带字解释图、图表美化
+    tags: [illustration]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: guizang-ppt-skill
+    name: 归藏 PPT HTML Slides
+    author: op7418
+    repo: op7418/guizang-ppt-skill
+    stars: 21807
+    note: Swiss/Editorial 版式，WebGL runtime
+    tags: [html_slides]
+    primary_category: content_creation/ppt/html_slides
+    type: skill
+
+  - id: guizang-social-card-skill
+    name: 归藏社交卡片
+    author: op7418
+    repo: op7418/guizang-social-card-skill
+    stars: 5195
+    note: 小红书+公众号 21:9+1:1 封面，Swiss 设计
+    tags: [wechat_cover, xhs_images]
+    primary_category: content_creation/wechat/cover
+    type: skill
+
+  - id: Humanizer-zh
+    name: Humanizer 中文版
+    author: op7418
+    repo: op7418/Humanizer-zh
+    stars: 13445
+    note: 去除文本中 AI 痕迹
+    tags: [de_slop]
+    primary_category: meta_skills/de_slop
+    type: skill
+
+  - id: logo-generator-skill
+    name: Logo 生成
+    author: op7418
+    repo: op7418/logo-generator-skill
+    stars: 1541
+    note: Logo 设计 skill
+    tags: [logo_design]
+    primary_category: design_visual/logo
+    type: skill
+
+  - id: NanoBanana-PPT-Skills
+    name: NanoBanana PPT 视频转场
+    author: op7418
+    repo: op7418/NanoBanana-PPT-Skills
+    stars: 3140
+    note: 视频转场 PPT
+    tags: [html_slides]
+    primary_category: content_creation/ppt/html_slides
+    type: skill
+
+  - id: Youtube-clipper-skill
+    name: YouTube 视频剪辑
+    author: op7418
+    repo: op7418/Youtube-clipper-skill
+    stars: 2070
+    note: YouTube 视频剪辑
+    tags: [video_translate]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  # 宝玉 jimliu (4 个)
+  - id: baocut
+    name: BaoCut 视频剪辑
+    author: jimliu
+    repo: jimliu/baocut
+    stars: 225
+    note: macOS app 集成，需 BaoCut
+    tags: [video_translate]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: baoyu-design
+    name: 宝玉 Claude Design 本地版
+    author: jimliu
+    repo: jimliu/baoyu-design
+    stars: 2704
+    note: Claude Design 本地版
+    tags: [ui_design, html_slides]
+    primary_category: design_visual/ui_design
+    type: skill
+
+  - id: baoyu-skills
+    name: 宝玉 20+ Skills 合集
+    author: jimliu
+    repo: jimliu/baoyu-skills
+    stars: 23845
+    note: npx skills add jimliu/baoyu-skills
+    tags: [skill_collection, wechat_formatting, xhs_images]
+    primary_category: collections/skill_collection
+    type: collection
+
+  - id: Illustrated-Agent-Skills
+    name: 图解 Skill——AI 提效实战指南
+    author: jimliu
+    repo: jimliu/Illustrated-Agent-Skills
+    stars: 594
+    note: 宝玉出的 Skill 实战书
+    tags: [tutorial]
+    primary_category: collections/tutorial
+    type: book
+
+  # 花叔 alchaincyf (8 个)
+  - id: darwin-skill
+    name: Darwin 自我进化
+    author: alchaincyf
+    repo: alchaincyf/darwin-skill
+    stars: 4956
+    note: 评估→改进→测试→保留/回滚
+    tags: [self_evolve]
+    primary_category: meta_skills/self_evolve
+    type: meta
+
+  - id: huashu-design
+    name: 花叔 HTML 原生设计
+    author: alchaincyf
+    repo: alchaincyf/huashu-design
+    stars: 21665
+    note: HTML 原生设计，20 设计哲学
+    tags: [ui_design, html_slides]
+    primary_category: design_visual/ui_design
+    type: skill
+
+  - id: huashu-md-html
+    name: 花叔 md/html 双向流水线
+    author: alchaincyf
+    repo: alchaincyf/huashu-md-html
+    stars: 850
+    note: md↔html 双向，4 反 AI slop 主题
+    tags: [html_slides]
+    primary_category: content_creation/ppt/html_slides
+    type: skill
+
+  - id: huashu-skills
+    name: 花叔内容创作 11 Skills
+    author: alchaincyf
+    repo: alchaincyf/huashu-skills
+    stars: 1216
+    note: 内容创作 11 skills 合集
+    tags: [skill_collection]
+    primary_category: collections/skill_collection
+    type: collection
+
+  - id: nuwa-skill
+    name: 女娲——人物思维蒸馏引擎
+    author: alchaincyf
+    repo: alchaincyf/nuwa-skill
+    stars: 28282
+    note: 蒸馏引擎（meta-skill）
+    tags: [distill_person]
+    primary_category: meta_skills/distill_person
+    type: meta
+
+  - id: steve-jobs-skill
+    name: 乔布斯认知操作系统
+    author: alchaincyf
+    repo: alchaincyf/steve-jobs-skill
+    stars: 909
+    note: 6 心智模型 + 8 决策启发式
+    tags: [distill_person]
+    primary_category: meta_skills/distill_person
+    type: sub_skill
+
+  - id: tramstop-skill
+    name: 电车站反 AI 痕迹
+    author: alchaincyf
+    repo: alchaincyf/tramstop-skill
+    stars: 22
+    note: 4 层 AI 味模型 + 真实素材注入
+    tags: [de_slop]
+    primary_category: meta_skills/de_slop
+    type: skill
+
+  - id: x-mentor-skill
+    name: X 导师——6 位创作者合集
+    author: alchaincyf
+    repo: alchaincyf/x-mentor-skill
+    stars: 1069
+    note: nuwa 衍生：6 位 X 创作者方法论
+    tags: [distill_person]
+    primary_category: meta_skills/distill_person
+    type: sub_skill
+
+  - id: zhangxuefeng-skill
+    name: 张雪峰认知操作系统
+    author: alchaincyf
+    repo: alchaincyf/zhangxuefeng-skill
+    stars: 9951
+    note: 高考志愿/考研/职业规划
+    tags: [distill_person]
+    primary_category: meta_skills/distill_person
+    type: sub_skill
+
+  # 小虎 xiaohuailabs (2 个)
+  - id: xiaohu-video-translate
+    name: 小虎视频自动翻译字幕
+    author: xiaohuailabs
+    repo: xiaohuailabs/xiaohu-video-translate
+    stars: 618
+    note: 全程本地，零 API 费
+    tags: [video_translate]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: xiaohu-wechat-format
+    name: 小虎公众号排版
+    author: xiaohuailabs
+    repo: xiaohuailabs/xiaohu-wechat-format
+    stars: 660
+    note: 30 主题 + 可视化画廊
+    tags: [wechat_formatting]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  # 乔木 joeseesun (2 个)
+  - id: qiaomu-anything-to-notebooklm
+    name: 乔木多源→NotebookLM
+    author: joeseesun
+    repo: joeseesun/qiaomu-anything-to-notebooklm
+    stars: 5591
+    note: 6+ 来源 → Podcast/PPT/MindMap
+    tags: [notebooklm]
+    primary_category: content_aggregation/notebooklm
+    type: skill
+
+  - id: qiaomu-goal-meta-skill
+    name: 乔木任务规范化
+    author: joeseesun
+    repo: joeseesun/qiaomu-goal-meta-skill
+    stars: 781
+    note: 模糊任务转 /goal 命令
+    tags: [task_normalization]
+    primary_category: meta_skills/task_normalization
+    type: meta
+
+  # ============ 22 章原始技能（20 个）============
+  - id: interview-intel-local
+    name: 面试准备 Skill
+    author: 一人课程
+    repo: 一人/第2章面试准备
+    note: 公司+JD+简历 → 5 份材料
+    tags: [interview_prep]
+    primary_category: productivity/interview_prep
+    type: skill
+
+  - id: weekly-report-local
+    name: 智能周报生成器
+    author: 一人课程
+    repo: 一人/第3章智能周报生成器
+    note: 流水账 → STAR 周报 3 版
+    tags: [weekly_report]
+    primary_category: productivity/weekly_report
+    type: skill
+
+  - id: creative-brainstorm-local
+    name: AI 创意脑暴
+    author: 一人课程
+    repo: 一人/第4章AI辅助创意脑暴
+    note: SCAMPER 7 维发散 → 10 方案
+    tags: [brainstorm]
+    primary_category: product_design/brainstorm
+    type: skill
+
+  - id: invoice-local
+    name: 发票自动归档
+    author: 一人课程
+    repo: 一人/第5章发票与收据自动归档
+    note: 百度 OCR + Excel 报表
+    tags: [invoice]
+    primary_category: productivity/invoice
+    type: skill
+
+  - id: email-triage-local
+    name: 智能邮件分类回复
+    author: 一人课程
+    repo: 一人/第6章智能邮件分类与回复助手
+    note: 3 级分类 + 智能回复草稿
+    tags: [email]
+    primary_category: productivity/email
+    type: skill
+
+  - id: frontend-slides-local
+    name: 精美网页演示
+    author: 一人课程
+    repo: 一人/第7章一键生成精美网页演示
+    note: 零依赖 HTML slides，强制 100vh
+    tags: [html_slides]
+    primary_category: content_creation/ppt/html_slides
+    type: skill
+
+  - id: interview-local
+    name: AI 深度访谈爆款文章
+    author: 一人课程
+    repo: 一人/第8章AI深度访谈与爆款文章创作
+    note: 3 模式：转化/传播/平衡
+    tags: [article_interview]
+    primary_category: content_creation/article/interview
+    type: skill
+
+  - id: hot-article-local
+    name: 热点爆款文章生成器
+    author: 一人课程
+    repo: 一人/第9章热点爆款文章生成器
+    note: 联网搜热点 + 模板
+    tags: [article_hot]
+    primary_category: content_creation/article/hot
+    type: skill
+
+  - id: wechat-publish-local
+    name: 微信公众号一键排版发布
+    author: 一人课程
+    repo: 一人/第10章微信公众号一键排版与发布
+    note: 4 主题，含小绿书
+    tags: [wechat_formatting]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: xiaohongshu-images-local
+    name: 小红书爆款图文生成器
+    author: 一人课程
+    repo: 一人/第11章小红书爆款图文生成器
+    note: 3:4 卡片自动分页
+    tags: [xhs_images]
+    primary_category: content_creation/xiaohongshu/images
+    type: skill
+
+  - id: video-local-analyze-local
+    name: 爆款视频拆解器
+    author: 一人课程
+    repo: 一人/第12章爆款视频拆解器
+    note: 豆包 API 8 维拆解 + HTML 报告
+    tags: [video_analyze]
+    primary_category: content_creation/video/analyze
+    type: skill
+
+  - id: listenhub-local
+    name: ListenHub AI 解说视频/播客
+    author: 一人课程
+    repo: 一人/第13章ListenHub Skill
+    note: 4 模式：Podcast/Explain/TTS/Image
+    tags: [video_generate]
+    primary_category: content_creation/video/generate
+    type: skill
+
+  - id: video-wrapper-local
+    name: 访谈视频综艺特效
+    author: 一人课程
+    repo: 一人/第14章视频综艺特效
+    note: YouTube/B站 → 综艺风视频
+    tags: [video_effects]
+    primary_category: content_creation/video/effects
+    type: skill
+
+  - id: app-review-local
+    name: AppStore 评价分析
+    author: 一人课程
+    repo: 一人/第15章AppStore评价分析
+    note: 抓 500 条评论 + 情感分析
+    tags: [app_review]
+    primary_category: data_analysis/app_review
+    type: skill
+
+  - id: xiaohongshu-scraper-local
+    name: 小红书创作平台数据采集
+    author: 一人课程
+    repo: 一人/第16章商业数据分析
+    note: 油猴 + Node 服务
+    tags: [social_scraping]
+    primary_category: data_analysis/social_scraping
+    type: tool
+
+  - id: viral-monitor-local
+    name: 公众号爆文监控
+    author: 一人课程
+    repo: 一人/第17章公众号爆文监控
+    note: 大家啦 API + 日报
+    tags: [content_monitoring]
+    primary_category: content_aggregation/monitoring
+    type: tool
+
+  - id: prd-writer-local
+    name: PRD 撰写
+    author: 一人课程
+    repo: 一人/第19章产品需求撰写
+    note: 3 阶段 + ASCII 原型 + Mermaid
+    tags: [prd]
+    primary_category: product_design/prd
+    type: skill
+
+  - id: web-artifacts-builder-local
+    name: Web Artifacts Builder
+    author: 一人课程
+    repo: 一人/第20章WebArtifactsBuilder
+    note: React 18 + shadcn/ui
+    tags: [artifacts]
+    primary_category: dev_tools/artifacts
+    type: tool
+
+  - id: frontend-design-local
+    name: 前端界面设计
+    author: 一人课程
+    repo: 一人/第21章前端界面设计
+    note: 反 AI slop，12 美学方向
+    tags: [ui_design]
+    primary_category: design_visual/ui_design
+    type: skill
+
+  - id: webapp-testing-local
+    name: 网页自动化测试
+    author: 一人课程
+    repo: 一人/第22章网页自动化测试
+    note: Playwright
+    tags: [testing]
+    primary_category: dev_tools/testing
+    type: skill
+
+  # ============ 自研（1 个）============
+  - id: aggregate-skills-map-self
+    name: 聚合 GitHub 博主技能地图
+    author: 自研
+    repo: Alexxiang2008/awesome-skills-map
+    note: 本仓库元能力（aggregate.sh + dedup.py + taxonomy.yaml）
+    tags: [meta]
+    primary_category: meta_skills
+    type: meta
