@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-quality_score.py - 优质 skill 评分系统（v1.0）
+quality_score.py - 优质 skill 评分系统（v0.4）
 
 设计依据:
     4 维硬指标 (80 分):
@@ -28,7 +28,8 @@ quality_score.py - 优质 skill 评分系统（v1.0）
 
     总分 120 (>= 60 入选)
 
-依赖: gh CLI, PyYAML, (可选: anthropic SDK)
+依赖: gh CLI, PyYAML
+v0.4 决策: LLM 评分已禁用（用户决策 D，硬指标已足够）
 """
 import yaml, sys, json, subprocess, argparse, os, re
 from pathlib import Path
@@ -259,58 +260,19 @@ def calculate_ecosystem_bonus(metrics, full_name):
 
 def calculate_llm_score(metrics, skill_md_content=None):
     """
-    3 维 LLM 评分（需要 anthropic SDK）
-    返回 (score, breakdown)
+    3 维 LLM 评分（可选扩展，已禁用）
+
+    设计：doc_quality(8) + innovativeness(6) + practicality(6) = 20 分
+
+    启用步骤：
+      1. pip install openai（或 anthropic）
+      2. export MiniMax_API_KEY=xxx（或 ANTHROPIC_API_KEY）
+      3. ./quality_score.py --with-llm
+
+    现状：未启用。理由——硬指标（4 维 80 分）已能识别 Top 10 优质 skill，
+         LLM 评分边际收益不高（用户决策：D）。
     """
-    try:
-        import anthropic
-    except ImportError:
-        return None, {'error': 'anthropic SDK 未安装'}
-
-    api_key = os.environ.get('ANTHROPIC_API_KEY')
-    if not api_key:
-        return None, {'error': 'ANTHROPIC_API_KEY 未设置'}
-
-    client = anthropic.Anthropic(api_key=api_key)
-
-    desc = metrics.get('description', '')
-    prompt = f"""评估这个 GitHub Claude Skill 项目的质量。
-
-仓库信息：
-- 名称: {metrics.get('full_name', '')}
-- 描述: {desc}
-- Stars: {metrics.get('stars', 0):,}
-- Topics: {', '.join(metrics.get('topics') or [])}
-
-请从三个维度评分（0-1）：
-
-1. **doc_quality**：文档/描述质量（README 质量、说明清晰度）
-2. **innovativeness**：创新性（解决真问题 vs 重复造轮）
-3. **practicality**：实用性（场景真实、有用户案例）
-
-输出 JSON 格式：{{"doc_quality": 0.X, "innovativeness": 0.X, "practicalty": 0.X, "reason": "一句话理由"}}"""
-
-    try:
-        msg = client.messages.create(
-            model='claude-sonnet-4-5',
-            max_tokens=512,
-            messages=[{'role': 'user', 'content': prompt}]
-        )
-        text = msg.content[0].text
-        # 提取 JSON
-        match = re.search(r'\{.*\}', text, re.DOTALL)
-        if match:
-            data = json.loads(match.group())
-            score = (
-                data.get('doc_quality', 0) * 8 +
-                data.get('innovativeness', 0) * 6 +
-                data.get('practicality', 0) * 6
-            )
-            return round(score, 1), data
-    except Exception as e:
-        return None, {'error': str(e)}
-
-    return None, {'error': 'LLM 响应解析失败'}
+    return None, {'error': 'LLM 评分已禁用（v0.4 决策）。如需启用见函数 docstring。'}
 
 
 # ============================================================
