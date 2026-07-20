@@ -9,17 +9,21 @@
     --bg: #0d1117;
     --bg-card: #161b22;
     --bg-card-hover: #1f2530;
+    --bg-card-selected: #1c2c4a;
     --border: #30363d;
+    --border-selected: #58a6ff;
     --text: #c9d1d9;
     --text-muted: #8b949e;
     --accent: #58a6ff;
     --gold: #f0b72f;
     --silver: #c0c0c0;
     --bronze: #cd7f32;
+    --success: #3fb950;
     --tag-bg: #21262d;
     --tier-1: linear-gradient(135deg, #f0b72f 0%, #d97706 100%);
     --tier-2: linear-gradient(135deg, #6e7681 0%, #484f58 100%);
     --tier-3: linear-gradient(135deg, #cd7f32 0%, #6e7681 100%);
+    --toolbar-h: 64px;
   }
 
   @media (prefers-color-scheme: light) {
@@ -27,13 +31,16 @@
       --bg: #ffffff;
       --bg-card: #f6f8fa;
       --bg-card-hover: #eaeef2;
+      --bg-card-selected: #dbeafe;
       --border: #d0d7de;
+      --border-selected: #0969da;
       --text: #1f2328;
       --text-muted: #656d76;
       --accent: #0969da;
       --gold: #bf8700;
       --silver: #6e7781;
       --bronze: #9a6700;
+      --success: #1a7f37;
       --tag-bg: #eaeef2;
     }
   }
@@ -45,15 +52,134 @@
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
-    padding: 20px;
+    padding-top: var(--toolbar-h); /* 为 sticky toolbar 留位 */
   }
 
   .container {
     max-width: 1400px;
     margin: 0 auto;
+    padding: 20px;
   }
 
-  /* Header */
+  /* ===== Sticky Toolbar ===== */
+  .toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--toolbar-h);
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    gap: 12px;
+  }
+
+  @media (prefers-color-scheme: light) {
+    .toolbar { background: rgba(255, 255, 255, 0.92); }
+  }
+
+  .toolbar-title {
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .count-badge {
+    background: var(--accent);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  .count-badge:empty,
+  .count-badge[data-count="0"] {
+    background: var(--text-muted);
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+  }
+
+  .btn.primary {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .btn.primary:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn.success {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    transition: transform 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9em;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast.error {
+    background: #f85149;
+  }
+
+  /* ===== Header ===== */
   header {
     text-align: center;
     padding: 40px 20px;
@@ -85,7 +211,7 @@
   }
 
   header .stat {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     padding: 12px 20px;
     border-radius: 12px;
@@ -102,7 +228,7 @@
     opacity: 0.9;
   }
 
-  /* Theme categories */
+  /* ===== Theme categories ===== */
   .categories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -142,7 +268,7 @@
     margin-top: 4px;
   }
 
-  /* Tier section */
+  /* ===== Tier section ===== */
   .tier {
     margin-bottom: 40px;
   }
@@ -174,7 +300,7 @@
     font-weight: 600;
   }
 
-  /* Card grid */
+  /* ===== Card grid ===== */
   .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -186,9 +312,11 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 18px;
+    padding-right: 60px; /* 让出 checkbox + rank 空间 */
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .card:hover {
@@ -196,6 +324,12 @@
     background: var(--bg-card-hover);
     border-color: var(--accent);
     box-shadow: 0 4px 16px rgba(31, 111, 235, 0.15);
+  }
+
+  .card.selected {
+    background: var(--bg-card-selected);
+    border-color: var(--border-selected);
+    box-shadow: 0 0 0 1px var(--border-selected);
   }
 
   .card-rank {
@@ -212,19 +346,23 @@
     justify-content: center;
     font-weight: 700;
     font-size: 0.85em;
+    pointer-events: none;
   }
 
-  .card.t1 .card-rank {
-    background: var(--gold);
-    color: #000;
-  }
-  .card.t2 .card-rank {
-    background: var(--silver);
-    color: #000;
-  }
-  .card.t3 .card-rank {
-    background: var(--bronze);
-    color: #000;
+  .card.t1 .card-rank { background: var(--gold); color: #000; }
+  .card.t2 .card-rank { background: var(--silver); color: #000; }
+  .card.t3 .card-rank { background: var(--bronze); color: #000; }
+
+  /* ===== Checkbox ===== */
+  .card-checkbox {
+    position: absolute;
+    top: 14px;
+    right: 52px; /* 避开 .card-rank */
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    z-index: 5;
+    accent-color: var(--accent);
   }
 
   .card-name {
@@ -234,7 +372,6 @@
     text-decoration: none;
     display: inline-block;
     margin-bottom: 6px;
-    padding-right: 40px;
     word-break: break-all;
   }
 
@@ -302,9 +439,9 @@
     border-radius: 6px;
     font-weight: 700;
     font-size: 0.9em;
+    pointer-events: none;
   }
 
-  /* Detailed cards */
   .card.detailed .card-desc {
     font-size: 0.95em;
     margin-bottom: 14px;
@@ -320,7 +457,7 @@
     border-radius: 0 4px 4px 0;
   }
 
-  /* Notice section */
+  /* ===== Notice ===== */
   .notice {
     background: var(--bg-card);
     border-left: 4px solid var(--gold);
@@ -344,7 +481,6 @@
     margin-bottom: 6px;
   }
 
-  /* Footer */
   footer {
     text-align: center;
     padding: 32px 20px;
@@ -363,21 +499,44 @@
     text-decoration: underline;
   }
 
-  /* Print */
   @media print {
-    body { background: white; color: black; }
+    body { background: white; color: black; padding-top: 0; }
+    .toolbar { display: none; }
     .card { break-inside: avoid; }
+    .card-checkbox { display: none; }
   }
 
-  /* Responsive */
   @media (max-width: 640px) {
     header h1 { font-size: 1.8em; }
     .cards { grid-template-columns: 1fr; }
     header .stats { gap: 12px; }
+    .toolbar { padding: 0 12px; height: auto; flex-wrap: wrap; padding: 8px 12px; }
+    .toolbar-actions { width: 100%; justify-content: flex-end; }
+    .btn { padding: 6px 10px; font-size: 0.8em; }
   }
 </style>
 </head>
 <body>
+
+<!-- ============ Sticky Toolbar ============ -->
+<div class="toolbar">
+  <div class="toolbar-title">
+    🗺️ 75 Claude Skills
+    <span class="count-badge" id="count-badge" data-count="0">0</span>
+    <span style="font-weight: 400; color: var(--text-muted); font-size: 0.85em;">已选</span>
+  </div>
+  <div class="toolbar-actions">
+    <button class="btn" id="btn-select-all">☑️ 全选</button>
+    <button class="btn" id="btn-clear">🗑️ 清空</button>
+    <button class="btn primary" id="btn-copy-md" disabled>📋 复制 MD</button>
+    <button class="btn primary" id="btn-download-md" disabled>⬇️ 下载 MD</button>
+    <button class="btn" id="btn-copy-json" disabled>📋 复制 JSON</button>
+    <button class="btn" id="btn-download-json" disabled>⬇️ JSON</button>
+  </div>
+</div>
+
+<!-- ============ Toast ============ -->
+<div class="toast" id="toast"></div>
 
 <div class="container">
 
@@ -469,15 +628,13 @@
     </div>
     <div class="cards">
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">1</div>
-        <a href="https://github.com/santifer/career-ops" class="card-name">career-ops</a>
+        <input type="checkbox" class="card-checkbox" data-id="career-ops" data-name="career-ops" data-url="https://github.com/santifer/career-ops" data-author="santifer" data-desc="Open-source AI 求职助手，扫描招聘网站、A-F 评分、定制简历、追踪申请。本地 CLI 跑" data-stars="60625" data-score="74.7">
+        <a href="https://github.com/santifer/career-ops" class="card-name" target="_blank">career-ops</a>
         <div class="card-author">@santifer</div>
         <div class="card-desc">Open-source AI 求职助手，扫描招聘网站、A-F 评分、定制简历、追踪申请。本地 CLI 跑</div>
         <div class="card-value">💎 价值：⭐⭐⭐⭐⭐（60K ⭐ + 19.7% forks/stars，开发者实测真用）</div>
-        <div class="card-tags">
-          <span class="tag">ai-agent</span><span class="tag">career</span><span class="tag">claude-code</span><span class="tag">resume</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>60,625</strong></span>
           <span class="card-meta-item">🍴 <strong>19.7%</strong></span>
@@ -486,15 +643,13 @@
         <div class="score-badge">74.7</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">2</div>
-        <a href="https://github.com/jeecgboot/JeecgBoot" class="card-name">JeecgBoot</a>
+        <input type="checkbox" class="card-checkbox" data-id="JeecgBoot" data-name="JeecgBoot" data-url="https://github.com/jeecgboot/JeecgBoot" data-author="jeecgboot" data-desc="AI 低代码平台 v2.0，AI Skills 一句话生成整个系统（前后端代码 + 流程 + 表单 + 报表 + 大屏）" data-stars="47131" data-score="74.7">
+        <a href="https://github.com/jeecgboot/JeecgBoot" class="card-name" target="_blank">JeecgBoot</a>
         <div class="card-author">@jeecgboot</div>
         <div class="card-desc">AI 低代码平台 v2.0，AI Skills 一句话生成整个系统（前后端代码 + 流程 + 表单 + 报表 + 大屏）</div>
         <div class="card-value">💎 价值：forks/stars 34.2% 极高 + 解决 90% Java 重复工作</div>
-        <div class="card-tags">
-          <span class="tag">springboot</span><span class="tag">mcp</span><span class="tag">low-code</span><span class="tag">skills</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>47,131</strong></span>
           <span class="card-meta-item">🍴 <strong>34.2%</strong></span>
@@ -503,15 +658,13 @@
         <div class="score-badge">74.7</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">3</div>
-        <a href="https://github.com/zhayujie/CowAgent" class="card-name">CowAgent</a>
+        <input type="checkbox" class="card-checkbox" data-id="CowAgent" data-name="CowAgent" data-url="https://github.com/zhayujie/CowAgent" data-author="zhayujie" data-desc="超级 AI 助手 + Agent Harness。规划任务、运行 tools 和 skills、记忆自进化。多模型多渠道" data-stars="46047" data-score="74.6">
+        <a href="https://github.com/zhayujie/CowAgent" class="card-name" target="_blank">CowAgent</a>
         <div class="card-author">@zhayujie</div>
         <div class="card-desc">超级 AI 助手 + Agent Harness。规划任务、运行 tools 和 skills、记忆自进化。多模型多渠道</div>
         <div class="card-value">💎 价值：⭐⭐⭐⭐⭐（中文作者 + 含 OpenClaw 支持）</div>
-        <div class="card-tags">
-          <span class="tag">claude-code</span><span class="tag">codex</span><span class="tag">openclaw</span><span class="tag">multi-agent</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>46,047</strong></span>
           <span class="card-meta-item">🍴 <strong>22.3%</strong></span>
@@ -520,15 +673,13 @@
         <div class="score-badge">74.6</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">4</div>
-        <a href="https://github.com/NousResearch/hermes-agent" class="card-name">hermes-agent</a>
+        <input type="checkbox" class="card-checkbox" data-id="hermes-agent" data-name="hermes-agent" data-url="https://github.com/NousResearch/hermes-agent" data-author="NousResearch" data-desc="The agent that grows with you（与你共成长的 agent）" data-stars="217309" data-score="73.8">
+        <a href="https://github.com/NousResearch/hermes-agent" class="card-name" target="_blank">hermes-agent</a>
         <div class="card-author">@NousResearch</div>
         <div class="card-desc">The agent that grows with you（与你共成长的 agent）</div>
         <div class="card-value">💎 价值：流量王（217K ⭐）但描述极简，可能过度营销</div>
-        <div class="card-tags">
-          <span class="tag">anthropic</span><span class="tag">claude-code</span><span class="tag">hermes</span><span class="tag">openai</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>217,309</strong></span>
           <span class="card-meta-item">🍴 <strong>18.8%</strong></span>
@@ -537,15 +688,13 @@
         <div class="score-badge">73.8</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">5</div>
-        <a href="https://github.com/nanocoai/nanoclaw" class="card-name">nanoclaw</a>
+        <input type="checkbox" class="card-checkbox" data-id="nanoclaw" data-name="nanoclaw" data-url="https://github.com/nanocoai/nanoclaw" data-author="nanocoai" data-desc="轻量级 OpenClaw 替代，跑在 Docker 容器里更安全。连接 WhatsApp/Telegram/Slack/Discord/Gmail" data-stars="30293" data-score="72.6">
+        <a href="https://github.com/nanocoai/nanoclaw" class="card-name" target="_blank">nanoclaw</a>
         <div class="card-author">@nanocoai</div>
         <div class="card-desc">轻量级 OpenClaw 替代，跑在 Docker 容器里更安全。连接 WhatsApp/Telegram/Slack/Discord/Gmail</div>
         <div class="card-value">💎 价值：⭐⭐⭐⭐⭐（forks/stars 42.5%，大量开发者 clone 真用）</div>
-        <div class="card-tags">
-          <span class="tag">ai-agents</span><span class="tag">claude-code</span><span class="tag">openclaw</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>30,293</strong></span>
           <span class="card-meta-item">🍴 <strong>42.5%</strong></span>
@@ -554,15 +703,13 @@
         <div class="score-badge">72.6</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">6</div>
-        <a href="https://github.com/HKUDS/nanobot" class="card-name">nanobot</a>
+        <input type="checkbox" class="card-checkbox" data-id="nanobot" data-name="nanobot" data-url="https://github.com/HKUDS/nanobot" data-author="HKUDS" data-desc="轻量级开源 AI agent，为 tools/chats/workflows 设计" data-stars="45898" data-score="72.3">
+        <a href="https://github.com/HKUDS/nanobot" class="card-name" target="_blank">nanobot</a>
         <div class="card-author">@HKUDS</div>
         <div class="card-desc">轻量级开源 AI agent，为 tools/chats/workflows 设计</div>
         <div class="card-value">💎 价值：HKUDS 是顶级学术实验室，质量保证</div>
-        <div class="card-tags">
-          <span class="tag">claude-code</span><span class="tag">codex-cli</span><span class="tag">openclaw</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>45,898</strong></span>
           <span class="card-meta-item">🍴 <strong>17.7%</strong></span>
@@ -571,15 +718,13 @@
         <div class="score-badge">72.3</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">7</div>
-        <a href="https://github.com/shareAI-lab/learn-claude-code" class="card-name">learn-claude-code</a>
+        <input type="checkbox" class="card-checkbox" data-id="learn-claude-code" data-name="learn-claude-code" data-url="https://github.com/shareAI-lab/learn-claude-code" data-author="shareAI-lab" data-desc="Bash is all you need——用最少代码从 0 到 1 实现 nano claude code-like agent harness" data-stars="71541" data-score="71.3">
+        <a href="https://github.com/shareAI-lab/learn-claude-code" class="card-name" target="_blank">learn-claude-code</a>
         <div class="card-author">@shareAI-lab</div>
         <div class="card-desc">Bash is all you need——用最少代码从 0 到 1 实现 nano claude code-like agent harness</div>
         <div class="card-value">💎 价值：教育类硬通货（71K ⭐），适合理解 Claude Code 内部原理</div>
-        <div class="card-tags">
-          <span class="tag">educational</span><span class="tag">tutorial</span><span class="tag">agent</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>71,541</strong></span>
           <span class="card-meta-item">🍴 <strong>16.3%</strong></span>
@@ -588,15 +733,13 @@
         <div class="score-badge">71.3</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">8</div>
-        <a href="https://github.com/asgeirtj/system_prompts_leaks" class="card-name">system_prompts_leaks</a>
+        <input type="checkbox" class="card-checkbox" data-id="system_prompts_leaks" data-name="system_prompts_leaks" data-url="https://github.com/asgeirtj/system_prompts_leaks" data-author="asgeirtj" data-desc="提取的 system prompts 集合（Claude、OpenAI、Gemini、Grok 等大模型）" data-stars="59097" data-score="71.3">
+        <a href="https://github.com/asgeirtj/system_prompts_leaks" class="card-name" target="_blank">system_prompts_leaks</a>
         <div class="card-author">@asgeirtj</div>
         <div class="card-desc">提取的 system prompts 集合（Claude、OpenAI、Gemini、Grok 等大模型）</div>
         <div class="card-value">💎 价值：研究 prompt 设计；但偏"泄露"性质，可能有版权风险</div>
-        <div class="card-tags">
-          <span class="tag">ai-prompts</span><span class="tag">anthropic</span><span class="tag">system-prompt</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>59,097</strong></span>
           <span class="card-meta-item">🍴 <strong>16.3%</strong></span>
@@ -605,15 +748,13 @@
         <div class="score-badge">71.3</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">9</div>
-        <a href="https://github.com/affaan-m/ECC" class="card-name">ECC</a>
+        <input type="checkbox" class="card-checkbox" data-id="ECC" data-name="ECC" data-url="https://github.com/affaan-m/ECC" data-author="affaan-m" data-desc="Agent harness 性能优化系统。Skills、instincts、memory、security、研究优先开发" data-stars="231268" data-score="70.3">
+        <a href="https://github.com/affaan-m/ECC" class="card-name" target="_blank">ECC</a>
         <div class="card-author">@affaan-m</div>
         <div class="card-desc">Agent harness 性能优化系统。Skills、instincts、memory、security、研究优先开发</div>
         <div class="card-value">💎 价值：流量王（231K ⭐），需进一步评估</div>
-        <div class="card-tags">
-          <span class="tag">ai-agents</span><span class="tag">anthropic</span><span class="tag">mcp</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>231,268</strong></span>
           <span class="card-meta-item">🍴 <strong>15.3%</strong></span>
@@ -622,15 +763,13 @@
         <div class="score-badge">70.3</div>
       </div>
 
-      <div class="card t1 detailed">
+      <div class="card t1 detailed" data-tier="1">
         <div class="card-rank">10</div>
-        <a href="https://github.com/router-for-me/CLIProxyAPI" class="card-name">CLIProxyAPI</a>
+        <input type="checkbox" class="card-checkbox" data-id="CLIProxyAPI" data-name="CLIProxyAPI" data-url="https://github.com/router-for-me/CLIProxyAPI" data-author="router-for-me" data-desc="包装 Antigravity/ChatGPT Codex/Claude Code/Grok Build 成 OpenAI/Gemini 兼容 API——免费用 Gemini 3.1 Pro、GPT 5.5" data-stars="43697" data-score="70.1">
+        <a href="https://github.com/router-for-me/CLIProxyAPI" class="card-name" target="_blank">CLIProxyAPI</a>
         <div class="card-author">@router-for-me</div>
         <div class="card-desc">包装 Antigravity/ChatGPT Codex/Claude Code/Grok Build 成 OpenAI/Gemini 兼容 API——免费用 Gemini 3.1 Pro、GPT 5.5</div>
         <div class="card-value">💎 价值：跨模型 API，节省 API 费用</div>
-        <div class="card-tags">
-          <span class="tag">antigravity</span><span class="tag">claude-code</span><span class="tag">gemini</span><span class="tag">openai</span>
-        </div>
         <div class="card-meta">
           <span class="card-meta-item">⭐ <strong>43,697</strong></span>
           <span class="card-meta-item">🍴 <strong>15.7%</strong></span>
@@ -642,7 +781,7 @@
     </div>
   </section>
 
-  <!-- Tier 2 -->
+  <!-- Tier 2 简化卡片 (11-30) -->
   <section class="tier">
     <div class="tier-header">
       <span class="tier-badge t2">🥈 Tier 2</span>
@@ -650,243 +789,183 @@
     </div>
     <div class="cards">
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">11</div>
-        <a href="https://github.com/ruvnet/ruflo" class="card-name">ruflo</a>
-        <div class="card-author">@ruvnet</div>
+        <input type="checkbox" class="card-checkbox" data-id="ruflo" data-name="ruflo" data-url="https://github.com/ruvnet/ruflo" data-author="ruvnet" data-desc="🌊 Leading agent meta-harness（多 agent 编排）" data-stars="65211" data-score="66.9">
+        <a href="https://github.com/ruvnet/ruflo" class="card-name" target="_blank">ruflo</a>
         <div class="card-desc">🌊 Leading agent meta-harness（多 agent 编排）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>65,211</strong></span>
-          <span class="card-meta-item">🍴 <strong>11.9%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>65,211</strong></span></div>
         <div class="score-badge">66.9</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">12</div>
-        <a href="https://github.com/JCodesMore/ai-website-cloner-template" class="card-name">ai-website-cloner-template</a>
-        <div class="card-author">@JCodesMore</div>
+        <input type="checkbox" class="card-checkbox" data-id="ai-website-cloner-template" data-name="ai-website-cloner-template" data-url="https://github.com/JCodesMore/ai-website-cloner-template" data-author="JCodesMore" data-desc="一行命令 clone 任意网站" data-stars="28851" data-score="66.7">
+        <a href="https://github.com/JCodesMore/ai-website-cloner-template" class="card-name" target="_blank">ai-website-cloner-template</a>
         <div class="card-desc">一行命令 clone 任意网站</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>28,851</strong></span>
-          <span class="card-meta-item">🍴 <strong>14.4%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>28,851</strong></span></div>
         <div class="score-badge">66.7</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">13</div>
-        <a href="https://github.com/luongnv89/claude-howto" class="card-name">claude-howto</a>
-        <div class="card-author">@luongnv89</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-howto" data-name="claude-howto" data-url="https://github.com/luongnv89/claude-howto" data-author="luongnv89" data-desc="Claude Code 可视化指南" data-stars="40009" data-score="66.0">
+        <a href="https://github.com/luongnv89/claude-howto" class="card-name" target="_blank">claude-howto</a>
         <div class="card-desc">Claude Code 可视化指南</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>40,009</strong></span>
-          <span class="card-meta-item">🍴 <strong>12.1%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>40,009</strong></span></div>
         <div class="score-badge">66.0</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">14</div>
-        <a href="https://github.com/addyosmani/agent-skills" class="card-name">agent-skills</a>
-        <div class="card-author">@addyosmani</div>
+        <input type="checkbox" class="card-checkbox" data-id="agent-skills" data-name="agent-skills" data-url="https://github.com/addyosmani/agent-skills" data-author="addyosmani" data-desc="⭐ 生产级工程 skills（addyosmani 是 Google Chrome 团队）" data-stars="79333" data-score="65.8">
+        <a href="https://github.com/addyosmani/agent-skills" class="card-name" target="_blank">agent-skills</a>
         <div class="card-desc">⭐ 生产级工程 skills（addyosmani 是 Google Chrome 团队）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>79,333</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.8%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>79,333</strong></span></div>
         <div class="score-badge">65.8</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">15</div>
-        <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" class="card-name">ui-ux-pro-max-skill</a>
-        <div class="card-author">@nextlevelbuilder</div>
+        <input type="checkbox" class="card-checkbox" data-id="ui-ux-pro-max-skill" data-name="ui-ux-pro-max-skill" data-url="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" data-author="nextlevelbuilder" data-desc="⭐ 设计智能 skill（107K ⭐ 流量王）" data-stars="107837" data-score="65.6">
+        <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" class="card-name" target="_blank">ui-ux-pro-max-skill</a>
         <div class="card-desc">⭐ 设计智能 skill（107K ⭐ 流量王）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>107,837</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.6%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>107,837</strong></span></div>
         <div class="score-badge">65.6</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">16</div>
-        <a href="https://github.com/shanraisshan/claude-code-best-practice" class="card-name">claude-code-best-practice</a>
-        <div class="card-author">@shanraisshan</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-code-best-practice" data-name="claude-code-best-practice" data-url="https://github.com/shanraisshan/claude-code-best-practice" data-author="shanraisshan" data-desc="从 vibe coding 到 agentic engineering" data-stars="63112" data-score="65.0">
+        <a href="https://github.com/shanraisshan/claude-code-best-practice" class="card-name" target="_blank">claude-code-best-practice</a>
         <div class="card-desc">从 vibe coding 到 agentic engineering</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>63,112</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.0%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>63,112</strong></span></div>
         <div class="score-badge">65.0</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">17</div>
-        <a href="https://github.com/Graphify-Labs/graphify" class="card-name">graphify</a>
-        <div class="card-author">@Graphify-Labs</div>
+        <input type="checkbox" class="card-checkbox" data-id="graphify" data-name="graphify" data-url="https://github.com/Graphify-Labs/graphify" data-author="Graphify-Labs" data-desc="AI 编程助手 skill 跨 Claude Code/Codex/OpenCode" data-stars="91669" data-score="64.7">
+        <a href="https://github.com/Graphify-Labs/graphify" class="card-name" target="_blank">graphify</a>
         <div class="card-desc">AI 编程助手 skill 跨 Claude Code/Codex/OpenCode</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>91,669</strong></span>
-          <span class="card-meta-item">🍴 <strong>9.7%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>91,669</strong></span></div>
         <div class="score-badge">64.7</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">18</div>
-        <a href="https://github.com/alirezarezvani/claude-skills" class="card-name">claude-skills</a>
-        <div class="card-author">@alirezarezvani</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-skills" data-name="claude-skills" data-url="https://github.com/alirezarezvani/claude-skills" data-author="alirezarezvani" data-desc="⭐ 345 Claude Code skills（巨型合集）" data-stars="22832" data-score="64.7">
+        <a href="https://github.com/alirezarezvani/claude-skills" class="card-name" target="_blank">claude-skills</a>
         <div class="card-desc">⭐ 345 Claude Code skills（巨型合集）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>22,832</strong></span>
-          <span class="card-meta-item">🍴 <strong>13.5%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>22,832</strong></span></div>
         <div class="score-badge">64.7</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">19</div>
-        <a href="https://github.com/CherryHQ/cherry-studio" class="card-name">cherry-studio</a>
-        <div class="card-author">@CherryHQ</div>
+        <input type="checkbox" class="card-checkbox" data-id="cherry-studio" data-name="cherry-studio" data-url="https://github.com/CherryHQ/cherry-studio" data-author="CherryHQ" data-desc="AI 生产力 studio（多模型聊天 + 自主 agent）" data-stars="48771" data-score="64.4">
+        <a href="https://github.com/CherryHQ/cherry-studio" class="card-name" target="_blank">cherry-studio</a>
         <div class="card-desc">AI 生产力 studio（多模型聊天 + 自主 agent）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>48,771</strong></span>
-          <span class="card-meta-item">🍴 <strong>9.5%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>48,771</strong></span></div>
         <div class="score-badge">64.4</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">20</div>
-        <a href="https://github.com/wshobson/agents" class="card-name">agents</a>
-        <div class="card-author">@wshobson</div>
+        <input type="checkbox" class="card-checkbox" data-id="agents" data-name="agents" data-url="https://github.com/wshobson/agents" data-author="wshobson" data-desc="⭐ Multi-harness plugin marketplace" data-stars="38068" data-score="64.4">
+        <a href="https://github.com/wshobson/agents" class="card-name" target="_blank">agents</a>
         <div class="card-desc">⭐ Multi-harness plugin marketplace</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>38,068</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.7%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>38,068</strong></span></div>
         <div class="score-badge">64.4</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">21</div>
-        <a href="https://github.com/anthropics/claude-plugins-official" class="card-name">claude-plugins-official</a>
-        <div class="card-author">@anthropics</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-plugins-official" data-name="claude-plugins-official" data-url="https://github.com/anthropics/claude-plugins-official" data-author="anthropics" data-desc="⭐ Anthropic 官方 plugins 目录" data-stars="32354" data-score="64.1">
+        <a href="https://github.com/anthropics/claude-plugins-official" class="card-name" target="_blank">claude-plugins-official</a>
         <div class="card-desc">⭐ Anthropic 官方 plugins 目录</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>32,354</strong></span>
-          <span class="card-meta-item">🍴 <strong>11.2%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>32,354</strong></span></div>
         <div class="score-badge">64.1</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">22</div>
-        <a href="https://github.com/thedotmack/claude-mem" class="card-name">claude-mem</a>
-        <div class="card-author">@thedotmack</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-mem" data-name="claude-mem" data-url="https://github.com/thedotmack/claude-mem" data-author="thedotmack" data-desc="⭐ 跨会话持久化上下文（87K ⭐）" data-stars="87885" data-score="63.7">
+        <a href="https://github.com/thedotmack/claude-mem" class="card-name" target="_blank">claude-mem</a>
         <div class="card-desc">⭐ 跨会话持久化上下文（87K ⭐）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>87,885</strong></span>
-          <span class="card-meta-item">🍴 <strong>8.7%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>87,885</strong></span></div>
         <div class="score-badge">63.7</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">23</div>
-        <a href="https://github.com/mvanhorn/last30days-skill" class="card-name">last30days-skill</a>
-        <div class="card-author">@mvanhorn</div>
+        <input type="checkbox" class="card-checkbox" data-id="last30days-skill" data-name="last30days-skill" data-url="https://github.com/mvanhorn/last30days-skill" data-author="mvanhorn" data-desc="⭐ 跨 Reddit/X/YouTube 研究任何话题的 AI skill" data-stars="52806" data-score="63.6">
+        <a href="https://github.com/mvanhorn/last30days-skill" class="card-name" target="_blank">last30days-skill</a>
         <div class="card-desc">⭐ 跨 Reddit/X/YouTube 研究任何话题的 AI skill</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>52,806</strong></span>
-          <span class="card-meta-item">🍴 <strong>8.6%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>52,806</strong></span></div>
         <div class="score-badge">63.6</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">24</div>
-        <a href="https://github.com/teng-lin/notebooklm-py" class="card-name">notebooklm-py</a>
-        <div class="card-author">@teng-lin</div>
+        <input type="checkbox" class="card-checkbox" data-id="notebooklm-py" data-name="notebooklm-py" data-url="https://github.com/teng-lin/notebooklm-py" data-author="teng-lin" data-desc="Google NotebookLM Python API + skill" data-stars="17975" data-score="63.6">
+        <a href="https://github.com/teng-lin/notebooklm-py" class="card-name" target="_blank">notebooklm-py</a>
         <div class="card-desc">Google NotebookLM Python API + skill</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>17,975</strong></span>
-          <span class="card-meta-item">🍴 <strong>13.5%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>17,975</strong></span></div>
         <div class="score-badge">63.6</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">25</div>
-        <a href="https://github.com/Egonex-AI/Understand-Anything" class="card-name">Understand-Anything</a>
-        <div class="card-author">@Egonex-AI</div>
+        <input type="checkbox" class="card-checkbox" data-id="Understand-Anything" data-name="Understand-Anything" data-url="https://github.com/Egonex-AI/Understand-Anything" data-author="Egonex-AI" data-desc="⭐ 把代码转成可教学的可视化图" data-stars="75205" data-score="63.3">
+        <a href="https://github.com/Egonex-AI/Understand-Anything" class="card-name" target="_blank">Understand-Anything</a>
         <div class="card-desc">⭐ 把代码转成可教学的可视化图</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>75,205</strong></span>
-          <span class="card-meta-item">🍴 <strong>8.3%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>75,205</strong></span></div>
         <div class="score-badge">63.3</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">26</div>
-        <a href="https://github.com/code-yeongyu/oh-my-openagent" class="card-name">oh-my-openagent</a>
-        <div class="card-author">@code-yeongyu</div>
+        <input type="checkbox" class="card-checkbox" data-id="oh-my-openagent" data-name="oh-my-openagent" data-url="https://github.com/code-yeongyu/oh-my-openagent" data-author="code-yeongyu" data-desc="omo/lazycodex（token 节省派编码 agent）" data-stars="66194" data-score="63.2">
+        <a href="https://github.com/code-yeongyu/oh-my-openagent" class="card-name" target="_blank">oh-my-openagent</a>
         <div class="card-desc">omo/lazycodex（token 节省派编码 agent）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>66,194</strong></span>
-          <span class="card-meta-item">🍴 <strong>8.2%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>66,194</strong></span></div>
         <div class="score-badge">63.2</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">27</div>
-        <a href="https://github.com/davila7/claude-code-templates" class="card-name">claude-code-templates</a>
-        <div class="card-author">@davila7</div>
+        <input type="checkbox" class="card-checkbox" data-id="claude-code-templates" data-name="claude-code-templates" data-url="https://github.com/davila7/claude-code-templates" data-author="davila7" data-desc="Claude Code 配置 + 监控 CLI" data-stars="29741" data-score="63.1">
+        <a href="https://github.com/davila7/claude-code-templates" class="card-name" target="_blank">claude-code-templates</a>
         <div class="card-desc">Claude Code 配置 + 监控 CLI</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>29,741</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.7%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>29,741</strong></span></div>
         <div class="score-badge">63.1</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">28</div>
-        <a href="https://github.com/Panniantong/Agent-Reach" class="card-name">Agent-Reach</a>
-        <div class="card-author">@Panniantong</div>
+        <input type="checkbox" class="card-checkbox" data-id="Agent-Reach" data-name="Agent-Reach" data-url="https://github.com/Panniantong/Agent-Reach" data-author="Panniantong" data-desc="⭐ 让 AI agent 看见整个互联网（Read & search）" data-stars="58285" data-score="63.0">
+        <a href="https://github.com/Panniantong/Agent-Reach" class="card-name" target="_blank">Agent-Reach</a>
         <div class="card-desc">⭐ 让 AI agent 看见整个互联网（Read & search）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>58,285</strong></span>
-          <span class="card-meta-item">🍴 <strong>8.0%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>58,285</strong></span></div>
         <div class="score-badge">63.0</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">29</div>
-        <a href="https://github.com/Yeachan-Heo/oh-my-claudecode" class="card-name">oh-my-claudecode</a>
-        <div class="card-author">@Yeachan-Heo</div>
+        <input type="checkbox" class="card-checkbox" data-id="oh-my-claudecode" data-name="oh-my-claudecode" data-url="https://github.com/Yeachan-Heo/oh-my-claudecode" data-author="Yeachan-Heo" data-desc="多 agent 团队编排（Claude Code）" data-stars="37897" data-score="62.7">
+        <a href="https://github.com/Yeachan-Heo/oh-my-claudecode" class="card-name" target="_blank">oh-my-claudecode</a>
         <div class="card-desc">多 agent 团队编排（Claude Code）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>37,897</strong></span>
-          <span class="card-meta-item">🍴 <strong>9.0%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>37,897</strong></span></div>
         <div class="score-badge">62.7</div>
       </div>
 
-      <div class="card t2">
+      <div class="card t2" data-tier="2">
         <div class="card-rank">30</div>
-        <a href="https://github.com/K-Dense-AI/scientific-agent-skills" class="card-name">scientific-agent-skills</a>
-        <div class="card-author">@K-Dense-AI</div>
+        <input type="checkbox" class="card-checkbox" data-id="scientific-agent-skills" data-name="scientific-agent-skills" data-url="https://github.com/K-Dense-AI/scientific-agent-skills" data-author="K-Dense-AI" data-desc="⭐ 把任何 agent 变成 AI 科学家" data-stars="31235" data-score="62.7">
+        <a href="https://github.com/K-Dense-AI/scientific-agent-skills" class="card-name" target="_blank">scientific-agent-skills</a>
         <div class="card-desc">⭐ 把任何 agent 变成 AI 科学家</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>31,235</strong></span>
-          <span class="card-meta-item">🍴 <strong>10.0%</strong></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-item">⭐ <strong>31,235</strong></span></div>
         <div class="score-badge">62.7</div>
       </div>
 
@@ -899,458 +978,11 @@
       <span class="tier-badge t3">🥉 Tier 3</span>
       <span class="tier-title">31-75 中等候选（score 50-60）</span>
     </div>
-    <div class="cards">
-
-      <div class="card t3">
-        <div class="card-rank">31</div>
-        <a href="https://github.com/iOfficeAI/AionUi" class="card-name">AionUi</a>
-        <div class="card-desc">24/7 OpenClaw cowork 应用</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>30,467</strong></span>
-        </div>
-        <div class="score-badge">62.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">32</div>
-        <a href="https://github.com/headroomlabs-ai/headroom" class="card-name">headroom</a>
-        <div class="card-desc">⭐ 压缩工具输出 + 日志 + RAG</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>60,396</strong></span>
-        </div>
-        <div class="score-badge">62.5</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">33</div>
-        <a href="https://github.com/Leonxlnx/taste-skill" class="card-name">taste-skill</a>
-        <div class="card-desc">⭐ 给 AI 品味（停止生成垃圾）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>65,289</strong></span>
-        </div>
-        <div class="score-badge">61.9</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">34</div>
-        <a href="https://github.com/Imbad0202/academic-research-skills" class="card-name">academic-research-skills</a>
-        <div class="card-desc">学术研究全流程</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>38,507</strong></span>
-        </div>
-        <div class="score-badge">61.8</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">35</div>
-        <a href="https://github.com/farion1231/cc-switch" class="card-name">cc-switch</a>
-        <div class="card-desc">⭐ 跨平台 Claude Code 全能桌面助手</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>118,995</strong></span>
-        </div>
-        <div class="score-badge">61.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">36</div>
-        <a href="https://github.com/codeaashu/claude-code" class="card-name">claude-code</a>
-        <div class="card-desc">Claude Code 介绍（forks/stars 115%！）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,126</strong></span>
-        </div>
-        <div class="score-badge">61.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">37</div>
-        <a href="https://github.com/JuliusBrussee/caveman" class="card-name">caveman</a>
-        <div class="card-desc">🪨 省 token 哲学</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>90,880</strong></span>
-        </div>
-        <div class="score-badge">60.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">38</div>
-        <a href="https://github.com/DietrichGebert/ponytail" class="card-name">ponytail</a>
-        <div class="card-desc">⭐ 让 AI 像资深懒工程师思考</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>86,150</strong></span>
-        </div>
-        <div class="score-badge">60.5</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">39</div>
-        <a href="https://github.com/OthmanAdi/planning-with-files" class="card-name">planning-with-files</a>
-        <div class="card-desc">持久化文件规划</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>25,532</strong></span>
-        </div>
-        <div class="score-badge">60.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">40</div>
-        <a href="https://github.com/zarazhangrui/frontend-slides" class="card-name">frontend-slides</a>
-        <div class="card-desc">编码 agent 制作精美 slides</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>25,947</strong></span>
-        </div>
-        <div class="score-badge">60.0</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">41</div>
-        <a href="https://github.com/manaflow-ai/cmux" class="card-name">cmux</a>
-        <div class="card-desc">Ghostty-based macOS 终端</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>24,801</strong></span>
-        </div>
-        <div class="score-badge">59.8</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">42</div>
-        <a href="https://github.com/nidhinjs/prompt-master" class="card-name">prompt-master</a>
-        <div class="card-desc">⭐ 写准确 prompts 的 skill</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>10,580</strong></span>
-        </div>
-        <div class="score-badge">59.4</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">43</div>
-        <a href="https://github.com/yusufkaraaslan/Skill_Seekers" class="card-name">Skill_Seekers</a>
-        <div class="card-desc">转文档/GitHub/PDF → Skills</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>14,500</strong></span>
-        </div>
-        <div class="score-badge">59.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">44</div>
-        <a href="https://github.com/worldwonderer/oh-story-claudecode" class="card-name">oh-story-claudecode</a>
-        <div class="card-desc">⭐ 网文/小说写作 skill 全流程</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>4,335</strong></span>
-        </div>
-        <div class="score-badge">58.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">45</div>
-        <a href="https://github.com/oraios/serena" class="card-name">serena</a>
-        <div class="card-desc">强大 MCP 工具包（代码语义检索）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>26,591</strong></span>
-        </div>
-        <div class="score-badge">58.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">46</div>
-        <a href="https://github.com/gastownhall/beads" class="card-name">beads</a>
-        <div class="card-desc">Agent 记忆升级</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>25,435</strong></span>
-        </div>
-        <div class="score-badge">58.5</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">47</div>
-        <a href="https://github.com/JimLiu/baoyu-skills" class="card-name">baoyu-skills</a>
-        <div class="card-desc">⭐ 5 博主已知，已入 taxonomy</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>23,869</strong></span>
-        </div>
-        <div class="score-badge">57.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">48</div>
-        <a href="https://github.com/SnailSploit/Claude-Red" class="card-name">Claude-Red</a>
-        <div class="card-desc">⭐ 进攻性安全 skills 库（红队/渗透）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,717</strong></span>
-        </div>
-        <div class="score-badge">57.4</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">49</div>
-        <a href="https://github.com/jarrodwatts/claude-hud" class="card-name">claude-hud</a>
-        <div class="card-desc">Claude Code 实时 HUD 插件</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>26,594</strong></span>
-        </div>
-        <div class="score-badge">57.0</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">50</div>
-        <a href="https://github.com/elementalsouls/Claude-BugHunter" class="card-name">Claude-BugHunter</a>
-        <div class="card-desc">Bug 猎杀 + 外部红队 skill 包</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,995</strong></span>
-        </div>
-        <div class="score-badge">56.8</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">51</div>
-        <a href="https://github.com/Jeffallan/claude-skills" class="card-name">claude-skills</a>
-        <div class="card-desc">66 个全栈工程师 skills</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>10,652</strong></span>
-        </div>
-        <div class="score-badge">56.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">52</div>
-        <a href="https://github.com/NevaMind-AI/memU" class="card-name">memU</a>
-        <div class="card-desc">跨 agent 个人记忆</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>14,049</strong></span>
-        </div>
-        <div class="score-badge">56.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">53</div>
-        <a href="https://github.com/nexu-io/html-anything" class="card-name">html-anything</a>
-        <div class="card-desc">本地 AI 写 HTML 的 agentic 编辑器</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>7,857</strong></span>
-        </div>
-        <div class="score-badge">55.8</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">54</div>
-        <a href="https://github.com/jangviktor-web/nihaixia" class="card-name">nihaixia</a>
-        <div class="card-desc">⭐ 倪海厦中医 Agent Skill</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>1,018</strong></span>
-        </div>
-        <div class="score-badge">55.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">55</div>
-        <a href="https://github.com/AgriciDaniel/claude-blog" class="card-name">claude-blog</a>
-        <div class="card-desc">blog skill 套件（30 子技能）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>1,418</strong></span>
-        </div>
-        <div class="score-badge">55.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">56</div>
-        <a href="https://github.com/davepoon/buildwithclaude" class="card-name">buildwithclaude</a>
-        <div class="card-desc">Claude Skills/Agents 中心</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,193</strong></span>
-        </div>
-        <div class="score-badge">55.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">57</div>
-        <a href="https://github.com/Orchestra-Research/AI-Research-SKILLs" class="card-name">AI-Research-SKILLs</a>
-        <div class="card-desc">AI 研究 + 工程综合库</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>10,864</strong></span>
-        </div>
-        <div class="score-badge">55.0</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">58</div>
-        <a href="https://github.com/eugeniughelbur/obsidian-second-brain" class="card-name">obsidian-second-brain</a>
-        <div class="card-desc">⭐ 跨 CLI 的 Obsidian 第二大脑</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,416</strong></span>
-        </div>
-        <div class="score-badge">54.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">59</div>
-        <a href="https://github.com/aaron-he-zhu/aaron-marketing-skills" class="card-name">aaron-marketing-skills</a>
-        <div class="card-desc">⭐ 120 个营销 skills + 8 commands</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,421</strong></span>
-        </div>
-        <div class="score-badge">54.1</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">60</div>
-        <a href="https://github.com/nowork-studio/NotFair" class="card-name">NotFair</a>
-        <div class="card-desc">⭐ SEO/GEO/Google Ads/Meta Ads skills</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,159</strong></span>
-        </div>
-        <div class="score-badge">53.9</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">61</div>
-        <a href="https://github.com/Hao0321/claude-skill-social-post" class="card-name">claude-skill-social-post</a>
-        <div class="card-desc">学习 Facebook 写作风格</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>554</strong></span>
-        </div>
-        <div class="score-badge">53.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">62</div>
-        <a href="https://github.com/geekjourneyx/md2wechat-skill" class="card-name">md2wechat-skill</a>
-        <div class="card-desc">⭐ MD→公众号一键（40+ 排版样式）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,293</strong></span>
-        </div>
-        <div class="score-badge">53.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">63</div>
-        <a href="https://github.com/feiskyer/claude-code-settings" class="card-name">claude-code-settings</a>
-        <div class="card-desc">精选 skills + sub-agents</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>1,599</strong></span>
-        </div>
-        <div class="score-badge">53.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">64</div>
-        <a href="https://github.com/Agents365-ai/drawio-skill" class="card-name">drawio-skill</a>
-        <div class="card-desc">自然语言生成 draw.io 图</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>6,086</strong></span>
-        </div>
-        <div class="score-badge">52.8</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">65</div>
-        <a href="https://github.com/anbeime/skill" class="card-name">skill</a>
-        <div class="card-desc">⭐ 中文技能商店（72 个分类）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,906</strong></span>
-        </div>
-        <div class="score-badge">52.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">66</div>
-        <a href="https://github.com/op7418/guizang-social-card-skill" class="card-name">guizang-social-card-skill</a>
-        <div class="card-desc">5 博主已知（已入 taxonomy）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>5,208</strong></span>
-        </div>
-        <div class="score-badge">52.5</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">67</div>
-        <a href="https://github.com/chuspeeism/dashi-ppt-skill" class="card-name">dashi-ppt-skill</a>
-        <div class="card-desc">AI agent 生成浏览器可编辑 PPT</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,881</strong></span>
-        </div>
-        <div class="score-badge">52.1</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">68</div>
-        <a href="https://github.com/isjiamu/gzh-design-skill" class="card-name">gzh-design-skill</a>
-        <div class="card-desc">⭐ MD→公众号 HTML（6 主题）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,350</strong></span>
-        </div>
-        <div class="score-badge">51.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">69</div>
-        <a href="https://github.com/wesammustafa/Claude-Code-Everything-You-Need-to-Know" class="card-name">Claude-Code-Everything-You-Need-to-Know</a>
-        <div class="card-desc">Claude Code 实操指南</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,340</strong></span>
-        </div>
-        <div class="score-badge">51.7</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">70</div>
-        <a href="https://github.com/tt-a1i/archify" class="card-name">archify</a>
-        <div class="card-desc">⭐ 生成架构图（dark/light theme）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>5,979</strong></span>
-        </div>
-        <div class="score-badge">51.6</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">71</div>
-        <a href="https://github.com/Bhanunamikaze/Agentic-SEO-Skill" class="card-name">Agentic-SEO-Skill</a>
-        <div class="card-desc">LLM-first SEO 分析</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>781</strong></span>
-        </div>
-        <div class="score-badge">51.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">72</div>
-        <a href="https://github.com/bitwize-music-studio/claude-ai-music-skills" class="card-name">claude-ai-music-skills</a>
-        <div class="card-desc">人 + AI Suno 音乐制作</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>363</strong></span>
-        </div>
-        <div class="score-badge">51.2</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">73</div>
-        <a href="https://github.com/rohitg00/pro-workflow" class="card-name">pro-workflow</a>
-        <div class="card-desc">Claude Code 从你的纠错中学习</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>2,623</strong></span>
-        </div>
-        <div class="score-badge">50.5</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">74</div>
-        <a href="https://github.com/parcadei/Continuous-Claude-v3" class="card-name">Continuous-Claude-v3</a>
-        <div class="card-desc">Claude Code 上下文管理（hooks）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>3,870</strong></span>
-        </div>
-        <div class="score-badge">50.3</div>
-      </div>
-
-      <div class="card t3">
-        <div class="card-rank">75</div>
-        <a href="https://github.com/dzcmemory-web/bazi-ziwei-skill" class="card-name">bazi-ziwei-skill</a>
-        <div class="card-desc">⭐ AI 八字 + 紫微斗数（精准排盘）</div>
-        <div class="card-meta">
-          <span class="card-meta-item">⭐ <strong>672</strong></span>
-        </div>
-        <div class="score-badge">50.0</div>
-      </div>
-
+    <div class="cards" id="tier3-cards">
+      <!-- 由 JS 批量渲染，避免 HTML 冗余 -->
+      <p style="color: var(--text-muted); padding: 20px; text-align: center;">
+        加载中...
+      </p>
     </div>
   </section>
 
@@ -1373,9 +1005,317 @@
     <p>由 <a href="https://github.com/Alexxiang2008/awesome-skills-map">awesome-skills-map</a> 的 <code>discover.py</code> 自动扫描生成</p>
     <p>扫描时间: 2026-07-20 · 数据源: GitHub search (topic: claude-skill/claude-code/agent-skill/claude-skills)</p>
     <p>评分: 硬指标 4 维（stars + forks/stars + recency + issue_close）+ 卫生指标 + 生态 bonus = 100 分</p>
+    <p style="margin-top: 16px; font-size: 0.9em;">
+      ⌨️ 快捷键: <kbd>Ctrl+A</kbd> 全选 · <kbd>Esc</kbd> 清空 · 点击卡片也可选中
+    </p>
   </footer>
 
 </div>
+
+<script>
+/* ============================================================
+   Skills Data (Tier 3, 31-75)
+   ============================================================ */
+const TIER3_DATA = [
+  {rank: 31, name: "AionUi", url: "https://github.com/iOfficeAI/AionUi", desc: "24/7 OpenClaw cowork 应用", stars: 30467, score: 62.6},
+  {rank: 32, name: "headroom", url: "https://github.com/headroomlabs-ai/headroom", desc: "⭐ 压缩工具输出 + 日志 + RAG", stars: 60396, score: 62.5},
+  {rank: 33, name: "taste-skill", url: "https://github.com/Leonxlnx/taste-skill", desc: "⭐ 给 AI 品味（停止生成垃圾）", stars: 65289, score: 61.9},
+  {rank: 34, name: "academic-research-skills", url: "https://github.com/Imbad0202/academic-research-skills", desc: "学术研究全流程", stars: 38507, score: 61.8},
+  {rank: 35, name: "cc-switch", url: "https://github.com/farion1231/cc-switch", desc: "⭐ 跨平台 Claude Code 全能桌面助手", stars: 118995, score: 61.7},
+  {rank: 36, name: "claude-code", url: "https://github.com/codeaashu/claude-code", desc: "Claude Code 介绍（forks/stars 115%！）", stars: 3126, score: 61.6},
+  {rank: 37, name: "caveman", url: "https://github.com/JuliusBrussee/caveman", desc: "🪨 省 token 哲学", stars: 90880, score: 60.7},
+  {rank: 38, name: "ponytail", url: "https://github.com/DietrichGebert/ponytail", desc: "⭐ 让 AI 像资深懒工程师思考", stars: 86150, score: 60.5},
+  {rank: 39, name: "planning-with-files", url: "https://github.com/OthmanAdi/planning-with-files", desc: "持久化文件规划", stars: 25532, score: 60.2},
+  {rank: 40, name: "frontend-slides", url: "https://github.com/zarazhangrui/frontend-slides", desc: "编码 agent 制作精美 slides", stars: 25947, score: 60.0},
+  {rank: 41, name: "cmux", url: "https://github.com/manaflow-ai/cmux", desc: "Ghostty-based macOS 终端", stars: 24801, score: 59.8},
+  {rank: 42, name: "prompt-master", url: "https://github.com/nidhinjs/prompt-master", desc: "⭐ 写准确 prompts 的 skill", stars: 10580, score: 59.4},
+  {rank: 43, name: "Skill_Seekers", url: "https://github.com/yusufkaraaslan/Skill_Seekers", desc: "转文档/GitHub/PDF → Skills", stars: 14500, score: 59.2},
+  {rank: 44, name: "oh-story-claudecode", url: "https://github.com/worldwonderer/oh-story-claudecode", desc: "⭐ 网文/小说写作 skill 全流程", stars: 4335, score: 58.7},
+  {rank: 45, name: "serena", url: "https://github.com/oraios/serena", desc: "强大 MCP 工具包（代码语义检索）", stars: 26591, score: 58.6},
+  {rank: 46, name: "beads", url: "https://github.com/gastownhall/beads", desc: "Agent 记忆升级", stars: 25435, score: 58.5},
+  {rank: 47, name: "baoyu-skills", url: "https://github.com/JimLiu/baoyu-skills", desc: "⭐ 5 博主已知，已入 taxonomy", stars: 23869, score: 57.6},
+  {rank: 48, name: "Claude-Red", url: "https://github.com/SnailSploit/Claude-Red", desc: "⭐ 进攻性安全 skills 库（红队/渗透）", stars: 2717, score: 57.4},
+  {rank: 49, name: "claude-hud", url: "https://github.com/jarrodwatts/claude-hud", desc: "Claude Code 实时 HUD 插件", stars: 26594, score: 57.0},
+  {rank: 50, name: "Claude-BugHunter", url: "https://github.com/elementalsouls/Claude-BugHunter", desc: "Bug 猎杀 + 外部红队 skill 包", stars: 2995, score: 56.8},
+  {rank: 51, name: "claude-skills", url: "https://github.com/Jeffallan/claude-skills", desc: "66 个全栈工程师 skills", stars: 10652, score: 56.6},
+  {rank: 52, name: "memU", url: "https://github.com/NevaMind-AI/memU", desc: "跨 agent 个人记忆", stars: 14049, score: 56.3},
+  {rank: 53, name: "html-anything", url: "https://github.com/nexu-io/html-anything", desc: "本地 AI 写 HTML 的 agentic 编辑器", stars: 7857, score: 55.8},
+  {rank: 54, name: "nihaixia", url: "https://github.com/jangviktor-web/nihaixia", desc: "⭐ 倪海厦中医 Agent Skill", stars: 1018, score: 55.7},
+  {rank: 55, name: "claude-blog", url: "https://github.com/AgriciDaniel/claude-blog", desc: "blog skill 套件（30 子技能）", stars: 1418, score: 55.2},
+  {rank: 56, name: "buildwithclaude", url: "https://github.com/davepoon/buildwithclaude", desc: "Claude Skills/Agents 中心", stars: 3193, score: 55.2},
+  {rank: 57, name: "AI-Research-SKILLs", url: "https://github.com/Orchestra-Research/AI-Research-SKILLs", desc: "AI 研究 + 工程综合库", stars: 10864, score: 55.0},
+  {rank: 58, name: "obsidian-second-brain", url: "https://github.com/eugeniughelbur/obsidian-second-brain", desc: "⭐ 跨 CLI 的 Obsidian 第二大脑", stars: 3416, score: 54.2},
+  {rank: 59, name: "aaron-marketing-skills", url: "https://github.com/aaron-he-zhu/aaron-marketing-skills", desc: "⭐ 120 个营销 skills + 8 commands", stars: 2421, score: 54.1},
+  {rank: 60, name: "NotFair", url: "https://github.com/nowork-studio/NotFair", desc: "⭐ SEO/GEO/Google Ads/Meta Ads skills", stars: 3159, score: 53.9},
+  {rank: 61, name: "claude-skill-social-post", url: "https://github.com/Hao0321/claude-skill-social-post", desc: "学习 Facebook 写作风格", stars: 554, score: 53.3},
+  {rank: 62, name: "md2wechat-skill", url: "https://github.com/geekjourneyx/md2wechat-skill", desc: "⭐ MD→公众号一键（40+ 排版样式）", stars: 3293, score: 53.3},
+  {rank: 63, name: "claude-code-settings", url: "https://github.com/feiskyer/claude-code-settings", desc: "精选 skills + sub-agents", stars: 1599, score: 53.3},
+  {rank: 64, name: "drawio-skill", url: "https://github.com/Agents365-ai/drawio-skill", desc: "自然语言生成 draw.io 图", stars: 6086, score: 52.8},
+  {rank: 65, name: "skill", url: "https://github.com/anbeime/skill", desc: "⭐ 中文技能商店（72 个分类）", stars: 3906, score: 52.6},
+  {rank: 66, name: "guizang-social-card-skill", url: "https://github.com/op7418/guizang-social-card-skill", desc: "5 博主已知（已入 taxonomy）", stars: 5208, score: 52.5},
+  {rank: 67, name: "dashi-ppt-skill", url: "https://github.com/chuspeeism/dashi-ppt-skill", desc: "AI agent 生成浏览器可编辑 PPT", stars: 3881, score: 52.1},
+  {rank: 68, name: "gzh-design-skill", url: "https://github.com/isjiamu/gzh-design-skill", desc: "⭐ MD→公众号 HTML（6 主题）", stars: 2350, score: 51.7},
+  {rank: 69, name: "Claude-Code-Everything-You-Need-to-Know", url: "https://github.com/wesammustafa/Claude-Code-Everything-You-Need-to-Know", desc: "Claude Code 实操指南", stars: 2340, score: 51.7},
+  {rank: 70, name: "archify", url: "https://github.com/tt-a1i/archify", desc: "⭐ 生成架构图（dark/light theme）", stars: 5979, score: 51.6},
+  {rank: 71, name: "Agentic-SEO-Skill", url: "https://github.com/Bhanunamikaze/Agentic-SEO-Skill", desc: "LLM-first SEO 分析", stars: 781, score: 51.3},
+  {rank: 72, name: "claude-ai-music-skills", url: "https://github.com/bitwize-music-studio/claude-ai-music-skills", desc: "人 + AI Suno 音乐制作", stars: 363, score: 51.2},
+  {rank: 73, name: "pro-workflow", url: "https://github.com/rohitg00/pro-workflow", desc: "Claude Code 从你的纠错中学习", stars: 2623, score: 50.5},
+  {rank: 74, name: "Continuous-Claude-v3", url: "https://github.com/parcadei/Continuous-Claude-v3", desc: "Claude Code 上下文管理（hooks）", stars: 3870, score: 50.3},
+  {rank: 75, name: "bazi-ziwei-skill", url: "https://github.com/dzcmemory-web/bazi-ziwei-skill", desc: "⭐ AI 八字 + 紫微斗数（精准排盘）", stars: 672, score: 50.0}
+];
+
+/* ============================================================
+   Render Tier 3 cards (动态)
+   ============================================================ */
+const tier3Container = document.getElementById('tier3-cards');
+const t3Frag = document.createDocumentFragment();
+TIER3_DATA.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'card t3';
+  card.dataset.tier = '3';
+  card.innerHTML = `
+    <div class="card-rank">${s.rank}</div>
+    <input type="checkbox" class="card-checkbox"
+      data-id="${s.name}"
+      data-name="${s.name}"
+      data-url="${s.url}"
+      data-author="${s.name}"
+      data-desc="${s.desc}"
+      data-stars="${s.stars}"
+      data-score="${s.score}">
+    <a href="${s.url}" class="card-name" target="_blank">${s.name}</a>
+    <div class="card-desc">${s.desc}</div>
+    <div class="card-meta"><span class="card-meta-item">⭐ <strong>${s.stars.toLocaleString()}</strong></span></div>
+    <div class="score-badge">${s.score}</div>
+  `;
+  t3Frag.appendChild(card);
+});
+tier3Container.innerHTML = '';
+tier3Container.appendChild(t3Frag);
+
+/* ============================================================
+   Selection logic
+   ============================================================ */
+const STORAGE_KEY = 'skillsmap.selected';
+const ALL_CHECKBOXES = () => Array.from(document.querySelectorAll('.card-checkbox'));
+
+function getSelected() {
+  return ALL_CHECKBOXES().filter(cb => cb.checked);
+}
+
+function updateUI() {
+  const selected = getSelected();
+  const n = selected.length;
+  const badge = document.getElementById('count-badge');
+  badge.textContent = n;
+  badge.dataset.count = n;
+
+  // enable/disable buttons
+  ['btn-copy-md', 'btn-download-md', 'btn-copy-json', 'btn-download-json']
+    .forEach(id => document.getElementById(id).disabled = n === 0);
+
+  // 高亮卡片
+  ALL_CHECKBOXES().forEach(cb => {
+    cb.closest('.card').classList.toggle('selected', cb.checked);
+  });
+
+  // 保存到 localStorage
+  try {
+    const ids = selected.map(cb => cb.dataset.id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+  } catch (e) { /* localStorage 不可用时静默 */ }
+}
+
+function restoreSelection() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const ids = JSON.parse(raw);
+    const set = new Set(ids);
+    ALL_CHECKBOXES().forEach(cb => {
+      if (set.has(cb.dataset.id)) {
+        cb.checked = true;
+      }
+    });
+  } catch (e) { /* 静默 */ }
+}
+
+/* ============================================================
+   Event listeners
+   ============================================================ */
+// checkbox 变化
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('card-checkbox')) {
+    updateUI();
+  }
+});
+
+// 点击卡片切换选中（除链接外）
+document.addEventListener('click', e => {
+  if (e.target.closest('a')) return; // 点击链接不触发
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const cb = card.querySelector('.card-checkbox');
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  updateUI();
+});
+
+// 全选
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = true);
+  updateUI();
+});
+
+// 清空
+document.getElementById('btn-clear').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = false);
+  updateUI();
+});
+
+// 快捷键
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+    e.preventDefault();
+    ALL_CHECKBOXES().forEach(cb => cb.checked = true);
+    updateUI();
+  }
+  if (e.key === 'Escape') {
+    ALL_CHECKBOXES().forEach(cb => cb.checked = false);
+    updateUI();
+  }
+});
+
+/* ============================================================
+   Export logic
+   ============================================================ */
+function getSelectedData() {
+  return getSelected().map(cb => ({
+    id: cb.dataset.id,
+    name: cb.dataset.name,
+    url: cb.dataset.url,
+    author: cb.dataset.author,
+    desc: cb.dataset.desc,
+    stars: parseInt(cb.dataset.stars || '0', 10),
+    score: parseFloat(cb.dataset.score || '0'),
+  }));
+}
+
+function buildMarkdown(data) {
+  const lines = [];
+  lines.push('# 🎯 我精选的 Claude Skills');
+  lines.push('');
+  lines.push(`> 共 ${data.length} 个 · 由 candidates-overview.html 导出 · ${new Date().toISOString().slice(0, 10)}`);
+  lines.push('');
+  lines.push('| 排名 | ⭐ | score | name | 作者 | 仓库 | 简介 |');
+  lines.push('|------|----|----|------|------|------|------|');
+  data
+    .sort((a, b) => b.score - a.score)
+    .forEach((s, i) => {
+      const desc = (s.desc || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+      lines.push(`| ${i + 1} | ${s.stars.toLocaleString()} | ${s.score} | **${s.name}** | ${s.author} | [${s.url.replace('https://github.com/', '')}](${s.url}) | ${desc} |`);
+    });
+  lines.push('');
+  lines.push('## 📦 Markdown 列表（可直接复制安装）');
+  lines.push('');
+  lines.push('```bash');
+  data.forEach(s => {
+    // owner/repo
+    const m = s.url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    if (m) {
+      lines.push(`npx skills add ${m[1]}/${m[2]}   # ${s.name}`);
+    }
+  });
+  lines.push('```');
+  return lines.join('\n');
+}
+
+function buildJSON(data) {
+  return JSON.stringify({
+    exported_at: new Date().toISOString(),
+    count: data.length,
+    source: 'candidates-overview.html (awesome-skills-map)',
+    skills: data.sort((a, b) => b.score - a.score),
+  }, null, 2);
+}
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.toggle('error', isError);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (e) {
+    // Fallback: 选中 + execCommand
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      return true;
+    } catch (e2) {
+      document.body.removeChild(ta);
+      return false;
+    }
+  }
+}
+
+function downloadFile(content, filename, mimeType = 'text/plain') {
+  const blob = new Blob([content], {type: mimeType + ';charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('btn-copy-md').addEventListener('click', async () => {
+  const md = buildMarkdown(getSelectedData());
+  const ok = await copyToClipboard(md);
+  showToast(ok ? `✅ 已复制 ${getSelected().length} 个 skill（Markdown）` : '❌ 复制失败', !ok);
+});
+
+document.getElementById('btn-download-md').addEventListener('click', () => {
+  const data = getSelectedData();
+  const md = buildMarkdown(data);
+  const date = new Date().toISOString().slice(0, 10);
+  downloadFile(md, `my-skills-${date}.md`);
+  showToast(`⬇️ 已下载 my-skills-${date}.md`);
+});
+
+document.getElementById('btn-copy-json').addEventListener('click', async () => {
+  const json = buildJSON(getSelectedData());
+  const ok = await copyToClipboard(json);
+  showToast(ok ? `✅ 已复制 ${getSelected().length} 个 skill（JSON）` : '❌ 复制失败', !ok);
+});
+
+document.getElementById('btn-download-json').addEventListener('click', () => {
+  const data = getSelectedData();
+  const json = buildJSON(data);
+  const date = new Date().toISOString().slice(0, 10);
+  downloadFile(json, `my-skills-${date}.json`, 'application/json');
+  showToast(`⬇️ 已下载 my-skills-${date}.json`);
+});
+
+/* ============================================================
+   Init
+   ============================================================ */
+restoreSelection();
+updateUI();
+</script>
 
 </body>
 </html>
