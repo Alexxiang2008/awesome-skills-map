@@ -666,4 +666,419 @@ skills:
     note: 本仓库元能力（aggregate.sh + dedup.py + taxonomy.yaml）
     tags: [meta]
     primary_category: meta_skills
-    type: meta
+    type: meta  # ============ 用户精选 41 个 unique skill（v0.4 用户筛选清单）============
+
+  # ============ 用户精选 41 个 unique skill（v0.4 用户筛选清单）============
+  # 来源：b2b-skills-2026-07-21.md（按 name+repo dedup 后）
+  # 用户保留所有：🟢 35 强烈推荐 + 🟡 5 谨慎推荐 + 🔴 5 不推荐 = 41 个
+  # 分类来源：用户在 markdown 里标了 "内容创作/营销推广/HR 招聘/产品设计/AI 创作/其他"
+
+  - id: brand-landingpage
+    name: brand-landingpage
+    author: wshobson
+    repo: wshobson/agents
+    path: plugins/brand-landingpage/
+    note: 指导开发者从品牌探索、迭代设计到可部署成果，涵盖市场研究、设计系统、品牌识别、原型、发布规划及上线后评估。 (
+    tags: [user_selected]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: seo-analysis-monitoring
+    name: seo-analysis-monitoring
+    author: wshobson
+    repo: wshobson/agents
+    path: plugins/seo-analysis-monitoring/
+    note: 内容新鲜度分析 (
+    tags: [seo, user_selected]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: seo-content-creation
+    name: seo-content-creation
+    author: wshobson
+    repo: wshobson/agents
+    path: plugins/seo-content-creation/
+    note: SEO内容写作 (
+    tags: [seo, user_selected]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: infinitetalk-shopping-avatar
+    name: infinitetalk-shopping-avatar
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/infinitetalk-shopping-avatar/infinitetalk-shopping-avatar
+    note: 专为InfiniteTalk项目设计的小省导购员数字人带货提示词生成技能，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），生成适... (
+    tags: [digital_human, ecommerce, user_selected]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: infinitetalk
+    name: infinitetalk
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/infinitetalk
+    note: 音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持... (
+    tags: [video, audio, user_selected]
+    primary_category: content_creation/wechat/formatting
+    type: skill
+
+  - id: baoyu-post-to-wechat
+    name: baoyu-post-to-wechat
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/content-creation-publisher/baoyu-post-to-wechat
+    note: 通过 API 或 Chrome CDP 将内容发布到微信公众号。 (
+    tags: [wechat, browser, user_selected]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: seo-technical-optimization
+    name: seo-technical-optimization
+    author: wshobson
+    repo: wshobson/agents
+    path: plugins/seo-technical-optimization/
+    note: 技术SEO优化，包括元标签， (
+    tags: [seo, user_selected]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: content-creation-publisher
+    name: content-creation-publisher
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/content-creation-publisher
+    note: 内容创作与发布全流程技能，整合网页采集、Markdown格式化、智能配图、多平台发布（微信公众号、X/Twitter）功能，实现从内容获取到发布的一站式解决方案 (
+    tags: [wechat, user_selected]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: remotion-video-enhancer
+    name: remotion-video-enhancer
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/remotion-video-enhancer/remotion-video-enhancer
+    note: 视频转场与动画增强工具，提取 Remotion 的动画理念，提供高级视频转场效果和 Framer Motion 交互式动画。 (
+    tags: [video, user_selected]
+    primary_category: content_creation/video/translate
+    type: skill
+
+  - id: contract-review
+    name: contract-review
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/legal-assistant-skills-main/contract-review
+    note: 合同审查技能通过评论添加问题批注而不更改原文 (
+    tags: [legal, user_selected]
+    primary_category: productivity/interview_prep
+    type: skill
+
+  - id: tailored-resume-generator
+    name: tailored-resume-generator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/tailored-resume-generator/tailored-resume-generator
+    note: 分析职位描述并生成定制简历，突出相关经验 (
+    tags: [recruitment, user_selected]
+    primary_category: productivity/interview_prep
+    type: skill
+
+  - id: baoyu-url-to-markdown
+    name: baoyu-url-to-markdown
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/content-creation-publisher/baoyu-url-to-markdown
+    note: 使用Chrome CDP抓取任意URL并转为Markdown (
+    tags: [browser, user_selected]
+    primary_category: productivity/interview_prep
+    type: skill
+
+  - id: file-conversion
+    name: file-conversion
+    author: wshobson
+    repo: wshobson/agents
+    path: plugins/file-conversion/
+    note: 999种格式互转：PDF转Word等 (
+    tags: [user_selected]
+    primary_category: design_visual/ui_design
+    type: skill
+
+  - id: web-design-analyzer
+    name: web-design-analyzer
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/web-design-analyzer/web-design-analyzer
+    note: 分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。 (
+    tags: [user_selected]
+    primary_category: design_visual/ui_design
+    type: skill
+
+  - id: video-creation-suite
+    name: video-creation-suite
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/video-creation-suite/video-creation-suite
+    note: 完整的视频创作套件，支持原创创作、视频二创、视频分析三种模式，集成Coze Bot API、Edge-TTS、Suno API，涵盖多智能体协同、素材生成、... (
+    tags: [video, audio, user_selected]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: video-recreation
+    name: video-recreation
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/video-recreation/video-recreation
+    note: 完整的视频二创工具，支持视频反推、素材生成 、视频合成、文件下载的全流程，集成Coze Bot API进行视觉分析，使用Edge-TTS进行语音合成 (
+    tags: [video, audio, user_selected]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: qwen3-tts-local
+    name: qwen3-tts-local
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/qwen3-tts-local/qwen3-tts-local
+    note: 真正的本地语音合成服务，使用 Edge-TTS 引擎，零依赖、零配置、完全离线可用，支持多语言和多种音色 (
+    tags: [audio, user_selected]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: qwen3-asr-assistant
+    name: qwen3-asr-assistant
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/qwen3-asr-assistant/qwen3-asr-assistant
+    note: 智能语音转文字助手，基于 Qwen3-ASR 模型，支持实时语音识别和智能文本改写。 (
+    tags: [audio, user_selected]
+    primary_category: design_visual/illustration
+    type: skill
+
+  - id: dream-video-prompt-generator
+    name: dream-video-prompt-generator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/dream-video-prompt-generator/dream-video-prompt-generator
+    note: 小省导购员数字人带货版即梦视频提示词生成系统，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），按照"主体+运动+场景+（镜头语言... (
+    tags: [digital_human, video, ecommerce, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: pet-commerce-creator
+    name: pet-commerce-creator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/pet-commerce-creator/pet-commerce-creator
+    note: 萌宠带货短视频全流程创作技能，基于COZE视频大模型API，支持萌宠剧情/好物测评/品种科普/宠品带货等全类型创作，覆盖爆款解析反推、知识库联动、互动优化、... (
+    tags: [video, ecommerce, llm, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: agentkit-multimedia-shopping
+    name: agentkit-multimedia-shopping
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/agentkit-multimedia-shopping/agentkit-multimedia-shopping
+    note: 基于ByteDance agentkit-samples多媒体用例的小省导购员数字人带货视频生成技能，整合多模态内容生成能力（图像、视频、音频），支持AI绘... (
+    tags: [ecommerce, audio, digital_human, user_selected, video]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: video-creation-pro
+    name: video-creation-pro
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/video-creation-pro/video-creation-pro
+    note: 10大智能体协同的商品视频创作系统，全流程质量闭环（创作→质检→反馈迭代），强制使用COZE视频大模型API进行视频合成，彻底移除本地依赖包逻辑，适用于智能... (
+    tags: [video, llm, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: wechat-hotspot-publisher
+    name: wechat-hotspot-publisher
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/wechat-hotspot-publisher/wechat-hotspot-publisher
+    note: 智能采集热点话题，10分制筛选优质选题，AI生成爆款内容（标题/封面/标签/图片/HTML排版），支持素材上传和草稿箱发布，一键发布到微信公众号、小红书、B... (
+    tags: [wechat, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: product-video-creator
+    name: product-video-creator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/product-video-creator/product-video-creator
+    note: 多智能体协同的商品视频创作流水线，支持从商品信息到成视频的全流程创作：文案生成、故事策划、脚本创作、分镜设计、图片生成、字幕创作、音效推荐及视频合成； (
+    tags: [video, translate, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: ecommerce-video-marketing
+    name: ecommerce-video-marketing
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/ecommerce-video-marketing/ecommerce-video-marketing
+    note: 电商视频营销创作技能，支持多品类商品的营销视频脚本生成，包含6阶段创作流程、智能体提示词框架、8种商品类型模板，适用于电商平台、社交媒体、品牌推广 (
+    tags: [video, ecommerce, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: historical-science-video-prod
+    name: historical-science-video-prod
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/historical-science-video-prod/historical-science-video-prod
+    note: 自动化生成历史科学类3分钟科普短视频的全流程素材包，包含口播文案、分镜脚本、Veo2提示词、人物形象规范等，适配即梦平台视频生成。 (
+    tags: [video, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: digital-avatar-shopping-video
+    name: digital-avatar-shopping-video
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/digital-avatar-shopping-video/digital-avatar-shopping-video
+    note: 小省导购员多智能体数字人口播带货视频生成系统，以"小省导购员"为核心人设，打造专业购物助手+数字人口播带货视频一体化服务。 (
+    tags: [digital_human, video, ecommerce, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: media-processor
+    name: media-processor
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/media-processor/media-processor
+    note: 提供基于 FFmpeg 和 ImageMagick 的多媒体处理能力，支持视频和图像的格式转换、分辨率调整、压缩等操作 (
+    tags: [video, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: stock-analysis
+    name: stock-analysis
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/stock-analysis/stock-analysis
+    note: 股票个股分析，实时获取价格涨跌幅，计算技术指标和支撑位，识别缺口并判断支撑压力，智能预测未来3天走势并给出操作建议 (
+    tags: [finance, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: tts-voice-synthesis
+    name: tts-voice-synthesis
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/tts-voice-synthesis
+    note: 智能语音合成服务，支持音色克隆、拟人化语义适配配音、流式实时生成、多语言与方言支持，提供 1. (
+    tags: [audio, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: historical-interview-scripts
+    name: historical-interview-scripts
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/historical-interview-scripts/historical-interview-scripts
+    note: 生成历史名人现代访谈短视频文案，通过古今反差与网络热梗的爆笑结合，创作具有传播力的虚构趣味内容 (
+    tags: [video, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: product-marketing-copywriter
+    name: product-marketing-copywriter
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/product-marketing-copywriter/product-marketing-copywriter
+    note: 产品营销文案创作技能，支持多品类产品的吸引性营销文案生成，适用于产品推广、品牌营销、销售转化 (
+    tags: [marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: pop-up-book-illustration
+    name: pop-up-book-illustration
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/pop-up-book-illustration/pop-up-book-illustration
+    note: 生成3D纸艺弹出书风格插画，具备立体层次感、明亮温暖色调，适用于科技、教育、品牌展示等场景 (
+    tags: [illustration, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: ppt-roadshow-generator
+    name: ppt-roadshow-generator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/ppt-roadshow-generator/ppt-roadshow-generator
+    note: PPT 路演视频全流程生成器，支持品牌风格学习、智能配音、音效音乐、字幕和一键视频合成。 (
+    tags: [ppt, user_selected, presentation, video, translate]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: ecommerce-copywriter
+    name: ecommerce-copywriter
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/ecommerce-copywriter/ecommerce-copywriter
+    note: 电商图片文案创作技能，支持多品类产品的吸引性文案生成，适用于电商平台的商品营销推广 (
+    tags: [ecommerce, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: xiaohongshu-makeup
+    name: xiaohongshu-makeup
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/xiaohongshu-makeup/xiaohongshu-makeup
+    note: 小红书美妆内容创作技能，支持笔记生成、笔记优化、文生图描述创作； (
+    tags: [user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: article-illustrator
+    name: article-illustrator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/article-illustrator/article-illustrator
+    note: 分析文章内容，在需要视觉辅助理解的位置生成插画。 (
+    tags: [illustration, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: ppt-generator
+    name: ppt-generator
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/ppt-generator/ppt-generator
+    note: 基于七角色协作的智能 PPT 生成与优化工具。 (
+    tags: [ppt, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: poetry-music-visual
+    name: poetry-music-visual
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/poetry-music-visual/poetry-music-visual
+    note: 为古诗词提供配图与配乐的全流程创作指导； (
+    tags: [user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: viral-video-copywriting
+    name: viral-video-copywriting
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/viral-video-copywriting/viral-video-copywriting
+    note: 专业的爆款短视频文案创作工具。 (
+    tags: [video, marketing, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill
+
+  - id: law-to-markdown
+    name: law-to-markdown
+    author: anbeime
+    repo: anbeime/skill
+    path: skills/legal-assistant-skills-main/law-to-markdown
+    note: 将法条/规范文件（. (
+    tags: [compliance, legal, user_selected]
+    primary_category: content_aggregation/monitoring
+    type: skill

@@ -1,0 +1,2968 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🎯 B2B 出海 skill 精选 · awesome-skills-map</title><style>
+:root {
+  --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1f2530;
+  --bg-card-selected: #1c2c4a; --border: #30363d; --border-selected: #58a6ff;
+  --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff;
+  --gold: #f0b72f; --success: #3fb950; --tag-bg: #21262d;
+  --tier-1: linear-gradient(135deg, #f0b72f 0%, #d97706 100%);
+  --tier-2: linear-gradient(135deg, #6e7681 0%, #484f58 100%);
+  --tier-3: linear-gradient(135deg, #cd7f32 0%, #6e7681 100%);
+  --toolbar-h: 64px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff; --bg-card: #f6f8fa; --bg-card-hover: #eaeef2;
+    --bg-card-selected: #dbeafe; --border: #d0d7de; --border-selected: #0969da;
+    --text: #1f2328; --text-muted: #656d76; --accent: #0969da;
+    --gold: #bf8700; --success: #1a7f37; --tag-bg: #eaeef2;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6;
+  padding-top: var(--toolbar-h);
+}
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.toolbar {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--toolbar-h);
+  background: rgba(13, 17, 23, 0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); display: flex;
+  align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 100; gap: 12px;
+}
+@media (prefers-color-scheme: light) {
+  .toolbar { background: rgba(255, 255, 255, 0.92); }
+}
+.toolbar-title { font-weight: 600; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
+.count-badge {
+  background: var(--accent); color: white; padding: 3px 10px;
+  border-radius: 12px; font-size: 0.85em; font-weight: 700; min-width: 36px; text-align: center;
+}
+.count-badge[data-count="0"] { background: var(--text-muted); }
+.toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
+  padding: 8px 14px; border-radius: 6px; font-size: 0.85em;
+  cursor: pointer; transition: all 0.15s; font-weight: 500; white-space: nowrap;
+}
+.btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--success); color: white; padding: 12px 24px;
+  border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  z-index: 200; transition: transform 0.3s ease; font-weight: 500; font-size: 0.9em;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { background: #f85149; }
+header {
+  text-align: center; padding: 40px 20px;
+  background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+  border-radius: 16px; margin-bottom: 32px; color: white;
+  box-shadow: 0 8px 32px rgba(31, 111, 235, 0.3);
+}
+header h1 { font-size: 2.5em; margin-bottom: 12px; }
+header .subtitle { font-size: 1.1em; opacity: 0.95; margin-bottom: 16px; }
+header .stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
+header .stat {
+  background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
+  padding: 12px 20px; border-radius: 12px; min-width: 100px;
+}
+header .stat-num { font-size: 1.8em; font-weight: 700; }
+header .stat-label { font-size: 0.85em; opacity: 0.9; }
+.notice {
+  background: var(--bg-card); border-left: 4px solid var(--accent);
+  padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px;
+}
+.notice-title { font-weight: 600; margin-bottom: 8px; color: var(--accent); }
+.notice ul { padding-left: 24px; color: var(--text-muted); }
+.notice li { margin-bottom: 6px; }
+.category-header {
+  display: flex; align-items: center; gap: 12px; margin: 32px 0 16px;
+  padding-bottom: 8px; border-bottom: 2px solid var(--border);
+}
+.category-badge {
+  display: inline-block; padding: 6px 14px; border-radius: 6px;
+  background: var(--accent); color: white; font-weight: 700; font-size: 0.9em;
+}
+.category-count { color: var(--text-muted); font-size: 0.85em; }
+.cards {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px; margin-bottom: 16px;
+}
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px; padding-right: 56px;
+  transition: all 0.2s; position: relative; cursor: pointer;
+}
+.card:hover {
+  transform: translateY(-2px); background: var(--bg-card-hover);
+  border-color: var(--accent); box-shadow: 0 4px 16px rgba(31, 111, 235, 0.15);
+}
+.card.selected {
+  background: var(--bg-card-selected); border-color: var(--border-selected);
+  box-shadow: 0 0 0 1px var(--border-selected);
+}
+.card-checkbox {
+  position: absolute; top: 12px; right: 12px; width: 22px; height: 22px;
+  cursor: pointer; z-index: 5; accent-color: var(--accent);
+}
+.card-name {
+  font-size: 1.1em; font-weight: 600; color: var(--accent);
+  text-decoration: none; display: inline-block; margin-bottom: 8px;
+  word-break: break-all;
+}
+.card-name:hover { text-decoration: underline; }
+.card-desc {
+  font-size: 0.92em; color: var(--text); margin-bottom: 12px; line-height: 1.55;
+  min-height: 60px;
+}
+.card-meta {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  font-size: 0.75em; color: var(--text-muted);
+}
+footer {
+  text-align: center; padding: 32px 20px; color: var(--text-muted);
+  font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 40px;
+}
+@media (max-width: 640px) {
+  header h1 { font-size: 1.8em; }
+  .cards { grid-template-columns: 1fr; }
+  .toolbar { padding: 8px 12px; flex-wrap: wrap; }
+}
+    </style></head><body>
+<div class="toolbar">
+  <div class="toolbar-title">
+    🎯 B2B 出海 Skills
+    <span class="count-badge" id="count-badge" data-count="0">0</span>
+    <span style="font-weight: 400; color: var(--text-muted); font-size: 0.85em;">已选</span>
+  </div>
+  <div class="toolbar-actions">
+    <button class="btn" id="btn-select-all">☑️ 全选</button>
+    <button class="btn" id="btn-clear">🗑️ 清空</button>
+    <button class="btn primary" id="btn-copy-md" disabled>📋 复制 MD</button>
+    <button class="btn primary" id="btn-download-md" disabled>⬇️ 下载 MD</button>
+    <button class="btn" id="btn-copy-json" disabled>📋 JSON</button>
+    <button class="btn" id="btn-download-json" disabled>⬇️ JSON</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="container">
+
+<header>
+  <h1>🎯 B2B 出海企业 Skills 精选</h1>
+  <div class="subtitle">服务于老板 + 员工的日常使用 · 按功能分类 · 编程类已排除</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">182</div><div class="stat-label">入选</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">类别</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">合集源</div></div>
+  </div>
+</header>
+
+<div class="notice">
+  <div class="notice-title">📊 筛选说明</div>
+  <ul>
+    <li><strong>已排除 {excl_total} 个</strong>：编程/技术类（与 B2B 出海老板/员工日常使用不符）</li>
+    <li><strong>按功能分类</strong>：基于 description 关键词（不显示合集来源）</li>
+    <li><strong>不显示合集</strong>：你关注的是"做什么"，不是"哪里来"</li>
+  </ul>
+  <ul>
+    <li>排除: multi-agent: 3</li>    <li>排除: code review: 6</li>    <li>排除: graphql: 1</li>    <li>排除: api testing: 1</li>    <li>排除: observability: 2</li>    <li>排除: api design: 1</li>    <li>排除: orm: 22</li>    <li>排除: ci/cd: 3</li>  </ul></div>
+<section>
+  <div class="category-header">
+    <span class="category-badge">内容创作</span>
+    <span class="category-count">16 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="find-skills"
+        data-name="find-skills"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/skills/find-skills"
+        data-desc="Helps users discover and install agent skills when they ask questions like &quot;how do I do X&quot;, &quot;find a skill for X&quot;, &quot;is there a skill that can...&quot;, or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill."
+        data-category="内容创作">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/skills/find-skills" class="card-name" target="_blank">find-skills</a>
+      <div class="card-desc">Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions &quot;发布公众号&quot;, &quot;post to wechat&quot;, &quot;微信公众号&quot;, or &quot;图文/文章&quot;."
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a>
+      <div class="card-desc">Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions "发布公众号", "post to wechat", "微信公众号", or "图文/文章".</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context."
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a>
+      <div class="card-desc">HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context.</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="review-agent-governance"
+        data-name="review-agent-governance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin"
+        data-desc="Require a human approval signal before an AI agent can post PR reviews, comments, merges, or writes to CI config. Cedar-gated, receipt-signed, designed for the Hermes-style failure mode where a review bot posts without oversight."
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin" class="card-name" target="_blank">review-agent-governance</a>
+      <div class="card-desc">Require a human approval signal before an AI agent can post PR reviews, comments, merges, or writes to CI config. Cedar-gated, receipt-signed, designed for the Hermes-style failure mode where a review bot posts without oversight.</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk-shopping-avatar"
+        data-name="infinitetalk-shopping-avatar"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk-shopping-avatar/infinitetalk-shopping-avatar"
+        data-desc="专为InfiniteTalk项目设计的小省导购员数字人带货提示词生成技能，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），生成适配Image-to-Video模式的结构化提示词（角色固定特征+动作时序+场景环境+音频匹配+光影氛围+技术约束），支持9:16竖屏、5s/幕、音频同步（Suno+chinese-wav2vec2-base）、一致性管控（角色/视觉/情绪），直接对接模型推理流程"
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk-shopping-avatar/infinitetalk-shopping-avatar" class="card-name" target="_blank">infinitetalk-shopping-avatar</a>
+      <div class="card-desc">专为InfiniteTalk项目设计的小省导购员数字人带货提示词生成技能，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），生成适配Image-to-Video模式的结构化提示词（角色固定特征+动作时序+场景环境+音频匹配+光影氛围+技术约束），支持9:16竖屏、5s/幕、音频同步（Suno+chinese-wav2vec2-base）、一致性管控（角色/视觉/情绪），直接对接模型推理流程</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ship-mate"
+        data-name="ship-mate"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/ship-mate/.claude-plugin"
+        data-desc="Your AI development teammate. Turns a story file into a shipped, reviewed, and tested feature via orchestrator → architect → developer → PR reviewer → QA → Playwright."
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/ship-mate/.claude-plugin" class="card-name" target="_blank">ship-mate</a>
+      <div class="card-desc">Your AI development teammate. Turns a story file into a shipped, reviewed, and tested feature via orchestrator → architect → developer → PR reviewer → QA → Playwright.</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="playground"
+        data-name="playground"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin"
+        data-desc="Creates interactive HTML playgrounds — self-contained single-file explorers with visual controls, live preview, and prompt output with copy button"
+        data-category="内容创作">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin" class="card-name" target="_blank">playground</a>
+      <div class="card-desc">Creates interactive HTML playgrounds — self-contained single-file explorers with visual controls, live preview, and prompt output with copy button</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="code-documentation"
+        data-name="code-documentation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin"
+        data-desc="Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin" class="card-name" target="_blank">code-documentation</a>
+      <div class="card-desc">Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="frontend-mobile-security"
+        data-name="frontend-mobile-security"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/frontend-mobile-security/.claude-plugin"
+        data-desc="XSS prevention, CSRF protection, content security policies, mobile app security, and secure storage patterns"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/frontend-mobile-security/.claude-plugin" class="card-name" target="_blank">frontend-mobile-security</a>
+      <div class="card-desc">XSS prevention, CSRF protection, content security policies, mobile app security, and secure storage patterns</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-generation"
+        data-name="documentation-generation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin"
+        data-desc="OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin" class="card-name" target="_blank">documentation-generation</a>
+      <div class="card-desc">OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch."
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk"
+        data-name="infinitetalk"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk"
+        data-desc="音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持无限时长视频生成"
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk" class="card-name" target="_blank">infinitetalk</a>
+      <div class="card-desc">音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持无限时长视频生成</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk"
+        data-name="infinitetalk"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk/infinitetalk"
+        data-desc="音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持无限时长视频生成"
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk/infinitetalk" class="card-name" target="_blank">infinitetalk</a>
+      <div class="card-desc">音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持无限时长视频生成</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="Content freshness analysis, cannibalization detection, and authority building for SEO"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a>
+      <div class="card-desc">Content freshness analysis, cannibalization detection, and authority building for SEO</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="comprehensive-review"
+        data-name="comprehensive-review"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin"
+        data-desc="Multi-perspective code analysis covering architecture, security, and best practices"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin" class="card-name" target="_blank">comprehensive-review</a>
+      <div class="card-desc">Multi-perspective code analysis covering architecture, security, and best practices</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO content writing, planning, and quality auditing with E-E-A-T optimization"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a>
+      <div class="card-desc">SEO content writing, planning, and quality auditing with E-E-A-T optimization</div>
+      <div class="card-meta">
+        <span>📂 内容创作</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">营销推广</span>
+    <span class="category-count">12 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions &quot;发布公众号&quot;, &quot;post to wechat&quot;, &quot;微信公众号&quot;, or &quot;图文/文章&quot;."
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a>
+      <div class="card-desc">Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions "发布公众号", "post to wechat", "微信公众号", or "图文/文章".</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context."
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a>
+      <div class="card-desc">HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context.</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="dgx-spark-ops"
+        data-name="dgx-spark-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/dgx-spark-ops/.claude-plugin"
+        data-desc="NVIDIA DGX Spark (GB10 Grace Blackwell) environment operations: aarch64/CUDA-13 stack setup, training gotcha preflights, and unified-memory/thermal management for local ML workloads"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/dgx-spark-ops/.claude-plugin" class="card-name" target="_blank">dgx-spark-ops</a>
+      <div class="card-desc">NVIDIA DGX Spark (GB10 Grace Blackwell) environment operations: aarch64/CUDA-13 stack setup, training gotcha preflights, and unified-memory/thermal management for local ML workloads</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access."
+        data-category="营销推广">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a>
+      <div class="card-desc">iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access.</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="remotion-video-enhancer"
+        data-name="remotion-video-enhancer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/remotion-video-enhancer/remotion-video-enhancer"
+        data-desc="视频转场与动画增强工具，提取 Remotion 的动画理念，提供高级视频转场效果和 Framer Motion 交互式动画。可与 ppt-generator、nanobanana-ppt-visualizer、ppt-roadshow-generator Skill 协同工作。"
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/remotion-video-enhancer/remotion-video-enhancer" class="card-name" target="_blank">remotion-video-enhancer</a>
+      <div class="card-desc">视频转场与动画增强工具，提取 Remotion 的动画理念，提供高级视频转场效果和 Framer Motion 交互式动画。可与 ppt-generator、nanobanana-ppt-visualizer、ppt-roadshow-generator Skill 协同工作。</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a>
+      <div class="card-desc">Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a>
+      <div class="card-desc">Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch."
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-technical-optimization"
+        data-name="seo-technical-optimization"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-technical-optimization/.claude-plugin"
+        data-desc="Technical SEO optimization including meta tags, keywords, structure, and featured snippets"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-technical-optimization/.claude-plugin" class="card-name" target="_blank">seo-technical-optimization</a>
+      <div class="card-desc">Technical SEO optimization including meta tags, keywords, structure, and featured snippets</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="Content freshness analysis, cannibalization detection, and authority building for SEO"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a>
+      <div class="card-desc">Content freshness analysis, cannibalization detection, and authority building for SEO</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="content-creation-publisher"
+        data-name="content-creation-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher"
+        data-desc="内容创作与发布全流程技能，整合网页采集、Markdown格式化、智能配图、多平台发布（微信公众号、X/Twitter）功能，实现从内容获取到发布的一站式解决方案"
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher" class="card-name" target="_blank">content-creation-publisher</a>
+      <div class="card-desc">内容创作与发布全流程技能，整合网页采集、Markdown格式化、智能配图、多平台发布（微信公众号、X/Twitter）功能，实现从内容获取到发布的一站式解决方案</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO content writing, planning, and quality auditing with E-E-A-T optimization"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a>
+      <div class="card-desc">SEO content writing, planning, and quality auditing with E-E-A-T optimization</div>
+      <div class="card-meta">
+        <span>📂 营销推广</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">效率办公</span>
+    <span class="category-count">21 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes."
+        data-category="效率办公">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a>
+      <div class="card-desc">Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="create-skill"
+        data-name="create-skill"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/create-skill"
+        data-desc="Create a new skill in the current repository. Use when the user wants to create/add a new skill, or mentions creating a skill from scratch. This skill follows the workflow defined in .agents/skills/README.md and helps scaffold, validate, and sync new skills."
+        data-category="效率办公">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/create-skill" class="card-name" target="_blank">create-skill</a>
+      <div class="card-desc">Create a new skill in the current repository. Use when the user wants to create/add a new skill, or mentions creating a skill from scratch. This skill follows the workflow defined in .agents/skills/README.md and helps scaffold, validate, and sync new skills.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context."
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a>
+      <div class="card-desc">HADS (Human-AI Document Standard) — semantic tagging convention for writing documentation that works efficiently for both human readers and AI models. Reduces token consumption and hallucination risk by separating machine-critical facts from human context.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="prepare-release"
+        data-name="prepare-release"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/prepare-release"
+        data-desc="Prepare a new release by collecting commits, generating bilingual release notes, updating version files, and creating a release branch with PR. Use when asked to prepare/create a release, bump version, or run `/prepare-release`."
+        data-category="效率办公">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/prepare-release" class="card-name" target="_blank">prepare-release</a>
+      <div class="card-desc">Prepare a new release by collecting commits, generating bilingual release notes, updating version files, and creating a release branch with PR. Use when asked to prepare/create a release, bump version, or run `/prepare-release`.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="linear"
+        data-name="linear"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin"
+        data-desc="Linear issue tracking integration. Create issues, manage projects, update statuses, search across workspaces, and streamline your software development workflow with Linear&#39;s modern issue tracker."
+        data-category="效率办公">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin" class="card-name" target="_blank">linear</a>
+      <div class="card-desc">Linear issue tracking integration. Create issues, manage projects, update statuses, search across workspaces, and streamline your software development workflow with Linear's modern issue tracker.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ralph-loop"
+        data-name="ralph-loop"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop/.claude-plugin"
+        data-desc="Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion."
+        data-category="效率办公">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop/.claude-plugin" class="card-name" target="_blank">ralph-loop</a>
+      <div class="card-desc">Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates."
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a>
+      <div class="card-desc">Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates.</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="c4-architecture"
+        data-name="c4-architecture"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin"
+        data-desc="Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagram generation"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin" class="card-name" target="_blank">c4-architecture</a>
+      <div class="card-desc">Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagram generation</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="feature-dev"
+        data-name="feature-dev"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev/.claude-plugin"
+        data-desc="Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review"
+        data-category="效率办公">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev/.claude-plugin" class="card-name" target="_blank">feature-dev</a>
+      <div class="card-desc">Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a>
+      <div class="card-desc">Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="explanatory-output-style"
+        data-name="explanatory-output-style"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin"
+        data-desc="Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)"
+        data-category="效率办公">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin" class="card-name" target="_blank">explanatory-output-style</a>
+      <div class="card-desc">Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hr-legal-compliance"
+        data-name="hr-legal-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin"
+        data-desc="HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin" class="card-name" target="_blank">hr-legal-compliance</a>
+      <div class="card-desc">HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a>
+      <div class="card-desc">ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="code-documentation"
+        data-name="code-documentation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin"
+        data-desc="Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin" class="card-name" target="_blank">code-documentation</a>
+      <div class="card-desc">Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="security-compliance"
+        data-name="security-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/security-compliance/.claude-plugin"
+        data-desc="SOC2, HIPAA, and GDPR compliance validation, secrets scanning, compliance checklists, and regulatory documentation"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/security-compliance/.claude-plugin" class="card-name" target="_blank">security-compliance</a>
+      <div class="card-desc">SOC2, HIPAA, and GDPR compliance validation, secrets scanning, compliance checklists, and regulatory documentation</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a>
+      <div class="card-desc">ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-generation"
+        data-name="documentation-generation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin"
+        data-desc="OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin" class="card-name" target="_blank">documentation-generation</a>
+      <div class="card-desc">OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a>
+      <div class="card-desc">Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="team-collaboration"
+        data-name="team-collaboration"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/team-collaboration/.claude-plugin"
+        data-desc="Team workflows, issue management, standup automation, and developer experience optimization"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/team-collaboration/.claude-plugin" class="card-name" target="_blank">team-collaboration</a>
+      <div class="card-desc">Team workflows, issue management, standup automation, and developer experience optimization</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="incident-response"
+        data-name="incident-response"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin"
+        data-desc="Production incident management, triage workflows, and automated incident resolution"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin" class="card-name" target="_blank">incident-response</a>
+      <div class="card-desc">Production incident management, triage workflows, and automated incident resolution</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO content writing, planning, and quality auditing with E-E-A-T optimization"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a>
+      <div class="card-desc">SEO content writing, planning, and quality auditing with E-E-A-T optimization</div>
+      <div class="card-meta">
+        <span>📂 效率办公</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">销售客户</span>
+    <span class="category-count">3 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a>
+      <div class="card-desc">ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows</div>
+      <div class="card-meta">
+        <span>📂 销售客户</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a>
+      <div class="card-desc">ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development</div>
+      <div class="card-meta">
+        <span>📂 销售客户</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a>
+      <div class="card-desc">Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration</div>
+      <div class="card-meta">
+        <span>📂 销售客户</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">HR 招聘</span>
+    <span class="category-count">10 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="contract-review"
+        data-name="contract-review"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review"
+        data-desc="Contract review skill that adds comment-based issue annotations without changing original text. Enforces a three-layer review (basic, business, legal), writes structured comments (issue type, risk reason, revision suggestion) with risk level encoded via reviewer name, and generates a contract summary, consolidated opinion, and Mermaid business flowchart (with rendered image). Output language must follow the contract’s language."
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review" class="card-name" target="_blank">contract-review</a>
+      <div class="card-desc">Contract review skill that adds comment-based issue annotations without changing original text. Enforces a three-layer review (basic, business, legal), writes structured comments (issue type, risk reason, revision suggestion) with risk level encoded via reviewer name, and generates a contract summary, consolidated opinion, and Mermaid business flowchart (with rendered image). Output language must follow the contract’s language.</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions &quot;发布公众号&quot;, &quot;post to wechat&quot;, &quot;微信公众号&quot;, or &quot;图文/文章&quot;."
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a>
+      <div class="card-desc">Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions "发布公众号", "post to wechat", "微信公众号", or "图文/文章".</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="cwc-makers"
+        data-name="cwc-makers"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/cwc-makers/.claude-plugin"
+        data-desc="Seamless onboarding for the Code-with-Claude Makers Cardputer: one /maker-setup command clones the build-with-claude repo, flashes UIFlow firmware, and installs the Claude Buddy app bundle onto a freshly-plugged-in M5Stack Cardputer-Adv."
+        data-category="HR 招聘">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/cwc-makers/.claude-plugin" class="card-name" target="_blank">cwc-makers</a>
+      <div class="card-desc">Seamless onboarding for the Code-with-Claude Makers Cardputer: one /maker-setup command clones the build-with-claude repo, flashes UIFlow firmware, and installs the Claude Buddy app bundle onto a freshly-plugged-in M5Stack Cardputer-Adv.</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown."
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a>
+      <div class="card-desc">Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown.</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skill-forge-essentials"
+        data-name="skill-forge-essentials"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin"
+        data-desc="Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin" class="card-name" target="_blank">skill-forge-essentials</a>
+      <div class="card-desc">Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates."
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a>
+      <div class="card-desc">Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates.</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="tailored-resume-generator"
+        data-name="tailored-resume-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/tailored-resume-generator/tailored-resume-generator"
+        data-desc="Analyzes job descriptions and generates tailored resumes that highlight relevant experience, skills, and achievements to maximize interview chances"
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/tailored-resume-generator/tailored-resume-generator" class="card-name" target="_blank">tailored-resume-generator</a>
+      <div class="card-desc">Analyzes job descriptions and generates tailored resumes that highlight relevant experience, skills, and achievements to maximize interview chances</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a>
+      <div class="card-desc">Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hr-legal-compliance"
+        data-name="hr-legal-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin"
+        data-desc="HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin" class="card-name" target="_blank">hr-legal-compliance</a>
+      <div class="card-desc">HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch."
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.</div>
+      <div class="card-meta">
+        <span>📂 HR 招聘</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">财务行政</span>
+    <span class="category-count">5 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes."
+        data-category="财务行政">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a>
+      <div class="card-desc">Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.</div>
+      <div class="card-meta">
+        <span>📂 财务行政</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a>
+      <div class="card-desc">Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research</div>
+      <div class="card-meta">
+        <span>📂 财务行政</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="payment-processing"
+        data-name="payment-processing"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/payment-processing/.claude-plugin"
+        data-desc="Payment gateway integration with Stripe, PayPal, checkout flow implementation, subscription billing, and PCI compliance"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/payment-processing/.claude-plugin" class="card-name" target="_blank">payment-processing</a>
+      <div class="card-desc">Payment gateway integration with Stripe, PayPal, checkout flow implementation, subscription billing, and PCI compliance</div>
+      <div class="card-meta">
+        <span>📂 财务行政</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="quantitative-trading"
+        data-name="quantitative-trading"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin"
+        data-desc="Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin" class="card-name" target="_blank">quantitative-trading</a>
+      <div class="card-desc">Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting</div>
+      <div class="card-meta">
+        <span>📂 财务行政</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a>
+      <div class="card-desc">Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making</div>
+      <div class="card-meta">
+        <span>📂 财务行政</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">数据分析</span>
+    <span class="category-count">8 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="contract-review"
+        data-name="contract-review"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review"
+        data-desc="Contract review skill that adds comment-based issue annotations without changing original text. Enforces a three-layer review (basic, business, legal), writes structured comments (issue type, risk reason, revision suggestion) with risk level encoded via reviewer name, and generates a contract summary, consolidated opinion, and Mermaid business flowchart (with rendered image). Output language must follow the contract’s language."
+        data-category="数据分析">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review" class="card-name" target="_blank">contract-review</a>
+      <div class="card-desc">Contract review skill that adds comment-based issue annotations without changing original text. Enforces a three-layer review (basic, business, legal), writes structured comments (issue type, risk reason, revision suggestion) with risk level encoded via reviewer name, and generates a contract summary, consolidated opinion, and Mermaid business flowchart (with rendered image). Output language must follow the contract’s language.</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="json-canvas"
+        data-name="json-canvas"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/json-canvas"
+        data-desc="Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian."
+        data-category="数据分析">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/json-canvas" class="card-name" target="_blank">json-canvas</a>
+      <div class="card-desc">Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with .canvas files, creating visual canvases, mind maps, flowcharts, or when the user mentions Canvas files in Obsidian.</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="linear"
+        data-name="linear"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin"
+        data-desc="Linear issue tracking integration. Create issues, manage projects, update statuses, search across workspaces, and streamline your software development workflow with Linear&#39;s modern issue tracker."
+        data-category="数据分析">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin" class="card-name" target="_blank">linear</a>
+      <div class="card-desc">Linear issue tracking integration. Create issues, manage projects, update statuses, search across workspaces, and streamline your software development workflow with Linear's modern issue tracker.</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="issue-reporter"
+        data-name="issue-reporter"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/issue-reporter"
+        data-desc="帮助用户提交 Bug Report 或 Feature Request。支持 GitHub Issue（有账户）和本地存档（无账户）两种模式。当诊断发现是代码 Bug 时主动提议，或当用户说&quot;帮我提 issue&quot;、&quot;这是个 bug&quot;、&quot;我想要这个功能&quot;、&quot;submit a bug&quot;、&quot;feature request&quot;时触发。"
+        data-category="数据分析">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/issue-reporter" class="card-name" target="_blank">issue-reporter</a>
+      <div class="card-desc">帮助用户提交 Bug Report 或 Feature Request。支持 GitHub Issue（有账户）和本地存档（无账户）两种模式。当诊断发现是代码 Bug 时主动提议，或当用户说"帮我提 issue"、"这是个 bug"、"我想要这个功能"、"submit a bug"、"feature request"时触发。</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="explanatory-output-style"
+        data-name="explanatory-output-style"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin"
+        data-desc="Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)"
+        data-category="数据分析">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin" class="card-name" target="_blank">explanatory-output-style</a>
+      <div class="card-desc">Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a>
+      <div class="card-desc">ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a>
+      <div class="card-desc">ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a>
+      <div class="card-desc">Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making</div>
+      <div class="card-meta">
+        <span>📂 数据分析</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">客户支持</span>
+    <span class="category-count">7 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions &quot;发布公众号&quot;, &quot;post to wechat&quot;, &quot;微信公众号&quot;, or &quot;图文/文章&quot;."
+        data-category="客户支持">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a>
+      <div class="card-desc">Posts content to WeChat Official Account (微信公众号) via API or Chrome CDP. Supports article posting (文章) with HTML, markdown, or plain text input, and image-text posting (图文) with multiple images. Use when user mentions "发布公众号", "post to wechat", "微信公众号", or "图文/文章".</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown."
+        data-category="客户支持">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a>
+      <div class="card-desc">Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown.</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access."
+        data-category="客户支持">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a>
+      <div class="card-desc">iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access.</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="fakechat"
+        data-name="fakechat"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/fakechat/.claude-plugin"
+        data-desc="Localhost iMessage-style web chat for Claude Code — test surface with file upload and edits. No tokens, no access control."
+        data-category="客户支持">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/fakechat/.claude-plugin" class="card-name" target="_blank">fakechat</a>
+      <div class="card-desc">Localhost iMessage-style web chat for Claude Code — test surface with file upload and edits. No tokens, no access control.</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration"
+        data-category="客户支持">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a>
+      <div class="card-desc">Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-scripting"
+        data-name="web-scripting"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/web-scripting/.claude-plugin"
+        data-desc="Web scripting with PHP and Ruby for web applications, CMS development, and backend services"
+        data-category="客户支持">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/web-scripting/.claude-plugin" class="card-name" target="_blank">web-scripting</a>
+      <div class="card-desc">Web scripting with PHP and Ruby for web applications, CMS development, and backend services</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="faq-collector"
+        data-name="faq-collector"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/faq-collector"
+        data-desc="将成功解决的用户问题收录到 FAQ 知识库。问题解决后自动判断是否收录。也可以在用户说&quot;收录到 FAQ&quot;、&quot;记录这个问题&quot;、&quot;add to FAQ&quot;时手动触发。"
+        data-category="客户支持">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/faq-collector" class="card-name" target="_blank">faq-collector</a>
+      <div class="card-desc">将成功解决的用户问题收录到 FAQ 知识库。问题解决后自动判断是否收录。也可以在用户说"收录到 FAQ"、"记录这个问题"、"add to FAQ"时手动触发。</div>
+      <div class="card-meta">
+        <span>📂 客户支持</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">产品设计</span>
+    <span class="category-count">27 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="demand-first-review"
+        data-name="demand-first-review"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/demand-first-review"
+        data-desc="Use when reviewing a PR, API, IPC channel, endpoint, parameter, type, config, or architectural extension point that adds or expands shared surface area, especially when consumers are absent, exports are unused or speculative, existing consumers are hack-heavy, forward compatibility is claimed, or multiple similar APIs may express one demand."
+        data-category="产品设计">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/demand-first-review" class="card-name" target="_blank">demand-first-review</a>
+      <div class="card-desc">Use when reviewing a PR, API, IPC channel, endpoint, parameter, type, config, or architectural extension point that adds or expands shared surface area, especially when consumers are absent, exports are unused or speculative, existing consumers are hack-heavy, forward compatibility is claimed, or multiple similar APIs may express one demand.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes."
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a>
+      <div class="card-desc">Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="cwc-makers"
+        data-name="cwc-makers"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/cwc-makers/.claude-plugin"
+        data-desc="Seamless onboarding for the Code-with-Claude Makers Cardputer: one /maker-setup command clones the build-with-claude repo, flashes UIFlow firmware, and installs the Claude Buddy app bundle onto a freshly-plugged-in M5Stack Cardputer-Adv."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/cwc-makers/.claude-plugin" class="card-name" target="_blank">cwc-makers</a>
+      <div class="card-desc">Seamless onboarding for the Code-with-Claude Makers Cardputer: one /maker-setup command clones the build-with-claude repo, flashes UIFlow firmware, and installs the Claude Buddy app bundle onto a freshly-plugged-in M5Stack Cardputer-Adv.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="frontend-design"
+        data-name="frontend-design"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/frontend-design/frontend-design"
+        data-desc="Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics."
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/frontend-design/frontend-design" class="card-name" target="_blank">frontend-design</a>
+      <div class="card-desc">Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="review-agent-governance"
+        data-name="review-agent-governance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin"
+        data-desc="Require a human approval signal before an AI agent can post PR reviews, comments, merges, or writes to CI config. Cedar-gated, receipt-signed, designed for the Hermes-style failure mode where a review bot posts without oversight."
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin" class="card-name" target="_blank">review-agent-governance</a>
+      <div class="card-desc">Require a human approval signal before an AI agent can post PR reviews, comments, merges, or writes to CI config. Cedar-gated, receipt-signed, designed for the Hermes-style failure mode where a review bot posts without oversight.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="math-olympiad"
+        data-name="math-olympiad"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/math-olympiad/.claude-plugin"
+        data-desc="Solve competition math (IMO, Putnam, USAMO) with adversarial verification that catches what self-verification misses. Fresh-context verifiers attack proofs with specific failure patterns. Calibrated abstention over bluffing."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/math-olympiad/.claude-plugin" class="card-name" target="_blank">math-olympiad</a>
+      <div class="card-desc">Solve competition math (IMO, Putnam, USAMO) with adversarial verification that catches what self-verification misses. Fresh-context verifiers attack proofs with specific failure patterns. Calibrated abstention over bluffing.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown."
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a>
+      <div class="card-desc">Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - auto-capture on page load, or wait for user signal (for pages requiring login). Use when user wants to save a webpage as markdown.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="file-conversion"
+        data-name="file-conversion"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/file-conversion/.claude-plugin"
+        data-desc="Convert files between 999 routes — PDF to Word, HEIC to JPG, MP4 to MP3, CSV to JSON, EPUB to MOBI — via the free ChangeThisFile API. MCP-aware with a zero-dependency script fallback; no API key required."
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/file-conversion/.claude-plugin" class="card-name" target="_blank">file-conversion</a>
+      <div class="card-desc">Convert files between 999 routes — PDF to Word, HEIC to JPG, MP4 to MP3, CSV to JSON, EPUB to MOBI — via the free ChangeThisFile API. MCP-aware with a zero-dependency script fallback; no API key required.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a>
+      <div class="card-desc">iMessage channel for Claude Code — reads chat.db directly, sends via AppleScript. Built-in access control; manage pairing, allowlists, and policy via /imessage:access.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skill-forge-essentials"
+        data-name="skill-forge-essentials"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin"
+        data-desc="Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin" class="card-name" target="_blank">skill-forge-essentials</a>
+      <div class="card-desc">Three behavioral skills addressing AI-specific failure patterns: hidden code debt from agent generation, context compaction amnesia, and imprecise Design Mode edits</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates."
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a>
+      <div class="card-desc">Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="telegram"
+        data-name="telegram"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/telegram/.claude-plugin"
+        data-desc="Telegram channel for Claude Code — messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /telegram:access."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/telegram/.claude-plugin" class="card-name" target="_blank">telegram</a>
+      <div class="card-desc">Telegram channel for Claude Code — messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /telegram:access.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="discord"
+        data-name="discord"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/discord/.claude-plugin"
+        data-desc="Discord channel for Claude Code — messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /discord:access."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/discord/.claude-plugin" class="card-name" target="_blank">discord</a>
+      <div class="card-desc">Discord channel for Claude Code — messaging bridge with built-in access control. Manage pairing, allowlists, and policy via /discord:access.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="plugin-dev"
+        data-name="plugin-dev"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/plugin-dev/.claude-plugin"
+        data-desc="Plugin development toolkit with skills for creating agents, commands, hooks, MCP integrations, and comprehensive plugin structure guidance"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/plugin-dev/.claude-plugin" class="card-name" target="_blank">plugin-dev</a>
+      <div class="card-desc">Plugin development toolkit with skills for creating agents, commands, hooks, MCP integrations, and comprehensive plugin structure guidance</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="cherry-pr-test"
+        data-name="cherry-pr-test"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/cherry-pr-test"
+        data-desc="Test Cherry Studio PRs by checking out the branch, launching the Electron app in debug mode, and running interactive UI tests via CDP."
+        data-category="产品设计">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/cherry-pr-test" class="card-name" target="_blank">cherry-pr-test</a>
+      <div class="card-desc">Test Cherry Studio PRs by checking out the branch, launching the Electron app in debug mode, and running interactive UI tests via CDP.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="feature-dev"
+        data-name="feature-dev"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev/.claude-plugin"
+        data-desc="Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/feature-dev/.claude-plugin" class="card-name" target="_blank">feature-dev</a>
+      <div class="card-desc">Comprehensive feature development workflow with specialized agents for codebase exploration, architecture design, and quality review</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pr-review-toolkit"
+        data-name="pr-review-toolkit"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pr-review-toolkit/.claude-plugin"
+        data-desc="Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pr-review-toolkit/.claude-plugin" class="card-name" target="_blank">pr-review-toolkit</a>
+      <div class="card-desc">Comprehensive PR review agents specializing in comments, tests, error handling, type design, code quality, and code simplification</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="accessibility-compliance"
+        data-name="accessibility-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/accessibility-compliance/.claude-plugin"
+        data-desc="WCAG accessibility auditing, compliance validation, UI testing for screen readers, keyboard navigation, and inclusive design"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/accessibility-compliance/.claude-plugin" class="card-name" target="_blank">accessibility-compliance</a>
+      <div class="card-desc">WCAG accessibility auditing, compliance validation, UI testing for screen readers, keyboard navigation, and inclusive design</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="before-you-build"
+        data-name="before-you-build"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/before-you-build/.claude-plugin"
+        data-desc="Pre-build product risk review for founders, product teams, and AI-assisted builders before implementation starts."
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/before-you-build/.claude-plugin" class="card-name" target="_blank">before-you-build</a>
+      <div class="card-desc">Pre-build product risk review for founders, product teams, and AI-assisted builders before implementation starts.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a>
+      <div class="card-desc">ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-design-analyzer"
+        data-name="web-design-analyzer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer"
+        data-desc="分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。适用于 UI/UX 设计师和前端工程师需要从现有网页设计中提取设计规范、配色方案、排版系统和组件风格的场景。"
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer" class="card-name" target="_blank">web-design-analyzer</a>
+      <div class="card-desc">分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。适用于 UI/UX 设计师和前端工程师需要从现有网页设计中提取设计规范、配色方案、排版系统和组件风格的场景。</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-generation"
+        data-name="documentation-generation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin"
+        data-desc="OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin" class="card-name" target="_blank">documentation-generation</a>
+      <div class="card-desc">OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch."
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="Content freshness analysis, cannibalization detection, and authority building for SEO"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a>
+      <div class="card-desc">Content freshness analysis, cannibalization detection, and authority building for SEO</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="comprehensive-review"
+        data-name="comprehensive-review"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin"
+        data-desc="Multi-perspective code analysis covering architecture, security, and best practices"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin" class="card-name" target="_blank">comprehensive-review</a>
+      <div class="card-desc">Multi-perspective code analysis covering architecture, security, and best practices</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="incident-response"
+        data-name="incident-response"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin"
+        data-desc="Production incident management, triage workflows, and automated incident resolution"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin" class="card-name" target="_blank">incident-response</a>
+      <div class="card-desc">Production incident management, triage workflows, and automated incident resolution</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="frontend-design"
+        data-name="frontend-design"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design/.claude-plugin"
+        data-desc="Frontend design skill for UI/UX implementation"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design/.claude-plugin" class="card-name" target="_blank">frontend-design</a>
+      <div class="card-desc">Frontend design skill for UI/UX implementation</div>
+      <div class="card-meta">
+        <span>📂 产品设计</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">学习研究</span>
+    <span class="category-count">15 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="reverse-engineering"
+        data-name="reverse-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/reverse-engineering/.claude-plugin"
+        data-desc="Binary reverse engineering, malware analysis, firmware security, and software protection research for authorized security research, CTF competitions, and defensive security"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/reverse-engineering/.claude-plugin" class="card-name" target="_blank">reverse-engineering</a>
+      <div class="card-desc">Binary reverse engineering, malware analysis, firmware security, and software protection research for authorized security research, CTF competitions, and defensive security</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates."
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a>
+      <div class="card-desc">Create production-ready, editable PowerPoint decks through a spec-first, coordinate-explicit workflow with read-only reference analysis and quality gates.</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="c4-architecture"
+        data-name="c4-architecture"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin"
+        data-desc="Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagram generation"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin" class="card-name" target="_blank">c4-architecture</a>
+      <div class="card-desc">Comprehensive C4 architecture documentation workflow with bottom-up code analysis, component synthesis, container mapping, and context diagram generation</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="learning-output-style"
+        data-name="learning-output-style"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/learning-output-style/.claude-plugin"
+        data-desc="Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style)"
+        data-category="学习研究">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/learning-output-style/.claude-plugin" class="card-name" target="_blank">learning-output-style</a>
+      <div class="card-desc">Interactive learning mode that requests meaningful code contributions at decision points (mimics the unshipped Learning output style)</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a>
+      <div class="card-desc">Hermes Agent plugin for X/Twitter research, timeline reading, tweet analysis, and approval-gated tweet actions through Hermes Tweet</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a>
+      <div class="card-desc">Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="explanatory-output-style"
+        data-name="explanatory-output-style"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin"
+        data-desc="Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)"
+        data-category="学习研究">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/explanatory-output-style/.claude-plugin" class="card-name" target="_blank">explanatory-output-style</a>
+      <div class="card-desc">Adds educational insights about implementation choices and codebase patterns (mimics the deprecated Explanatory output style)</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="claude-md-management"
+        data-name="claude-md-management"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management/.claude-plugin"
+        data-desc="Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current."
+        data-category="学习研究">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management/.claude-plugin" class="card-name" target="_blank">claude-md-management</a>
+      <div class="card-desc">Tools to maintain and improve CLAUDE.md files - audit quality, capture session learnings, and keep project memory current.</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="code-documentation"
+        data-name="code-documentation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin"
+        data-desc="Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/code-documentation/.claude-plugin" class="card-name" target="_blank">code-documentation</a>
+      <div class="card-desc">Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="quantitative-trading"
+        data-name="quantitative-trading"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin"
+        data-desc="Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin" class="card-name" target="_blank">quantitative-trading</a>
+      <div class="card-desc">Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-generation"
+        data-name="documentation-generation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin"
+        data-desc="OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-generation/.claude-plugin" class="card-name" target="_blank">documentation-generation</a>
+      <div class="card-desc">OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch."
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-ready HTML via Stitch.</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a>
+      <div class="card-desc">Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="Content freshness analysis, cannibalization detection, and authority building for SEO"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a>
+      <div class="card-desc">Content freshness analysis, cannibalization detection, and authority building for SEO</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="comprehensive-review"
+        data-name="comprehensive-review"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin"
+        data-desc="Multi-perspective code analysis covering architecture, security, and best practices"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/comprehensive-review/.claude-plugin" class="card-name" target="_blank">comprehensive-review</a>
+      <div class="card-desc">Multi-perspective code analysis covering architecture, security, and best practices</div>
+      <div class="card-meta">
+        <span>📂 学习研究</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">AI 创作</span>
+    <span class="category-count">7 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ralph-loop"
+        data-name="ralph-loop"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop/.claude-plugin"
+        data-desc="Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion."
+        data-category="AI 创作">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-loop/.claude-plugin" class="card-name" target="_blank">ralph-loop</a>
+      <div class="card-desc">Continuous self-referential AI loops for interactive iterative development, implementing the Ralph Wiggum technique. Run Claude in a while-true loop with the same prompt until task completion.</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="playground"
+        data-name="playground"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin"
+        data-desc="Creates interactive HTML playgrounds — self-contained single-file explorers with visual controls, live preview, and prompt output with copy button"
+        data-category="AI 创作">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin" class="card-name" target="_blank">playground</a>
+      <div class="card-desc">Creates interactive HTML playgrounds — self-contained single-file explorers with visual controls, live preview, and prompt output with copy button</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-design-analyzer"
+        data-name="web-design-analyzer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer"
+        data-desc="分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。适用于 UI/UX 设计师和前端工程师需要从现有网页设计中提取设计规范、配色方案、排版系统和组件风格的场景。"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer" class="card-name" target="_blank">web-design-analyzer</a>
+      <div class="card-desc">分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。适用于 UI/UX 设计师和前端工程师需要从现有网页设计中提取设计规范、配色方案、排版系统和组件风格的场景。</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="qwen3-asr-assistant"
+        data-name="qwen3-asr-assistant"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/qwen3-asr-assistant/qwen3-asr-assistant"
+        data-desc="智能语音转文字助手，基于 Qwen3-ASR 模型，支持实时语音识别和智能文本改写。可以将录音转换为文字，并一键改写成邮件、笔记、社交媒体文案，支持复制、分享和录音拼接。适用于会议纪要、语音备忘、内容创作等多种场景。"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/qwen3-asr-assistant/qwen3-asr-assistant" class="card-name" target="_blank">qwen3-asr-assistant</a>
+      <div class="card-desc">智能语音转文字助手，基于 Qwen3-ASR 模型，支持实时语音识别和智能文本改写。可以将录音转换为文字，并一键改写成邮件、笔记、社交媒体文案，支持复制、分享和录音拼接。适用于会议纪要、语音备忘、内容创作等多种场景。</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-recreation"
+        data-name="video-recreation"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-recreation/video-recreation"
+        data-desc="完整的视频二创工具，支持视频反推、素材生成(图片/音效/背景音乐/配音/字幕)、视频合成、文件下载的全流程，集成Coze Bot API进行视觉分析，使用Edge-TTS进行语音合成"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-recreation/video-recreation" class="card-name" target="_blank">video-recreation</a>
+      <div class="card-desc">完整的视频二创工具，支持视频反推、素材生成(图片/音效/背景音乐/配音/字幕)、视频合成、文件下载的全流程，集成Coze Bot API进行视觉分析，使用Edge-TTS进行语音合成</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-suite"
+        data-name="video-creation-suite"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-suite/video-creation-suite"
+        data-desc="完整的视频创作套件，支持原创创作、视频二创、视频分析三种模式，集成Coze Bot API、Edge-TTS、Suno API，涵盖多智能体协同、素材生成、视频合成全流程"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-suite/video-creation-suite" class="card-name" target="_blank">video-creation-suite</a>
+      <div class="card-desc">完整的视频创作套件，支持原创创作、视频二创、视频分析三种模式，集成Coze Bot API、Edge-TTS、Suno API，涵盖多智能体协同、素材生成、视频合成全流程</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="qwen3-tts-local"
+        data-name="qwen3-tts-local"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/qwen3-tts-local/qwen3-tts-local"
+        data-desc="真正的本地语音合成服务，使用 Edge-TTS 引擎，零依赖、零配置、完全离线可用，支持多语言和多种音色"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/qwen3-tts-local/qwen3-tts-local" class="card-name" target="_blank">qwen3-tts-local</a>
+      <div class="card-desc">真正的本地语音合成服务，使用 Edge-TTS 引擎，零依赖、零配置、完全离线可用，支持多语言和多种音色</div>
+      <div class="card-meta">
+        <span>📂 AI 创作</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="category-header">
+    <span class="category-badge">其他</span>
+    <span class="category-count">51 个 skill</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="security-guidance"
+        data-name="security-guidance"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance/.claude-plugin"
+        data-desc="Security review for Claude-generated code. Pattern-based warnings on edits, LLM-powered diff review on Stop, and an agentic commit reviewer that catches injection, XSS, SSRF, hardcoded secrets, and 25+ other vulnerability classes."
+        data-category="其他">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance/.claude-plugin" class="card-name" target="_blank">security-guidance</a>
+      <div class="card-desc">Security review for Claude-generated code. Pattern-based warnings on edits, LLM-powered diff review on Stop, and an agentic commit reviewer that catches injection, XSS, SSRF, hardcoded secrets, and 25+ other vulnerability classes.</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="llm-finetuning"
+        data-name="llm-finetuning"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/llm-finetuning/.claude-plugin"
+        data-desc="Eval-gated LLM fine-tuning lifecycle: LoRA/QLoRA SFT, preference optimization (DPO/ORPO/KTO), GRPO/RLVR, vision SFT, and quantized export — Unsloth-first with TRL fallback, no eval harness means no fine-tune"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/llm-finetuning/.claude-plugin" class="card-name" target="_blank">llm-finetuning</a>
+      <div class="card-desc">Eval-gated LLM fine-tuning lifecycle: LoRA/QLoRA SFT, preference optimization (DPO/ORPO/KTO), GRPO/RLVR, vision SFT, and quantized export — Unsloth-first with TRL fallback, no eval harness means no fine-tune</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="digital-avatar-shopping-video"
+        data-name="digital-avatar-shopping-video"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/digital-avatar-shopping-video/digital-avatar-shopping-video"
+        data-desc="小省导购员多智能体数字人口播带货视频生成系统，以&quot;小省导购员&quot;为核心人设，打造专业购物助手+数字人口播带货视频一体化服务。涵盖五大智能体（小省导购员、带货脚本师、数字人口播生成师、带货画面设计师、音画合成师），产出&quot;数字人口播+带货画面+字幕音效&quot;的成品视频，适配抖音、快手等短视频平台，支持淘宝、京东、拼多多、唯品会等全平台商品信息，具备知识库自动存取能力。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/digital-avatar-shopping-video/digital-avatar-shopping-video" class="card-name" target="_blank">digital-avatar-shopping-video</a>
+      <div class="card-desc">小省导购员多智能体数字人口播带货视频生成系统，以"小省导购员"为核心人设，打造专业购物助手+数字人口播带货视频一体化服务。涵盖五大智能体（小省导购员、带货脚本师、数字人口播生成师、带货画面设计师、音画合成师），产出"数字人口播+带货画面+字幕音效"的成品视频，适配抖音、快手等短视频平台，支持淘宝、京东、拼多多、唯品会等全平台商品信息，具备知识库自动存取能力。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="dream-video-prompt-generator"
+        data-name="dream-video-prompt-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/dream-video-prompt-generator/dream-video-prompt-generator"
+        data-desc="小省导购员数字人带货版即梦视频提示词生成系统，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），按照&quot;主体+运动+场景+（镜头语言+光影+氛围）&quot;公式输出中英文双版提示词，适配5s短视频。确保人物一致性、视觉连贯性、情绪连贯性，支持知识库智能复用和跨工具适配（Suno音乐、AI绘画），为数字人带货视频提供高质量提示词生成服务。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/dream-video-prompt-generator/dream-video-prompt-generator" class="card-name" target="_blank">dream-video-prompt-generator</a>
+      <div class="card-desc">小省导购员数字人带货版即梦视频提示词生成系统，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），按照"主体+运动+场景+（镜头语言+光影+氛围）"公式输出中英文双版提示词，适配5s短视频。确保人物一致性、视觉连贯性、情绪连贯性，支持知识库智能复用和跨工具适配（Suno音乐、AI绘画），为数字人带货视频提供高质量提示词生成服务。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="protect-mcp"
+        data-name="protect-mcp"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/protect-mcp/.claude-plugin"
+        data-desc="Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin — receipts independently verifiable offline."
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/protect-mcp/.claude-plugin" class="card-name" target="_blank">protect-mcp</a>
+      <div class="card-desc">Cedar policy enforcement + Ed25519 signed receipts for every Claude Code tool call. First cryptographic governance plugin — receipts independently verifiable offline.</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="law-to-markdown"
+        data-name="law-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/law-to-markdown"
+        data-desc="将法条/规范文件（.txt/.docx/.pdf）转为 Markdown。适用于用户要求“法条转 markdown”“pdf/docx 转 markdown”。处理 .pdf/.docx 时先检查是否已安装 mineru-ocr skill；未安装先引导安装，安装后优先用 mineru-ocr；仅在用户明确同意时再用本地回退方案。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/law-to-markdown" class="card-name" target="_blank">law-to-markdown</a>
+      <div class="card-desc">将法条/规范文件（.txt/.docx/.pdf）转为 Markdown。适用于用户要求“法条转 markdown”“pdf/docx 转 markdown”。处理 .pdf/.docx 时先检查是否已安装 mineru-ocr skill；未安装先引导安装，安装后优先用 mineru-ocr；仅在用户明确同意时再用本地回退方案。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skills-manager"
+        data-name="skills-manager"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/skills-manager"
+        data-desc="搜索、安装和创建 Claude Code Agent Skills。当用户想要搜索技能、安装工具、创建自定义 Skill，或者说&quot;find a skill&quot;、&quot;搜索技能&quot;、&quot;帮我做个 skill&quot;、&quot;create a skill&quot;时触发。也适用于用户说&quot;有没有做 X 的工具&quot;、&quot;我想扩展 Agent 能力&quot;的场景。"
+        data-category="其他">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/skills-manager" class="card-name" target="_blank">skills-manager</a>
+      <div class="card-desc">搜索、安装和创建 Claude Code Agent Skills。当用户想要搜索技能、安装工具、创建自定义 Skill，或者说"find a skill"、"搜索技能"、"帮我做个 skill"、"create a skill"时触发。也适用于用户说"有没有做 X 的工具"、"我想扩展 Agent 能力"的场景。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="agent-team"
+        data-name="agent-team"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/agent-team/agent-team"
+        data-desc="统一管理多智能体角色的团队协作框架，支持智能体动态组合、灵活协作和扩展新角色。智能体本质上是&quot;角色定义&quot;，可以根据任务需求灵活组建团队，实现从会议决策到系统构建的完整能力。智能体角色明确分工：有干活的、有指挥的、有挑毛病的，能实时看到沟通过程，共享数据库记忆，确保上下文一致。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/agent-team/agent-team" class="card-name" target="_blank">agent-team</a>
+      <div class="card-desc">统一管理多智能体角色的团队协作框架，支持智能体动态组合、灵活协作和扩展新角色。智能体本质上是"角色定义"，可以根据任务需求灵活组建团队，实现从会议决策到系统构建的完整能力。智能体角色明确分工：有干活的、有指挥的、有挑毛病的，能实时看到沟通过程，共享数据库记忆，确保上下文一致。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="cherry-assistant-guide"
+        data-name="cherry-assistant-guide"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/cherry-assistant-guide"
+        data-desc="Cherry Studio 产品知识库、源码路径索引、故障排查和页面导航。当用户询问 Cherry Studio 的功能、配置、报错、使用方法时触发。也适用于用户提到 provider、模型、知识库、Agent、MCP、OpenClaw、PDF、快捷短语等关键词的场景。"
+        data-category="其他">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/cherry-assistant-guide" class="card-name" target="_blank">cherry-assistant-guide</a>
+      <div class="card-desc">Cherry Studio 产品知识库、源码路径索引、故障排查和页面导航。当用户询问 Cherry Studio 的功能、配置、报错、使用方法时触发。也适用于用户提到 provider、模型、知识库、Agent、MCP、OpenClaw、PDF、快捷短语等关键词的场景。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pet-commerce-creator"
+        data-name="pet-commerce-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/pet-commerce-creator/pet-commerce-creator"
+        data-desc="萌宠带货短视频全流程创作技能，基于COZE视频大模型API，支持萌宠剧情/好物测评/品种科普/宠品带货等全类型创作，覆盖爆款解析反推、知识库联动、互动优化、素材批量下载、全素材整合，实现从创意到带货引流型成品视频的自动化生成，适配15-30秒竖屏9:16主流平台规格。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/pet-commerce-creator/pet-commerce-creator" class="card-name" target="_blank">pet-commerce-creator</a>
+      <div class="card-desc">萌宠带货短视频全流程创作技能，基于COZE视频大模型API，支持萌宠剧情/好物测评/品种科普/宠品带货等全类型创作，覆盖爆款解析反推、知识库联动、互动优化、素材批量下载、全素材整合，实现从创意到带货引流型成品视频的自动化生成，适配15-30秒竖屏9:16主流平台规格。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="llm-application-dev"
+        data-name="llm-application-dev"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/llm-application-dev/.claude-plugin"
+        data-desc="LLM application development with LangGraph, RAG systems, vector search, and AI agent architectures for Claude 4.6 and GPT-5.4"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/llm-application-dev/.claude-plugin" class="card-name" target="_blank">llm-application-dev</a>
+      <div class="card-desc">LLM application development with LangGraph, RAG systems, vector search, and AI agent architectures for Claude 4.6 and GPT-5.4</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="agentkit-multimedia-shopping"
+        data-name="agentkit-multimedia-shopping"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/agentkit-multimedia-shopping/agentkit-multimedia-shopping"
+        data-desc="基于ByteDance agentkit-samples多媒体用例的小省导购员数字人带货视频生成技能，整合多模态内容生成能力（图像、视频、音频），支持AI绘画、语音合成、视频生成，与小省导购员人设融合，9:16竖屏适配，直接对接带货视频生成流程"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/agentkit-multimedia-shopping/agentkit-multimedia-shopping" class="card-name" target="_blank">agentkit-multimedia-shopping</a>
+      <div class="card-desc">基于ByteDance agentkit-samples多媒体用例的小省导购员数字人带货视频生成技能，整合多模态内容生成能力（图像、视频、音频），支持AI绘画、语音合成、视频生成，与小省导购员人设融合，9:16竖屏适配，直接对接带货视频生成流程</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="block-no-verify"
+        data-name="block-no-verify"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/block-no-verify/.claude-plugin"
+        data-desc="PreToolUse hook that prevents AI agents from using --no-verify, --no-gpg-sign, and other bypass flags that skip git hooks"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/block-no-verify/.claude-plugin" class="card-name" target="_blank">block-no-verify</a>
+      <div class="card-desc">PreToolUse hook that prevents AI agents from using --no-verify, --no-gpg-sign, and other bypass flags that skip git hooks</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="arm-cortex-microcontrollers"
+        data-name="arm-cortex-microcontrollers"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/arm-cortex-microcontrollers/.claude-plugin"
+        data-desc="ARM Cortex-M firmware development for Teensy, STM32, nRF52, and SAMD with peripheral drivers and memory safety patterns"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/arm-cortex-microcontrollers/.claude-plugin" class="card-name" target="_blank">arm-cortex-microcontrollers</a>
+      <div class="card-desc">ARM Cortex-M firmware development for Teensy, STM32, nRF52, and SAMD with peripheral drivers and memory safety patterns</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="code-simplifier"
+        data-name="code-simplifier"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier/.claude-plugin"
+        data-desc="Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality"
+        data-category="其他">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier/.claude-plugin" class="card-name" target="_blank">code-simplifier</a>
+      <div class="card-desc">Agent that simplifies and refines code for clarity, consistency, and maintainability while preserving functionality</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="backend-api-security"
+        data-name="backend-api-security"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/backend-api-security/.claude-plugin"
+        data-desc="API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/backend-api-security/.claude-plugin" class="card-name" target="_blank">backend-api-security</a>
+      <div class="card-desc">API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="bedtime-story"
+        data-name="bedtime-story"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/bedtime-story/bedtime-story"
+        data-desc="为3-12岁儿童提供温馨亲切的睡前寓言故事和成语典故讲解。支持用户唤醒后提供故事列表选择，或直接讲解指定故事/成语。讲解时保持亲切温馨的语气、0.6倍正常语速、通俗易懂的表达，为小朋友营造舒适的睡前氛围。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/bedtime-story/bedtime-story" class="card-name" target="_blank">bedtime-story</a>
+      <div class="card-desc">为3-12岁儿童提供温馨亲切的睡前寓言故事和成语典故讲解。支持用户唤醒后提供故事列表选择，或直接讲解指定故事/成语。讲解时保持亲切温馨的语气、0.6倍正常语速、通俗易懂的表达，为小朋友营造舒适的睡前氛围。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="game-development"
+        data-name="game-development"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/game-development/.claude-plugin"
+        data-desc="Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/game-development/.claude-plugin" class="card-name" target="_blank">game-development</a>
+      <div class="card-desc">Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-pro"
+        data-name="video-creation-pro"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-pro/video-creation-pro"
+        data-desc="10大智能体协同的商品视频创作系统，全流程质量闭环（创作→质检→反馈迭代），强制使用COZE视频大模型API进行视频合成，彻底移除本地依赖包逻辑，适用于智能硬件、美妆护肤、家居家电等多品类商品视频创作"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-pro/video-creation-pro" class="card-name" target="_blank">video-creation-pro</a>
+      <div class="card-desc">10大智能体协同的商品视频创作系统，全流程质量闭环（创作→质检→反馈迭代），强制使用COZE视频大模型API进行视频合成，彻底移除本地依赖包逻辑，适用于智能硬件、美妆护肤、家居家电等多品类商品视频创作</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="product-video-creator"
+        data-name="product-video-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/product-video-creator/product-video-creator"
+        data-desc="多智能体协同的商品视频创作流水线，支持从商品信息到成视频的全流程创作：文案生成、故事策划、脚本创作、分镜设计、图片生成、字幕创作、音效推荐及视频合成；适用于电商商品宣传、品牌推广、社交媒体营销等场景"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/product-video-creator/product-video-creator" class="card-name" target="_blank">product-video-creator</a>
+      <div class="card-desc">多智能体协同的商品视频创作流水线，支持从商品信息到成视频的全流程创作：文案生成、故事策划、脚本创作、分镜设计、图片生成、字幕创作、音效推荐及视频合成；适用于电商商品宣传、品牌推广、社交媒体营销等场景</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ppt-generator"
+        data-name="ppt-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ppt-generator/ppt-generator"
+        data-desc="基于七角色协作的智能 PPT 生成与优化工具。支持主题生成、模板推荐、内容填充、AI 智能配图、文本润色和 PPTX 文件生成。适用于学术汇报、商业演示、培训课件、产品发布等多种场景。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ppt-generator/ppt-generator" class="card-name" target="_blank">ppt-generator</a>
+      <div class="card-desc">基于七角色协作的智能 PPT 生成与优化工具。支持主题生成、模板推荐、内容填充、AI 智能配图、文本润色和 PPTX 文件生成。适用于学术汇报、商业演示、培训课件、产品发布等多种场景。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="viral-video-copywriting"
+        data-name="viral-video-copywriting"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/viral-video-copywriting/viral-video-copywriting"
+        data-desc="专业的爆款短视频文案创作工具。通过对标抖音爆款视频，智能提取视频内容，深度拆解爆款因素，并结合用户需求创作出符合爆款规律的新文案。适用于短视频创作者、运营人员提升内容质量。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/viral-video-copywriting/viral-video-copywriting" class="card-name" target="_blank">viral-video-copywriting</a>
+      <div class="card-desc">专业的爆款短视频文案创作工具。通过对标抖音爆款视频，智能提取视频内容，深度拆解爆款因素，并结合用户需求创作出符合爆款规律的新文案。适用于短视频创作者、运营人员提升内容质量。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="deployment-validation"
+        data-name="deployment-validation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/deployment-validation/.claude-plugin"
+        data-desc="Pre-deployment checks, configuration validation, and deployment readiness assessment"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/deployment-validation/.claude-plugin" class="card-name" target="_blank">deployment-validation</a>
+      <div class="card-desc">Pre-deployment checks, configuration validation, and deployment readiness assessment</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hookify"
+        data-name="hookify"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/hookify/.claude-plugin"
+        data-desc="Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns"
+        data-category="其他">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/hookify/.claude-plugin" class="card-name" target="_blank">hookify</a>
+      <div class="card-desc">Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="article-illustrator"
+        data-name="article-illustrator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/article-illustrator/article-illustrator"
+        data-desc="分析文章内容，在需要视觉辅助理解的位置生成插画。配图可以是信息补充、概念具象化，或引导读者想象。当用户要求&quot;给文章配图&quot;、&quot;为文章生成插图&quot;、&quot;添加配图&quot;时使用此技能。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/article-illustrator/article-illustrator" class="card-name" target="_blank">article-illustrator</a>
+      <div class="card-desc">分析文章内容，在需要视觉辅助理解的位置生成插画。配图可以是信息补充、概念具象化，或引导读者想象。当用户要求"给文章配图"、"为文章生成插图"、"添加配图"时使用此技能。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="article-illustrator"
+        data-name="article-illustrator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/article-illustrator"
+        data-desc="分析文章内容，在需要视觉辅助理解的位置生成插画。配图可以是信息补充、概念具象化，或引导读者想象。当用户要求&quot;给文章配图&quot;、&quot;为文章生成插图&quot;、&quot;添加配图&quot;时使用此技能。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/article-illustrator" class="card-name" target="_blank">article-illustrator</a>
+      <div class="card-desc">分析文章内容，在需要视觉辅助理解的位置生成插画。配图可以是信息补充、概念具象化，或引导读者想象。当用户要求"给文章配图"、"为文章生成插图"、"添加配图"时使用此技能。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="wechat-hotspot-publisher"
+        data-name="wechat-hotspot-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/wechat-hotspot-publisher/wechat-hotspot-publisher"
+        data-desc="智能采集热点话题，10分制筛选优质选题，AI生成爆款内容（标题/封面/标签/图片/HTML排版），支持素材上传和草稿箱发布，一键发布到微信公众号、小红书、B站等多平台"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/wechat-hotspot-publisher/wechat-hotspot-publisher" class="card-name" target="_blank">wechat-hotspot-publisher</a>
+      <div class="card-desc">智能采集热点话题，10分制筛选优质选题，AI生成爆款内容（标题/封面/标签/图片/HTML排版），支持素材上传和草稿箱发布，一键发布到微信公众号、小红书、B站等多平台</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="nanobanana-ppt-visualizer"
+        data-name="nanobanana-ppt-visualizer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/nanobanana-ppt-visualizer/nanobanana-ppt-visualizer"
+        data-desc="PPT 视觉增强工具，支持多种风格渲染、交互式播放器生成和视频合成。可与 ppt-generator Skill 协同工作，实现从内容规划到视觉呈现的完整流程。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/nanobanana-ppt-visualizer/nanobanana-ppt-visualizer" class="card-name" target="_blank">nanobanana-ppt-visualizer</a>
+      <div class="card-desc">PPT 视觉增强工具，支持多种风格渲染、交互式播放器生成和视频合成。可与 ppt-generator Skill 协同工作，实现从内容规划到视觉呈现的完整流程。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-collaborator"
+        data-name="video-creation-collaborator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-collaborator/video-creation-collaborator"
+        data-desc="影品智创多智能体协同视频创作管理工具,提供11个智能体结构化分工、5阶段协同流程、质量管控标准与数据反馈机制,解决生图失真、视频合成瑕疵等问题,确保输出统一可控"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-collaborator/video-creation-collaborator" class="card-name" target="_blank">video-creation-collaborator</a>
+      <div class="card-desc">影品智创多智能体协同视频创作管理工具,提供11个智能体结构化分工、5阶段协同流程、质量管控标准与数据反馈机制,解决生图失真、视频合成瑕疵等问题,确保输出统一可控</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="poetry-music-visual"
+        data-name="poetry-music-visual"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/poetry-music-visual/poetry-music-visual"
+        data-desc="为古诗词提供配图与配乐的全流程创作指导；支持深度解析诗词意境、生成画面描述、提供配乐创作蓝图（Suno格式）；适用于诗词可视化、MV创作、文化传播等场景"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/poetry-music-visual/poetry-music-visual" class="card-name" target="_blank">poetry-music-visual</a>
+      <div class="card-desc">为古诗词提供配图与配乐的全流程创作指导；支持深度解析诗词意境、生成画面描述、提供配乐创作蓝图（Suno格式）；适用于诗词可视化、MV创作、文化传播等场景</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="multi-agent-meeting"
+        data-name="multi-agent-meeting"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/multi-agent-meeting/multi-agent-meeting"
+        data-desc="模拟多个AI智能体协作开会并进行决策讨论的场景。适用于需要从多个专业角度分析问题、进行辩论和达成共识的场景，如项目决策、技术方案评审、商业策略制定等。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/multi-agent-meeting/multi-agent-meeting" class="card-name" target="_blank">multi-agent-meeting</a>
+      <div class="card-desc">模拟多个AI智能体协作开会并进行决策讨论的场景。适用于需要从多个专业角度分析问题、进行辩论和达成共识的场景，如项目决策、技术方案评审、商业策略制定等。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="context-management"
+        data-name="context-management"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/context-management/.claude-plugin"
+        data-desc="Context persistence, restoration, and long-running conversation management"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/context-management/.claude-plugin" class="card-name" target="_blank">context-management</a>
+      <div class="card-desc">Context persistence, restoration, and long-running conversation management</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ecommerce-video-marketing"
+        data-name="ecommerce-video-marketing"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ecommerce-video-marketing/ecommerce-video-marketing"
+        data-desc="电商视频营销创作技能，支持多品类商品的营销视频脚本生成，包含6阶段创作流程、智能体提示词框架、8种商品类型模板，适用于电商平台、社交媒体、品牌推广"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ecommerce-video-marketing/ecommerce-video-marketing" class="card-name" target="_blank">ecommerce-video-marketing</a>
+      <div class="card-desc">电商视频营销创作技能，支持多品类商品的营销视频脚本生成，包含6阶段创作流程、智能体提示词框架、8种商品类型模板，适用于电商平台、社交媒体、品牌推广</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ppt-roadshow-generator"
+        data-name="ppt-roadshow-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ppt-roadshow-generator/ppt-roadshow-generator"
+        data-desc="PPT 路演视频全流程生成器，支持品牌风格学习、智能配音、音效音乐、字幕和一键视频合成。可一次性生成 15-100 页风格统一的完整路演视频。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ppt-roadshow-generator/ppt-roadshow-generator" class="card-name" target="_blank">ppt-roadshow-generator</a>
+      <div class="card-desc">PPT 路演视频全流程生成器，支持品牌风格学习、智能配音、音效音乐、字幕和一键视频合成。可一次性生成 15-100 页风格统一的完整路演视频。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="wechatsync-publisher"
+        data-name="wechatsync-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/wechatsync-publisher/wechatsync-publisher"
+        data-desc="多平台内容发布助手，支持智能选题筛选、AI生成优质内容、一键发布到微信公众号等平台；支持内容格式自动适配（HTML/Markdown/纯文本）"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/wechatsync-publisher/wechatsync-publisher" class="card-name" target="_blank">wechatsync-publisher</a>
+      <div class="card-desc">多平台内容发布助手，支持智能选题筛选、AI生成优质内容、一键发布到微信公众号等平台；支持内容格式自动适配（HTML/Markdown/纯文本）</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="paper-analysis-assistant"
+        data-name="paper-analysis-assistant"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/paper-analysis-assistant/paper-analysis-assistant"
+        data-desc="根据arXiv论文网址自动下载PDF并进行多维度分析，包括文本提取、词频分析、语音播报、播客对话生成、交互式网页、PPT、总结图和引用分析"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/paper-analysis-assistant/paper-analysis-assistant" class="card-name" target="_blank">paper-analysis-assistant</a>
+      <div class="card-desc">根据arXiv论文网址自动下载PDF并进行多维度分析，包括文本提取、词频分析、语音播报、播客对话生成、交互式网页、PPT、总结图和引用分析</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="historical-science-video-prod"
+        data-name="historical-science-video-prod"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/historical-science-video-prod/historical-science-video-prod"
+        data-desc="自动化生成历史科学类3分钟科普短视频的全流程素材包，包含口播文案、分镜脚本、Veo2提示词、人物形象规范等，适配即梦平台视频生成。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/historical-science-video-prod/historical-science-video-prod" class="card-name" target="_blank">historical-science-video-prod</a>
+      <div class="card-desc">自动化生成历史科学类3分钟科普短视频的全流程素材包，包含口播文案、分镜脚本、Veo2提示词、人物形象规范等，适配即梦平台视频生成。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="three-body-video-creator"
+        data-name="three-body-video-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/three-body-video-creator/three-body-video-creator"
+        data-desc="《三体》赛道AI视频创作工具,提供结构化的多智能体协作流程、素材生成与视频合成,涵盖选题深化、视觉设计、音频生成、视频制作全流程"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/three-body-video-creator/three-body-video-creator" class="card-name" target="_blank">three-body-video-creator</a>
+      <div class="card-desc">《三体》赛道AI视频创作工具,提供结构化的多智能体协作流程、素材生成与视频合成,涵盖选题深化、视觉设计、音频生成、视频制作全流程</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="tts-voice-synthesis"
+        data-name="tts-voice-synthesis"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/tts-voice-synthesis"
+        data-desc="智能语音合成服务，支持音色克隆、拟人化语义适配配音、流式实时生成、多语言与方言支持，提供 1.7B/0.6B 双模型选择"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/tts-voice-synthesis" class="card-name" target="_blank">tts-voice-synthesis</a>
+      <div class="card-desc">智能语音合成服务，支持音色克隆、拟人化语义适配配音、流式实时生成、多语言与方言支持，提供 1.7B/0.6B 双模型选择</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="media-processor"
+        data-name="media-processor"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/media-processor/media-processor"
+        data-desc="提供基于 FFmpeg 和 ImageMagick 的多媒体处理能力，支持视频和图像的格式转换、分辨率调整、压缩等操作"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/media-processor/media-processor" class="card-name" target="_blank">media-processor</a>
+      <div class="card-desc">提供基于 FFmpeg 和 ImageMagick 的多媒体处理能力，支持视频和图像的格式转换、分辨率调整、压缩等操作</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="stock-analysis"
+        data-name="stock-analysis"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/stock-analysis/stock-analysis"
+        data-desc="股票个股分析，实时获取价格涨跌幅，计算技术指标和支撑位，识别缺口并判断支撑压力，智能预测未来3天走势并给出操作建议"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/stock-analysis/stock-analysis" class="card-name" target="_blank">stock-analysis</a>
+      <div class="card-desc">股票个股分析，实时获取价格涨跌幅，计算技术指标和支撑位，识别缺口并判断支撑压力，智能预测未来3天走势并给出操作建议</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaohongshu-makeup"
+        data-name="xiaohongshu-makeup"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/xiaohongshu-makeup/xiaohongshu-makeup"
+        data-desc="小红书美妆内容创作技能，支持笔记生成、笔记优化、文生图描述创作；适用于美妆护肤产品的内容创作、测评和营销推广"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/xiaohongshu-makeup/xiaohongshu-makeup" class="card-name" target="_blank">xiaohongshu-makeup</a>
+      <div class="card-desc">小红书美妆内容创作技能，支持笔记生成、笔记优化、文生图描述创作；适用于美妆护肤产品的内容创作、测评和营销推广</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="moltbook"
+        data-name="moltbook"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/moltbook"
+        data-desc="AI Agent的社交网络. 发布帖子、评论、点赞和创建社区。当用户明确要求时才会使用，否则不会使用。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/moltbook" class="card-name" target="_blank">moltbook</a>
+      <div class="card-desc">AI Agent的社交网络. 发布帖子、评论、点赞和创建社区。当用户明确要求时才会使用，否则不会使用。</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="historical-interview-scripts"
+        data-name="historical-interview-scripts"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/historical-interview-scripts/historical-interview-scripts"
+        data-desc="生成历史名人现代访谈短视频文案，通过古今反差与网络热梗的爆笑结合，创作具有传播力的虚构趣味内容"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/historical-interview-scripts/historical-interview-scripts" class="card-name" target="_blank">historical-interview-scripts</a>
+      <div class="card-desc">生成历史名人现代访谈短视频文案，通过古今反差与网络热梗的爆笑结合，创作具有传播力的虚构趣味内容</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="product-marketing-copywriter"
+        data-name="product-marketing-copywriter"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/product-marketing-copywriter/product-marketing-copywriter"
+        data-desc="产品营销文案创作技能，支持多品类产品的吸引性营销文案生成，适用于产品推广、品牌营销、销售转化"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/product-marketing-copywriter/product-marketing-copywriter" class="card-name" target="_blank">product-marketing-copywriter</a>
+      <div class="card-desc">产品营销文案创作技能，支持多品类产品的吸引性营销文案生成，适用于产品推广、品牌营销、销售转化</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-frame-extractor"
+        data-name="video-frame-extractor"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-frame-extractor/video-frame-extractor"
+        data-desc="视频反推工具,支持视频抽帧、视觉模型分析、提示词生成,适用于视频创作参考、内容提取、场景分析"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-frame-extractor/video-frame-extractor" class="card-name" target="_blank">video-frame-extractor</a>
+      <div class="card-desc">视频反推工具,支持视频抽帧、视觉模型分析、提示词生成,适用于视频创作参考、内容提取、场景分析</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pop-up-book-illustration"
+        data-name="pop-up-book-illustration"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/pop-up-book-illustration/pop-up-book-illustration"
+        data-desc="生成3D纸艺弹出书风格插画，具备立体层次感、明亮温暖色调，适用于科技、教育、品牌展示等场景"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/pop-up-book-illustration/pop-up-book-illustration" class="card-name" target="_blank">pop-up-book-illustration</a>
+      <div class="card-desc">生成3D纸艺弹出书风格插画，具备立体层次感、明亮温暖色调，适用于科技、教育、品牌展示等场景</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ecommerce-copywriter"
+        data-name="ecommerce-copywriter"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ecommerce-copywriter/ecommerce-copywriter"
+        data-desc="电商图片文案创作技能，支持多品类产品的吸引性文案生成，适用于电商平台的商品营销推广"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ecommerce-copywriter/ecommerce-copywriter" class="card-name" target="_blank">ecommerce-copywriter</a>
+      <div class="card-desc">电商图片文案创作技能，支持多品类产品的吸引性文案生成，适用于电商平台的商品营销推广</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaoyue-companion"
+        data-name="xiaoyue-companion"
+        data-url="https://github.com/anbeime/skill/tree/main/SKILL.md"
+        data-desc="小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/SKILL.md" class="card-name" target="_blank">xiaoyue-companion</a>
+      <div class="card-desc">小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaoyue-companion"
+        data-name="xiaoyue-companion"
+        data-url="https://github.com/anbeime/skill/tree/main/projects/companion-simple"
+        data-desc="小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/projects/companion-simple" class="card-name" target="_blank">xiaoyue-companion</a>
+      <div class="card-desc">小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="intelligent-content-system"
+        data-name="intelligent-content-system"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/intelligent-content-system"
+        data-desc="\|"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/intelligent-content-system" class="card-name" target="_blank">intelligent-content-system</a>
+      <div class="card-desc">|</div>
+      <div class="card-meta">
+        <span>📂 其他</span>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <p><strong>B2B 出海企业 Skills 精选</strong></p>
+  <p>由 <code>expand_v3.py</code> 生成 · 排除编程类 · 适用于老板 + 员工日常使用</p>
+  <p>生成时间: 2026-07-20 16:58</p>
+  <p style="margin-top: 16px; font-size: 0.9em;">
+    ⌨️ 快捷键: <kbd>Ctrl+A</kbd> 全选 · <kbd>Esc</kbd> 清空 · 点击卡片也可选中
+  </p>
+</footer>
+</div>
+
+<script>
+const STORAGE_KEY = 'b2b-skills.selected';
+const ALL_CHECKBOXES = () => Array.from(document.querySelectorAll('.card-checkbox'));
+
+function getSelected() { return ALL_CHECKBOXES().filter(cb => cb.checked); }
+
+function updateUI() {
+  const n = getSelected().length;
+  const badge = document.getElementById('count-badge');
+  badge.textContent = n; badge.dataset.count = n;
+  ['btn-copy-md', 'btn-download-md', 'btn-copy-json', 'btn-download-json']
+    .forEach(id => document.getElementById(id).disabled = n === 0);
+  ALL_CHECKBOXES().forEach(cb => {
+    cb.closest('.card').classList.toggle('selected', cb.checked);
+  });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getSelected().map(cb => cb.dataset.id)));
+  } catch (e) {}
+}
+
+function restoreSelection() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const ids = new Set(JSON.parse(raw));
+    ALL_CHECKBOXES().forEach(cb => { if (ids.has(cb.dataset.id)) cb.checked = true; });
+  } catch (e) {}
+}
+
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('card-checkbox')) updateUI();
+});
+document.addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const cb = card.querySelector('.card-checkbox');
+  if (!cb) return;
+  cb.checked = !cb.checked; updateUI();
+});
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = true); updateUI();
+});
+document.getElementById('btn-clear').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = false); updateUI();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+    e.preventDefault(); ALL_CHECKBOXES().forEach(cb => cb.checked = true); updateUI();
+  }
+  if (e.key === 'Escape') {
+    ALL_CHECKBOXES().forEach(cb => cb.checked = false); updateUI();
+  }
+});
+
+function getSelectedData() {
+  return getSelected().map(cb => ({
+    id: cb.dataset.id, name: cb.dataset.name, url: cb.dataset.url,
+    category: cb.dataset.category, desc: cb.dataset.desc,
+  }));
+}
+
+function buildMarkdown(data) {
+  const lines = ['# 🎯 B2B 出海精选 Skills', '',
+    `> 共 ${data.length} 个 · 日常生活 + 出海 + 老板员工通用 · ${new Date().toISOString().slice(0,10)}`, ''];
+
+  // 按 category 分组
+  const byCat = {};
+  data.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+  Object.keys(byCat).forEach(cat => {
+    lines.push(`## ${cat}（${byCat[cat].length} 个）`);
+    lines.push('');
+    byCat[cat].forEach(s => {
+      lines.push(`- **${s.name}** — ${s.desc.slice(0, 100)} ([link](${s.url}))`);
+    });
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+function buildJSON(data) {
+  return JSON.stringify({
+    exported_at: new Date().toISOString(),
+    count: data.length,
+    source: 'candidates-v3.html (B2B 出海精选)',
+    skills: data
+  }, null, 2);
+}
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.toggle('error', isError);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+async function copyToClipboard(text) {
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); document.body.removeChild(ta); return true; }
+    catch (e2) { document.body.removeChild(ta); return false; }
+  }
+}
+
+function downloadFile(content, filename, mimeType = 'text/plain') {
+  const blob = new Blob([content], {type: mimeType + ';charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('btn-copy-md').addEventListener('click', async () => {
+  const ok = await copyToClipboard(buildMarkdown(getSelectedData()));
+  showToast(ok ? `✅ 已复制 ${getSelected().length} 个（MD）` : '❌ 复制失败', !ok);
+});
+document.getElementById('btn-download-md').addEventListener('click', () => {
+  downloadFile(buildMarkdown(getSelectedData()), `b2b-skills-${new Date().toISOString().slice(0,10)}.md`);
+  showToast(`⬇️ 已下载 MD`);
+});
+document.getElementById('btn-copy-json').addEventListener('click', async () => {
+  const ok = await copyToClipboard(buildJSON(getSelectedData()));
+  showToast(ok ? '✅ 已复制 JSON' : '❌ 复制失败', !ok);
+});
+document.getElementById('btn-download-json').addEventListener('click', () => {
+  downloadFile(buildJSON(getSelectedData()), `b2b-skills-${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+  showToast(`⬇️ 已下载 JSON`);
+});
+
+restoreSelection();
+updateUI();
+</script>
+</body></html>

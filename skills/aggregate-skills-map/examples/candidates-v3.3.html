@@ -1,0 +1,2141 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🎯 B2B 出海 Skill 精选 v3.3（中文版）</title><style>
+:root { --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1f2530; --bg-card-selected: #1c2c4a;
+  --border: #30363d; --border-selected: #58a6ff; --text: #c9d1d9; --text-muted: #8b949e;
+  --accent: #58a6ff; --success: #3fb950; --tag-bg: #21262d; --toolbar-h: 64px; }
+@media (prefers-color-scheme: light) { :root { --bg: #fff; --bg-card: #f6f8fa; --bg-card-hover: #eaeef2;
+  --bg-card-selected: #dbeafe; --border: #d0d7de; --border-selected: #0969da; --text: #1f2328;
+  --text-muted: #656d76; --accent: #0969da; --success: #1a7f37; --tag-bg: #eaeef2; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.55; padding-top: var(--toolbar-h); }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.toolbar { position: fixed; top: 0; left: 0; right: 0; height: var(--toolbar-h);
+  background: rgba(13,17,23,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; z-index: 100; gap: 12px; }
+@media (prefers-color-scheme: light) { .toolbar { background: rgba(255,255,255,0.92); } }
+.toolbar-title { font-weight: 600; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
+.count-badge { background: var(--accent); color: white; padding: 3px 10px; border-radius: 12px;
+  font-size: 0.85em; font-weight: 700; min-width: 36px; text-align: center; }
+.count-badge[data-count="0"] { background: var(--text-muted); }
+.toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
+  padding: 8px 14px; border-radius: 6px; font-size: 0.85em; cursor: pointer;
+  transition: all 0.15s; font-weight: 500; white-space: nowrap; }
+.btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--success); color: white; padding: 12px 24px; border-radius: 8px;
+  z-index: 200; transition: transform 0.3s ease; font-weight: 500; font-size: 0.9em; }
+.toast.show { transform: translateX(-50%) translateY(0); }
+header { text-align: center; padding: 32px 20px; background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+  border-radius: 16px; margin-bottom: 24px; color: white;
+  box-shadow: 0 8px 32px rgba(31,111,235,0.3); }
+header h1 { font-size: 2.2em; margin-bottom: 8px; }
+header .subtitle { font-size: 1em; opacity: 0.95; margin-bottom: 12px; }
+header .stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+header .stat { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+  padding: 10px 16px; border-radius: 10px; min-width: 90px; }
+header .stat-num { font-size: 1.5em; font-weight: 700; }
+header .stat-label { font-size: 0.85em; opacity: 0.9; }
+.notice { background: var(--bg-card); border-left: 4px solid var(--accent);
+  padding: 14px 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+.notice-title { font-weight: 600; margin-bottom: 6px; color: var(--accent); font-size: 0.95em; }
+.notice ul { padding-left: 24px; color: var(--text-muted); font-size: 0.85em; }
+.notice li { margin-bottom: 4px; }
+.cat-header { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px;
+  padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+.cat-badge { display: inline-block; padding: 5px 12px; border-radius: 6px;
+  background: var(--accent); color: white; font-weight: 700; font-size: 0.9em; }
+.cat-count { color: var(--text-muted); font-size: 0.85em; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px; margin-bottom: 14px; }
+.card { background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px 14px 16px; padding-right: 50px;
+  transition: all 0.2s; position: relative; cursor: pointer;
+  display: flex; flex-direction: column; gap: 6px; min-height: 110px; }
+.card:hover { transform: translateY(-2px); background: var(--bg-card-hover);
+  border-color: var(--accent); box-shadow: 0 4px 16px rgba(31,111,235,0.15); }
+.card.selected { background: var(--bg-card-selected); border-color: var(--border-selected);
+  box-shadow: 0 0 0 1px var(--border-selected); }
+.card-checkbox { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px;
+  cursor: pointer; z-index: 5; accent-color: var(--accent); }
+.card-name { font-size: 1em; font-weight: 600; color: var(--accent);
+  text-decoration: none; display: inline-block; word-break: break-all; padding-right: 20px; }
+.card-name:hover { text-decoration: underline; }
+.card-desc { font-size: 0.95em; color: var(--text); line-height: 1.55; flex: 1; }
+.card-meta { font-size: 0.72em; color: var(--text-muted); }
+.card-tag-new { background: var(--accent); color: white; padding: 1px 6px;
+  border-radius: 3px; font-size: 0.7em; margin-left: 6px; }
+footer { text-align: center; padding: 24px 20px; color: var(--text-muted);
+  font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 32px; }
+@media (max-width: 640px) { header h1 { font-size: 1.6em; } .cards { grid-template-columns: 1fr; }
+  .toolbar { padding: 8px 12px; flex-wrap: wrap; } }
+    </style></head><body>
+<div class="toolbar">
+  <div class="toolbar-title">
+    🎯 B2B 出海 Skills v3.3
+    <span class="count-badge" id="count-badge" data-count="0">0</span>
+    <span style="font-weight: 400; color: var(--text-muted); font-size: 0.85em;">已选</span>
+  </div>
+  <div class="toolbar-actions">
+    <button class="btn" id="btn-select-all">☑️ 全选</button>
+    <button class="btn" id="btn-clear">🗑️ 清空</button>
+    <button class="btn primary" id="btn-copy-md" disabled>📋 复制 MD</button>
+    <button class="btn primary" id="btn-download-md" disabled>⬇️ MD</button>
+    <button class="btn" id="btn-copy-json" disabled>📋 JSON</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="container">
+
+<header>
+  <h1>🎯 B2B 出海 Skill 精选 v3.3</h1>
+  <div class="subtitle">所有 description 已翻译成中文 · 简洁（≤80字）· B2B 出海老板/员工日常使用</div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">152</div><div class="stat-label">总入选</div></div>
+    <div class="stat"><div class="stat-num">95</div><div class="stat-label">本次翻译</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">类别</div></div>
+  </div>
+</header>
+<div class="notice">
+  <div class="notice-title">🌏 v3.3 改进</div>
+  <ul>
+    <li>所有英文 description 已翻译成简体中文（LLM 调用）</li>
+    <li>已中文的 description 保留</li>
+    <li>描述中带 🆕 标记 = 本次新翻译</li>
+  </ul>
+</div>
+
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">内容创作</span>
+    <span class="cat-count">11 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="通过API或Chrome CDP向微信公众号发布内容"
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">通过API或Chrome CDP向微信公众号发布内容</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="playground"
+        data-name="playground"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin"
+        data-desc="创建交互式HTML游乐场——自包含单文件探索器"
+        data-category="内容创作">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin" class="card-name" target="_blank">playground</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建交互式HTML游乐场——自包含单文件探索器</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS — 高效编写文档的语义标记约定"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">HADS — 高效编写文档的语义标记约定</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="review-agent-governance"
+        data-name="review-agent-governance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin"
+        data-desc="AI智能体发布PR评审前需人工审批确认"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin" class="card-name" target="_blank">review-agent-governance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">AI智能体发布PR评审前需人工审批确认</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="引导开发者从品牌发现经迭代设计到部署"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">引导开发者从品牌发现经迭代设计到部署</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="内容新鲜度分析"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">内容新鲜度分析</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO内容写作"
+        data-category="内容创作">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">SEO内容写作</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="find-skills"
+        data-name="find-skills"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/skills/find-skills"
+        data-desc="Helps users discover and install agent skills when they ask questions like &quot;ho..."
+        data-category="内容创作">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/skills/find-skills" class="card-name" target="_blank">find-skills</a>
+      <div class="card-desc">Helps users discover and install agent skills when they ask questions like "ho...</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk-shopping-avatar"
+        data-name="infinitetalk-shopping-avatar"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk-shopping-avatar/infinitetalk-shopping-avatar"
+        data-desc="专为InfiniteTalk项目设计的小省导购员数字人带货提示词生成技能，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），生成适..."
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk-shopping-avatar/infinitetalk-shopping-avatar" class="card-name" target="_blank">infinitetalk-shopping-avatar</a>
+      <div class="card-desc">专为InfiniteTalk项目设计的小省导购员数字人带货提示词生成技能，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），生成适...</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk"
+        data-name="infinitetalk"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk"
+        data-desc="音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持..."
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk" class="card-name" target="_blank">infinitetalk</a>
+      <div class="card-desc">音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持...</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="infinitetalk"
+        data-name="infinitetalk"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/infinitetalk/infinitetalk"
+        data-desc="音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持..."
+        data-category="内容创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/infinitetalk/infinitetalk" class="card-name" target="_blank">infinitetalk</a>
+      <div class="card-desc">音频驱动的稀疏帧视频配音工具，支持音频驱动的 Video-to-Video 和 Image-to-Video 生成，实现精准的唇形、头部、身体姿态同步，支持...</div>
+      <div class="card-meta">📂 内容创作</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">营销推广</span>
+    <span class="cat-count">12 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="dgx-spark-ops"
+        data-name="dgx-spark-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/dgx-spark-ops/.claude-plugin"
+        data-desc="NVIDIA DGX Spark 环境运维：aarch64/CUDA-13 栈搭建"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/dgx-spark-ops/.claude-plugin" class="card-name" target="_blank">dgx-spark-ops</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">NVIDIA DGX Spark 环境运维：aarch64/CUDA-13 栈搭建</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="通过 API 或 Chrome CDP 将内容发布到微信公众号。"
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">通过 API 或 Chrome CDP 将内容发布到微信公众号。</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="Claude Code 的 iMessage 渠道——读取聊天"
+        data-category="营销推广">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Claude Code 的 iMessage 渠道——读取聊天</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="引导开发者完成从品牌发现到部署的全流程设计。"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">引导开发者完成从品牌发现到部署的全流程设计。</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="X/Twitter研究Hermes代理插件"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">X/Twitter研究Hermes代理插件</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS — 高效编写文档的语义标记约定"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">HADS — 高效编写文档的语义标记约定</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-technical-optimization"
+        data-name="seo-technical-optimization"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-technical-optimization/.claude-plugin"
+        data-desc="技术SEO优化，包括元标签，"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-technical-optimization/.claude-plugin" class="card-name" target="_blank">seo-technical-optimization</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">技术SEO优化，包括元标签，</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="客户支持工作流自动化，"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">客户支持工作流自动化，</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="内容新鲜度分析"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">内容新鲜度分析</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO内容写作"
+        data-category="营销推广">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">SEO内容写作</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="content-creation-publisher"
+        data-name="content-creation-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher"
+        data-desc="内容创作与发布全流程技能，整合网页采集、Markdown格式化、智能配图、多平台发布（微信公众号、X/Twitter）功能，实现从内容获取到发布的一站式解决方案"
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher" class="card-name" target="_blank">content-creation-publisher</a>
+      <div class="card-desc">内容创作与发布全流程技能，整合网页采集、Markdown格式化、智能配图、多平台发布（微信公众号、X/Twitter）功能，实现从内容获取到发布的一站式解决方案</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="remotion-video-enhancer"
+        data-name="remotion-video-enhancer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/remotion-video-enhancer/remotion-video-enhancer"
+        data-desc="视频转场与动画增强工具，提取 Remotion 的动画理念，提供高级视频转场效果和 Framer Motion 交互式动画。"
+        data-category="营销推广">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/remotion-video-enhancer/remotion-video-enhancer" class="card-name" target="_blank">remotion-video-enhancer</a>
+      <div class="card-desc">视频转场与动画增强工具，提取 Remotion 的动画理念，提供高级视频转场效果和 Framer Motion 交互式动画。</div>
+      <div class="card-meta">📂 营销推广</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">效率办公</span>
+    <span class="cat-count">14 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="创建和编辑带有wikilink的黑曜石风味Markdown"
+        data-category="效率办公">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建和编辑带有wikilink的黑曜石风味Markdown</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="c4-architecture"
+        data-name="c4-architecture"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin"
+        data-desc="基于自底向上代码分析的全套四层架构文档工作流"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin" class="card-name" target="_blank">c4-architecture</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">基于自底向上代码分析的全套四层架构文档工作流</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="documentation-standards"
+        data-name="documentation-standards"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin"
+        data-desc="HADS — 高效编写文档的语义标记约定"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/documentation-standards/.claude-plugin" class="card-name" target="_blank">documentation-standards</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">HADS — 高效编写文档的语义标记约定</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="构建提取、转换、加载（ETL）数据管道，"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">构建提取、转换、加载（ETL）数据管道，</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="综合初创企业分析（含市场规模评估）"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">综合初创企业分析（含市场规模评估）</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="linear"
+        data-name="linear"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin"
+        data-desc="Linear 集成，缺陷跟踪管理。"
+        data-category="效率办公">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin" class="card-name" target="_blank">linear</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Linear 集成，缺陷跟踪管理。</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="create-skill"
+        data-name="create-skill"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/create-skill"
+        data-desc="在当前仓库中新建一个技能。"
+        data-category="效率办公">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/create-skill" class="card-name" target="_blank">create-skill</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">在当前仓库中新建一个技能。</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="客户支持工作流自动化"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">客户支持工作流自动化</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="security-compliance"
+        data-name="security-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/security-compliance/.claude-plugin"
+        data-desc="SOC 2 合规认证"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/security-compliance/.claude-plugin" class="card-name" target="_blank">security-compliance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">SOC 2 合规认证</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="创建生产就绪的，"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建生产就绪的，</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hr-legal-compliance"
+        data-name="hr-legal-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin"
+        data-desc="人力资源政策文档"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin" class="card-name" target="_blank">hr-legal-compliance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">人力资源政策文档</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-content-creation"
+        data-name="seo-content-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin"
+        data-desc="SEO内容写作"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-content-creation/.claude-plugin" class="card-name" target="_blank">seo-content-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">SEO内容写作</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="incident-response"
+        data-name="incident-response"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin"
+        data-desc="生产事故管理"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin" class="card-name" target="_blank">incident-response</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">生产事故管理</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="ML model training pipelines,"
+        data-category="效率办公">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a>
+      <div class="card-desc">ML model training pipelines,</div>
+      <div class="card-meta">📂 效率办公</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">销售客户</span>
+    <span class="cat-count">3 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="机器学习模型训练流水线"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">机器学习模型训练流水线</div>
+      <div class="card-meta">📂 销售客户</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="客服工作流自动化"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">客服工作流自动化</div>
+      <div class="card-meta">📂 销售客户</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL流水线构建"
+        data-category="销售客户">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">ETL流水线构建</div>
+      <div class="card-meta">📂 销售客户</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">HR 招聘</span>
+    <span class="cat-count">9 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="X/Twitter 研究 Hermes 智能体插件"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">X/Twitter 研究 Hermes 智能体插件</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skill-forge-essentials"
+        data-name="skill-forge-essentials"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin"
+        data-desc="三个针对AI特有失败模式的行为技能：隐藏代码d…"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin" class="card-name" target="_blank">skill-forge-essentials</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">三个针对AI特有失败模式的行为技能：隐藏代码d…</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="contract-review"
+        data-name="contract-review"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review"
+        data-desc="合同审查技能通过评论添加问题批注而不更改原文"
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review" class="card-name" target="_blank">contract-review</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">合同审查技能通过评论添加问题批注而不更改原文</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="通过接口或浏览器CDP向微信公众号发布内容。"
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">通过接口或浏览器CDP向微信公众号发布内容。</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="tailored-resume-generator"
+        data-name="tailored-resume-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/tailored-resume-generator/tailored-resume-generator"
+        data-desc="分析职位描述并生成定制简历，突出相关经验"
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/tailored-resume-generator/tailored-resume-generator" class="card-name" target="_blank">tailored-resume-generator</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">分析职位描述并生成定制简历，突出相关经验</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hr-legal-compliance"
+        data-name="hr-legal-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin"
+        data-desc="人力资源政策文件，"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hr-legal-compliance/.claude-plugin" class="card-name" target="_blank">hr-legal-compliance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">人力资源政策文件，</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="创建生产就绪的"
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建生产就绪的</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="Guides developers from brand discovery through iterative design to deployment-..."
+        data-category="HR 招聘">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a>
+      <div class="card-desc">Guides developers from brand discovery through iterative design to deployment-...</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="Fetch any URL and convert to markdown using Chrome CDP."
+        data-category="HR 招聘">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a>
+      <div class="card-desc">Fetch any URL and convert to markdown using Chrome CDP.</div>
+      <div class="card-meta">📂 HR 招聘</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">财务行政</span>
+    <span class="cat-count">5 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="创建和编辑带wikilink的Obsidian风格Markdown"
+        data-category="财务行政">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建和编辑带wikilink的Obsidian风格Markdown</div>
+      <div class="card-meta">📂 财务行政</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="全方位创业分析含市场规模评估"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">全方位创业分析含市场规模评估</div>
+      <div class="card-meta">📂 财务行政</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="payment-processing"
+        data-name="payment-processing"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/payment-processing/.claude-plugin"
+        data-desc="Stripe 支付网关集成"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/payment-processing/.claude-plugin" class="card-name" target="_blank">payment-processing</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Stripe 支付网关集成</div>
+      <div class="card-meta">📂 财务行政</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="业务指标分析"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">业务指标分析</div>
+      <div class="card-meta">📂 财务行政</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="quantitative-trading"
+        data-name="quantitative-trading"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin"
+        data-desc="定量分析，"
+        data-category="财务行政">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin" class="card-name" target="_blank">quantitative-trading</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">定量分析，</div>
+      <div class="card-meta">📂 财务行政</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">数据分析</span>
+    <span class="cat-count">7 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="contract-review"
+        data-name="contract-review"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review"
+        data-desc="合同审查技能：添加问题注释标注而不改动文件"
+        data-category="数据分析">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/contract-review" class="card-name" target="_blank">contract-review</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">合同审查技能：添加问题注释标注而不改动文件</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="json-canvas"
+        data-name="json-canvas"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/json-canvas"
+        data-desc="创建和编辑 JSON Canvas 文件"
+        data-category="数据分析">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/json-canvas" class="card-name" target="_blank">json-canvas</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建和编辑 JSON Canvas 文件</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="linear"
+        data-name="linear"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin"
+        data-desc="Linear 任务追踪集成"
+        data-category="数据分析">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/linear/.claude-plugin" class="card-name" target="_blank">linear</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Linear 任务追踪集成</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL数据管道构建"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">ETL数据管道构建</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="业务指标分析，"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">业务指标分析，</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="issue-reporter"
+        data-name="issue-reporter"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/issue-reporter"
+        data-desc="帮助用户提交 Bug Report 或 Feature Request。"
+        data-category="数据分析">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/issue-reporter" class="card-name" target="_blank">issue-reporter</a>
+      <div class="card-desc">帮助用户提交 Bug Report 或 Feature Request。</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="machine-learning-ops"
+        data-name="machine-learning-ops"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin"
+        data-desc="ML model training pipelines,"
+        data-category="数据分析">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/machine-learning-ops/.claude-plugin" class="card-name" target="_blank">machine-learning-ops</a>
+      <div class="card-desc">ML model training pipelines,</div>
+      <div class="card-meta">📂 数据分析</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">客户支持</span>
+    <span class="cat-count">6 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="Claude Code 的 iMessage 通道——读取聊天内容。"
+        data-category="客户支持">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Claude Code 的 iMessage 通道——读取聊天内容。</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="使用Chrome CDP获取任意URL并转换为Markdown"
+        data-category="客户支持">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">使用Chrome CDP获取任意URL并转换为Markdown</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-post-to-wechat"
+        data-name="baoyu-post-to-wechat"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat"
+        data-desc="通过API或Chrome CDP向微信公众号发布内容。"
+        data-category="客户支持">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-post-to-wechat" class="card-name" target="_blank">baoyu-post-to-wechat</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">通过API或Chrome CDP向微信公众号发布内容。</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-scripting"
+        data-name="web-scripting"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/web-scripting/.claude-plugin"
+        data-desc="使用PHP和Ruby进行Web应用脚本开发"
+        data-category="客户支持">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/web-scripting/.claude-plugin" class="card-name" target="_blank">web-scripting</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">使用PHP和Ruby进行Web应用脚本开发</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="customer-sales-automation"
+        data-name="customer-sales-automation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin"
+        data-desc="客户支持工作流自动化"
+        data-category="客户支持">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/customer-sales-automation/.claude-plugin" class="card-name" target="_blank">customer-sales-automation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">客户支持工作流自动化</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="faq-collector"
+        data-name="faq-collector"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/faq-collector"
+        data-desc="将成功解决的用户问题收录到 FAQ 知识库。"
+        data-category="客户支持">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/faq-collector" class="card-name" target="_blank">faq-collector</a>
+      <div class="card-desc">将成功解决的用户问题收录到 FAQ 知识库。</div>
+      <div class="card-meta">📂 客户支持</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">产品设计</span>
+    <span class="cat-count">21 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="discord"
+        data-name="discord"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/discord/.claude-plugin"
+        data-desc="Claude Code 的 Discord 频道——内置访问控制的消息桥接"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/discord/.claude-plugin" class="card-name" target="_blank">discord</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Claude Code 的 Discord 频道——内置访问控制的消息桥接</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="baoyu-url-to-markdown"
+        data-name="baoyu-url-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown"
+        data-desc="使用 Chrome CDP 获取任意网址并转换为 Markdown 格式。"
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/baoyu-url-to-markdown" class="card-name" target="_blank">baoyu-url-to-markdown</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">使用 Chrome CDP 获取任意网址并转换为 Markdown 格式。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="imessage"
+        data-name="imessage"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin"
+        data-desc="Claude Code 的 iMessage 通道——读取聊天内容。"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/imessage/.claude-plugin" class="card-name" target="_blank">imessage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Claude Code 的 iMessage 通道——读取聊天内容。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="review-agent-governance"
+        data-name="review-agent-governance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin"
+        data-desc="人工智能代理发布拉取请求审查前，必须获得人工批准。"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/review-agent-governance/.claude-plugin" class="card-name" target="_blank">review-agent-governance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">人工智能代理发布拉取请求审查前，必须获得人工批准。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skill-forge-essentials"
+        data-name="skill-forge-essentials"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin"
+        data-desc="三项行为技能，应对AI特有失败模式：隐藏代码…"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/skill-forge-essentials/.claude-plugin" class="card-name" target="_blank">skill-forge-essentials</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">三项行为技能，应对AI特有失败模式：隐藏代码…</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="obsidian-markdown"
+        data-name="obsidian-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown"
+        data-desc="创建并编辑带双链的黑曜石风味Markdown"
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/obsidian-skills-integrated/obsidian-markdown" class="card-name" target="_blank">obsidian-markdown</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建并编辑带双链的黑曜石风味Markdown</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="引导开发者从品牌探索，经迭代设计直至部署。"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">引导开发者从品牌探索，经迭代设计直至部署。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="plugin-dev"
+        data-name="plugin-dev"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/plugin-dev/.claude-plugin"
+        data-desc="插件开发工具包，含创建智能体的技能，"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/plugin-dev/.claude-plugin" class="card-name" target="_blank">plugin-dev</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">插件开发工具包，含创建智能体的技能，</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="file-conversion"
+        data-name="file-conversion"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/file-conversion/.claude-plugin"
+        data-desc="999种格式互转：PDF转Word等"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/file-conversion/.claude-plugin" class="card-name" target="_blank">file-conversion</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">999种格式互转：PDF转Word等</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="frontend-design"
+        data-name="frontend-design"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design/.claude-plugin"
+        data-desc="用于 UI/UX 落地的前端设计技能"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design/.claude-plugin" class="card-name" target="_blank">frontend-design</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">用于 UI/UX 落地的前端设计技能</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pr-review-toolkit"
+        data-name="pr-review-toolkit"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pr-review-toolkit/.claude-plugin"
+        data-desc="全面的代码审查代理，专门负责评论。"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/pr-review-toolkit/.claude-plugin" class="card-name" target="_blank">pr-review-toolkit</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">全面的代码审查代理，专门负责评论。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="math-olympiad"
+        data-name="math-olympiad"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/math-olympiad/.claude-plugin"
+        data-desc="求解竞赛数学题（IMO，"
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/math-olympiad/.claude-plugin" class="card-name" target="_blank">math-olympiad</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">求解竞赛数学题（IMO，</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="accessibility-compliance"
+        data-name="accessibility-compliance"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/accessibility-compliance/.claude-plugin"
+        data-desc="WCAG无障碍审计"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/accessibility-compliance/.claude-plugin" class="card-name" target="_blank">accessibility-compliance</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">WCAG无障碍审计</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="data-engineering"
+        data-name="data-engineering"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin"
+        data-desc="ETL流水线构建，"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/data-engineering/.claude-plugin" class="card-name" target="_blank">data-engineering</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">ETL流水线构建，</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="demand-first-review"
+        data-name="demand-first-review"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/demand-first-review"
+        data-desc="审查 PR 时使用"
+        data-category="产品设计">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/.agents/skills/demand-first-review" class="card-name" target="_blank">demand-first-review</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">审查 PR 时使用</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="创建生产就绪的，"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建生产就绪的，</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="内容新鲜度分析"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">内容新鲜度分析</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="frontend-design"
+        data-name="frontend-design"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/frontend-design/frontend-design"
+        data-desc="打造独具特色，"
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/frontend-design/frontend-design" class="card-name" target="_blank">frontend-design</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">打造独具特色，</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="incident-response"
+        data-name="incident-response"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin"
+        data-desc="生产事故管理"
+        data-category="产品设计">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/incident-response/.claude-plugin" class="card-name" target="_blank">incident-response</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">生产事故管理</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="telegram"
+        data-name="telegram"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/telegram/.claude-plugin"
+        data-desc="Telegram channel for Claude Code — messaging bridge with built-in access contr..."
+        data-category="产品设计">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/external_plugins/telegram/.claude-plugin" class="card-name" target="_blank">telegram</a>
+      <div class="card-desc">Telegram channel for Claude Code — messaging bridge with built-in access contr...</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-design-analyzer"
+        data-name="web-design-analyzer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer"
+        data-desc="分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。"
+        data-category="产品设计">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer" class="card-name" target="_blank">web-design-analyzer</a>
+      <div class="card-desc">分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。</div>
+      <div class="card-meta">📂 产品设计</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">学习研究</span>
+    <span class="cat-count">10 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hermes-tweet"
+        data-name="hermes-tweet"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin"
+        data-desc="Hermes 智能体插件，用于 X/Twitter 研究"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/hermes-tweet/.claude-plugin" class="card-name" target="_blank">hermes-tweet</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Hermes 智能体插件，用于 X/Twitter 研究</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="learning-output-style"
+        data-name="learning-output-style"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/learning-output-style/.claude-plugin"
+        data-desc="交互式学习模式，在关键决策点请求有意义的代码贡献"
+        data-category="学习研究">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/learning-output-style/.claude-plugin" class="card-name" target="_blank">learning-output-style</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">交互式学习模式，在关键决策点请求有意义的代码贡献</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="c4-architecture"
+        data-name="c4-architecture"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin"
+        data-desc="全链路C4架构文档工作流，自底向上代码分析"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/c4-architecture/.claude-plugin" class="card-name" target="_blank">c4-architecture</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">全链路C4架构文档工作流，自底向上代码分析</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="brand-landingpage"
+        data-name="brand-landingpage"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin"
+        data-desc="引导开发者从品牌发现、迭代设计到部署上线。"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/brand-landingpage/.claude-plugin" class="card-name" target="_blank">brand-landingpage</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">引导开发者从品牌发现、迭代设计到部署上线。</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="claude-md-management"
+        data-name="claude-md-management"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management/.claude-plugin"
+        data-desc="用于维护和改进 CLAUDE 的工具。"
+        data-category="学习研究">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-md-management/.claude-plugin" class="card-name" target="_blank">claude-md-management</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">用于维护和改进 CLAUDE 的工具。</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="startup-business-analyst"
+        data-name="startup-business-analyst"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin"
+        data-desc="综合创业商业分析与市场规模评估"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/startup-business-analyst/.claude-plugin" class="card-name" target="_blank">startup-business-analyst</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">综合创业商业分析与市场规模评估</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pptx-deck-creation"
+        data-name="pptx-deck-creation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin"
+        data-desc="创建生产就绪的，"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/pptx-deck-creation/.claude-plugin" class="card-name" target="_blank">pptx-deck-creation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建生产就绪的，</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="seo-analysis-monitoring"
+        data-name="seo-analysis-monitoring"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin"
+        data-desc="内容新鲜度分析"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/seo-analysis-monitoring/.claude-plugin" class="card-name" target="_blank">seo-analysis-monitoring</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">内容新鲜度分析</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="business-analytics"
+        data-name="business-analytics"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin"
+        data-desc="商业指标分析，"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/business-analytics/.claude-plugin" class="card-name" target="_blank">business-analytics</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">商业指标分析，</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="quantitative-trading"
+        data-name="quantitative-trading"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin"
+        data-desc="量化分析，"
+        data-category="学习研究">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/quantitative-trading/.claude-plugin" class="card-name" target="_blank">quantitative-trading</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">量化分析，</div>
+      <div class="card-meta">📂 学习研究</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">AI 创作</span>
+    <span class="cat-count">6 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="playground"
+        data-name="playground"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin"
+        data-desc="创建交互式HTML游乐场——自包含单文件探索器"
+        data-category="AI 创作">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/playground/.claude-plugin" class="card-name" target="_blank">playground</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">创建交互式HTML游乐场——自包含单文件探索器</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-suite"
+        data-name="video-creation-suite"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-suite/video-creation-suite"
+        data-desc="完整的视频创作套件，支持原创创作、视频二创、视频分析三种模式，集成Coze Bot API、Edge-TTS、Suno API，涵盖多智能体协同、素材生成、..."
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-suite/video-creation-suite" class="card-name" target="_blank">video-creation-suite</a>
+      <div class="card-desc">完整的视频创作套件，支持原创创作、视频二创、视频分析三种模式，集成Coze Bot API、Edge-TTS、Suno API，涵盖多智能体协同、素材生成、...</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-recreation"
+        data-name="video-recreation"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-recreation/video-recreation"
+        data-desc="完整的视频二创工具，支持视频反推、素材生成 、视频合成、文件下载的全流程，集成Coze Bot API进行视觉分析，使用Edge-TTS进行语音合成"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-recreation/video-recreation" class="card-name" target="_blank">video-recreation</a>
+      <div class="card-desc">完整的视频二创工具，支持视频反推、素材生成 、视频合成、文件下载的全流程，集成Coze Bot API进行视觉分析，使用Edge-TTS进行语音合成</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="web-design-analyzer"
+        data-name="web-design-analyzer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer"
+        data-desc="分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/web-design-analyzer/web-design-analyzer" class="card-name" target="_blank">web-design-analyzer</a>
+      <div class="card-desc">分析网页截图，提取设计系统（Design System）并生成结构化数据和可用的 AI Coding Prompt。</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="qwen3-tts-local"
+        data-name="qwen3-tts-local"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/qwen3-tts-local/qwen3-tts-local"
+        data-desc="真正的本地语音合成服务，使用 Edge-TTS 引擎，零依赖、零配置、完全离线可用，支持多语言和多种音色"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/qwen3-tts-local/qwen3-tts-local" class="card-name" target="_blank">qwen3-tts-local</a>
+      <div class="card-desc">真正的本地语音合成服务，使用 Edge-TTS 引擎，零依赖、零配置、完全离线可用，支持多语言和多种音色</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="qwen3-asr-assistant"
+        data-name="qwen3-asr-assistant"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/qwen3-asr-assistant/qwen3-asr-assistant"
+        data-desc="智能语音转文字助手，基于 Qwen3-ASR 模型，支持实时语音识别和智能文本改写。"
+        data-category="AI 创作">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/qwen3-asr-assistant/qwen3-asr-assistant" class="card-name" target="_blank">qwen3-asr-assistant</a>
+      <div class="card-desc">智能语音转文字助手，基于 Qwen3-ASR 模型，支持实时语音识别和智能文本改写。</div>
+      <div class="card-meta">📂 AI 创作</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="cat-header">
+    <span class="cat-badge">其他</span>
+    <span class="cat-count">48 个</span>
+  </div>
+  <div class="cards">
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="protect-mcp"
+        data-name="protect-mcp"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/protect-mcp/.claude-plugin"
+        data-desc="Cedar 策略执行 + Ed25519 签名回执，覆盖每个 Claude Code 工具"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/protect-mcp/.claude-plugin" class="card-name" target="_blank">protect-mcp</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Cedar 策略执行 + Ed25519 签名回执，覆盖每个 Claude Code 工具</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="block-no-verify"
+        data-name="block-no-verify"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/block-no-verify/.claude-plugin"
+        data-desc="防止AI智能体使用--no-verify的PreToolUse钩子"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/block-no-verify/.claude-plugin" class="card-name" target="_blank">block-no-verify</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">防止AI智能体使用--no-verify的PreToolUse钩子</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="llm-finetuning"
+        data-name="llm-finetuning"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/llm-finetuning/.claude-plugin"
+        data-desc="评估门控LLM微调全流程：LoRA/QLoRA SFT"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/llm-finetuning/.claude-plugin" class="card-name" target="_blank">llm-finetuning</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">评估门控LLM微调全流程：LoRA/QLoRA SFT</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="llm-application-dev"
+        data-name="llm-application-dev"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/llm-application-dev/.claude-plugin"
+        data-desc="使用 LangGraph 开发大语言模型应用"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/llm-application-dev/.claude-plugin" class="card-name" target="_blank">llm-application-dev</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">使用 LangGraph 开发大语言模型应用</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="hookify"
+        data-name="hookify"
+        data-url="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/hookify/.claude-plugin"
+        data-desc="通过分析对话轻松创建钩子，阻止不当行为"
+        data-category="其他">
+      <a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/hookify/.claude-plugin" class="card-name" target="_blank">hookify</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">通过分析对话轻松创建钩子，阻止不当行为</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="game-development"
+        data-name="game-development"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/game-development/.claude-plugin"
+        data-desc="Unity游戏开发与C#脚本编程"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/game-development/.claude-plugin" class="card-name" target="_blank">game-development</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">Unity游戏开发与C#脚本编程</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="backend-api-security"
+        data-name="backend-api-security"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/backend-api-security/.claude-plugin"
+        data-desc="API安全加固"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/backend-api-security/.claude-plugin" class="card-name" target="_blank">backend-api-security</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">API安全加固</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="context-management"
+        data-name="context-management"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/context-management/.claude-plugin"
+        data-desc="上下文持久化"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/context-management/.claude-plugin" class="card-name" target="_blank">context-management</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">上下文持久化</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="intelligent-content-system"
+        data-name="intelligent-content-system"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/intelligent-content-system"
+        data-desc="逻辑或运算符"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/intelligent-content-system" class="card-name" target="_blank">intelligent-content-system</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">逻辑或运算符</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="deployment-validation"
+        data-name="deployment-validation"
+        data-url="https://github.com/wshobson/agents/tree/main/plugins/deployment-validation/.claude-plugin"
+        data-desc="部署前检查"
+        data-category="其他">
+      <a href="https://github.com/wshobson/agents/tree/main/plugins/deployment-validation/.claude-plugin" class="card-name" target="_blank">deployment-validation</a><span class="card-tag-new">🆕 译</span>
+      <div class="card-desc">部署前检查</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="dream-video-prompt-generator"
+        data-name="dream-video-prompt-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/dream-video-prompt-generator/dream-video-prompt-generator"
+        data-desc="小省导购员数字人带货版即梦视频提示词生成系统，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），按照&quot;主体+运动+场景+（镜头语言..."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/dream-video-prompt-generator/dream-video-prompt-generator" class="card-name" target="_blank">dream-video-prompt-generator</a>
+      <div class="card-desc">小省导购员数字人带货版即梦视频提示词生成系统，基于四大智能体协同（提示词生成师、质量管控师、知识库运维师、跨环节适配师），按照"主体+运动+场景+（镜头语言...</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pet-commerce-creator"
+        data-name="pet-commerce-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/pet-commerce-creator/pet-commerce-creator"
+        data-desc="萌宠带货短视频全流程创作技能，基于COZE视频大模型API，支持萌宠剧情/好物测评/品种科普/宠品带货等全类型创作，覆盖爆款解析反推、知识库联动、互动优化、..."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/pet-commerce-creator/pet-commerce-creator" class="card-name" target="_blank">pet-commerce-creator</a>
+      <div class="card-desc">萌宠带货短视频全流程创作技能，基于COZE视频大模型API，支持萌宠剧情/好物测评/品种科普/宠品带货等全类型创作，覆盖爆款解析反推、知识库联动、互动优化、...</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="agentkit-multimedia-shopping"
+        data-name="agentkit-multimedia-shopping"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/agentkit-multimedia-shopping/agentkit-multimedia-shopping"
+        data-desc="基于ByteDance agentkit-samples多媒体用例的小省导购员数字人带货视频生成技能，整合多模态内容生成能力（图像、视频、音频），支持AI绘..."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/agentkit-multimedia-shopping/agentkit-multimedia-shopping" class="card-name" target="_blank">agentkit-multimedia-shopping</a>
+      <div class="card-desc">基于ByteDance agentkit-samples多媒体用例的小省导购员数字人带货视频生成技能，整合多模态内容生成能力（图像、视频、音频），支持AI绘...</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-pro"
+        data-name="video-creation-pro"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-pro/video-creation-pro"
+        data-desc="10大智能体协同的商品视频创作系统，全流程质量闭环（创作→质检→反馈迭代），强制使用COZE视频大模型API进行视频合成，彻底移除本地依赖包逻辑，适用于智能..."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-pro/video-creation-pro" class="card-name" target="_blank">video-creation-pro</a>
+      <div class="card-desc">10大智能体协同的商品视频创作系统，全流程质量闭环（创作→质检→反馈迭代），强制使用COZE视频大模型API进行视频合成，彻底移除本地依赖包逻辑，适用于智能...</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="wechat-hotspot-publisher"
+        data-name="wechat-hotspot-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/wechat-hotspot-publisher/wechat-hotspot-publisher"
+        data-desc="智能采集热点话题，10分制筛选优质选题，AI生成爆款内容（标题/封面/标签/图片/HTML排版），支持素材上传和草稿箱发布，一键发布到微信公众号、小红书、B..."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/wechat-hotspot-publisher/wechat-hotspot-publisher" class="card-name" target="_blank">wechat-hotspot-publisher</a>
+      <div class="card-desc">智能采集热点话题，10分制筛选优质选题，AI生成爆款内容（标题/封面/标签/图片/HTML排版），支持素材上传和草稿箱发布，一键发布到微信公众号、小红书、B...</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="product-video-creator"
+        data-name="product-video-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/product-video-creator/product-video-creator"
+        data-desc="多智能体协同的商品视频创作流水线，支持从商品信息到成视频的全流程创作：文案生成、故事策划、脚本创作、分镜设计、图片生成、字幕创作、音效推荐及视频合成；"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/product-video-creator/product-video-creator" class="card-name" target="_blank">product-video-creator</a>
+      <div class="card-desc">多智能体协同的商品视频创作流水线，支持从商品信息到成视频的全流程创作：文案生成、故事策划、脚本创作、分镜设计、图片生成、字幕创作、音效推荐及视频合成；</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ecommerce-video-marketing"
+        data-name="ecommerce-video-marketing"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ecommerce-video-marketing/ecommerce-video-marketing"
+        data-desc="电商视频营销创作技能，支持多品类商品的营销视频脚本生成，包含6阶段创作流程、智能体提示词框架、8种商品类型模板，适用于电商平台、社交媒体、品牌推广"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ecommerce-video-marketing/ecommerce-video-marketing" class="card-name" target="_blank">ecommerce-video-marketing</a>
+      <div class="card-desc">电商视频营销创作技能，支持多品类商品的营销视频脚本生成，包含6阶段创作流程、智能体提示词框架、8种商品类型模板，适用于电商平台、社交媒体、品牌推广</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="paper-analysis-assistant"
+        data-name="paper-analysis-assistant"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/paper-analysis-assistant/paper-analysis-assistant"
+        data-desc="根据arXiv论文网址自动下载PDF并进行多维度分析，包括文本提取、词频分析、语音播报、播客对话生成、交互式网页、PPT、总结图和引用分析"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/paper-analysis-assistant/paper-analysis-assistant" class="card-name" target="_blank">paper-analysis-assistant</a>
+      <div class="card-desc">根据arXiv论文网址自动下载PDF并进行多维度分析，包括文本提取、词频分析、语音播报、播客对话生成、交互式网页、PPT、总结图和引用分析</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="historical-science-video-prod"
+        data-name="historical-science-video-prod"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/historical-science-video-prod/historical-science-video-prod"
+        data-desc="自动化生成历史科学类3分钟科普短视频的全流程素材包，包含口播文案、分镜脚本、Veo2提示词、人物形象规范等，适配即梦平台视频生成。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/historical-science-video-prod/historical-science-video-prod" class="card-name" target="_blank">historical-science-video-prod</a>
+      <div class="card-desc">自动化生成历史科学类3分钟科普短视频的全流程素材包，包含口播文案、分镜脚本、Veo2提示词、人物形象规范等，适配即梦平台视频生成。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="digital-avatar-shopping-video"
+        data-name="digital-avatar-shopping-video"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/digital-avatar-shopping-video/digital-avatar-shopping-video"
+        data-desc="小省导购员多智能体数字人口播带货视频生成系统，以&quot;小省导购员&quot;为核心人设，打造专业购物助手+数字人口播带货视频一体化服务。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/digital-avatar-shopping-video/digital-avatar-shopping-video" class="card-name" target="_blank">digital-avatar-shopping-video</a>
+      <div class="card-desc">小省导购员多智能体数字人口播带货视频生成系统，以"小省导购员"为核心人设，打造专业购物助手+数字人口播带货视频一体化服务。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="media-processor"
+        data-name="media-processor"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/media-processor/media-processor"
+        data-desc="提供基于 FFmpeg 和 ImageMagick 的多媒体处理能力，支持视频和图像的格式转换、分辨率调整、压缩等操作"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/media-processor/media-processor" class="card-name" target="_blank">media-processor</a>
+      <div class="card-desc">提供基于 FFmpeg 和 ImageMagick 的多媒体处理能力，支持视频和图像的格式转换、分辨率调整、压缩等操作</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="stock-analysis"
+        data-name="stock-analysis"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/stock-analysis/stock-analysis"
+        data-desc="股票个股分析，实时获取价格涨跌幅，计算技术指标和支撑位，识别缺口并判断支撑压力，智能预测未来3天走势并给出操作建议"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/stock-analysis/stock-analysis" class="card-name" target="_blank">stock-analysis</a>
+      <div class="card-desc">股票个股分析，实时获取价格涨跌幅，计算技术指标和支撑位，识别缺口并判断支撑压力，智能预测未来3天走势并给出操作建议</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="tts-voice-synthesis"
+        data-name="tts-voice-synthesis"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/tts-voice-synthesis"
+        data-desc="智能语音合成服务，支持音色克隆、拟人化语义适配配音、流式实时生成、多语言与方言支持，提供 1."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/tts-voice-synthesis" class="card-name" target="_blank">tts-voice-synthesis</a>
+      <div class="card-desc">智能语音合成服务，支持音色克隆、拟人化语义适配配音、流式实时生成、多语言与方言支持，提供 1.</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="historical-interview-scripts"
+        data-name="historical-interview-scripts"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/historical-interview-scripts/historical-interview-scripts"
+        data-desc="生成历史名人现代访谈短视频文案，通过古今反差与网络热梗的爆笑结合，创作具有传播力的虚构趣味内容"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/historical-interview-scripts/historical-interview-scripts" class="card-name" target="_blank">historical-interview-scripts</a>
+      <div class="card-desc">生成历史名人现代访谈短视频文案，通过古今反差与网络热梗的爆笑结合，创作具有传播力的虚构趣味内容</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="product-marketing-copywriter"
+        data-name="product-marketing-copywriter"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/product-marketing-copywriter/product-marketing-copywriter"
+        data-desc="产品营销文案创作技能，支持多品类产品的吸引性营销文案生成，适用于产品推广、品牌营销、销售转化"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/product-marketing-copywriter/product-marketing-copywriter" class="card-name" target="_blank">product-marketing-copywriter</a>
+      <div class="card-desc">产品营销文案创作技能，支持多品类产品的吸引性营销文案生成，适用于产品推广、品牌营销、销售转化</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="pop-up-book-illustration"
+        data-name="pop-up-book-illustration"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/pop-up-book-illustration/pop-up-book-illustration"
+        data-desc="生成3D纸艺弹出书风格插画，具备立体层次感、明亮温暖色调，适用于科技、教育、品牌展示等场景"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/pop-up-book-illustration/pop-up-book-illustration" class="card-name" target="_blank">pop-up-book-illustration</a>
+      <div class="card-desc">生成3D纸艺弹出书风格插画，具备立体层次感、明亮温暖色调，适用于科技、教育、品牌展示等场景</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ppt-roadshow-generator"
+        data-name="ppt-roadshow-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ppt-roadshow-generator/ppt-roadshow-generator"
+        data-desc="PPT 路演视频全流程生成器，支持品牌风格学习、智能配音、音效音乐、字幕和一键视频合成。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ppt-roadshow-generator/ppt-roadshow-generator" class="card-name" target="_blank">ppt-roadshow-generator</a>
+      <div class="card-desc">PPT 路演视频全流程生成器，支持品牌风格学习、智能配音、音效音乐、字幕和一键视频合成。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="wechatsync-publisher"
+        data-name="wechatsync-publisher"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/wechatsync-publisher/wechatsync-publisher"
+        data-desc="多平台内容发布助手，支持智能选题筛选、AI生成优质内容、一键发布到微信公众号等平台；"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/wechatsync-publisher/wechatsync-publisher" class="card-name" target="_blank">wechatsync-publisher</a>
+      <div class="card-desc">多平台内容发布助手，支持智能选题筛选、AI生成优质内容、一键发布到微信公众号等平台；</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ecommerce-copywriter"
+        data-name="ecommerce-copywriter"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ecommerce-copywriter/ecommerce-copywriter"
+        data-desc="电商图片文案创作技能，支持多品类产品的吸引性文案生成，适用于电商平台的商品营销推广"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ecommerce-copywriter/ecommerce-copywriter" class="card-name" target="_blank">ecommerce-copywriter</a>
+      <div class="card-desc">电商图片文案创作技能，支持多品类产品的吸引性文案生成，适用于电商平台的商品营销推广</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="agent-team"
+        data-name="agent-team"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/agent-team/agent-team"
+        data-desc="统一管理多智能体角色的团队协作框架，支持智能体动态组合、灵活协作和扩展新角色。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/agent-team/agent-team" class="card-name" target="_blank">agent-team</a>
+      <div class="card-desc">统一管理多智能体角色的团队协作框架，支持智能体动态组合、灵活协作和扩展新角色。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="cherry-assistant-guide"
+        data-name="cherry-assistant-guide"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/cherry-assistant-guide"
+        data-desc="Cherry Studio 产品知识库、源码路径索引、故障排查和页面导航。"
+        data-category="其他">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/cherry-assistant-guide" class="card-name" target="_blank">cherry-assistant-guide</a>
+      <div class="card-desc">Cherry Studio 产品知识库、源码路径索引、故障排查和页面导航。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="skills-manager"
+        data-name="skills-manager"
+        data-url="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/skills-manager"
+        data-desc="搜索、安装和创建 Claude Code Agent Skills。"
+        data-category="其他">
+      <a href="https://github.com/CherryHQ/cherry-studio/tree/main/resources/builtin-agents/cherry-assistant/.claude/skills/skills-manager" class="card-name" target="_blank">skills-manager</a>
+      <div class="card-desc">搜索、安装和创建 Claude Code Agent Skills。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="nanobanana-ppt-visualizer"
+        data-name="nanobanana-ppt-visualizer"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/nanobanana-ppt-visualizer/nanobanana-ppt-visualizer"
+        data-desc="PPT 视觉增强工具，支持多种风格渲染、交互式播放器生成和视频合成。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/nanobanana-ppt-visualizer/nanobanana-ppt-visualizer" class="card-name" target="_blank">nanobanana-ppt-visualizer</a>
+      <div class="card-desc">PPT 视觉增强工具，支持多种风格渲染、交互式播放器生成和视频合成。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaoyue-companion"
+        data-name="xiaoyue-companion"
+        data-url="https://github.com/anbeime/skill/tree/main/SKILL.md"
+        data-desc="小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/SKILL.md" class="card-name" target="_blank">xiaoyue-companion</a>
+      <div class="card-desc">小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaoyue-companion"
+        data-name="xiaoyue-companion"
+        data-url="https://github.com/anbeime/skill/tree/main/projects/companion-simple"
+        data-desc="小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/projects/companion-simple" class="card-name" target="_blank">xiaoyue-companion</a>
+      <div class="card-desc">小跃虚拟伴侣 - 使用智谱 AI 提供温暖的对话陪伴和静态图片分享</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="xiaohongshu-makeup"
+        data-name="xiaohongshu-makeup"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/xiaohongshu-makeup/xiaohongshu-makeup"
+        data-desc="小红书美妆内容创作技能，支持笔记生成、笔记优化、文生图描述创作；"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/xiaohongshu-makeup/xiaohongshu-makeup" class="card-name" target="_blank">xiaohongshu-makeup</a>
+      <div class="card-desc">小红书美妆内容创作技能，支持笔记生成、笔记优化、文生图描述创作；</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="bedtime-story"
+        data-name="bedtime-story"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/bedtime-story/bedtime-story"
+        data-desc="为3-12岁儿童提供温馨亲切的睡前寓言故事和成语典故讲解。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/bedtime-story/bedtime-story" class="card-name" target="_blank">bedtime-story</a>
+      <div class="card-desc">为3-12岁儿童提供温馨亲切的睡前寓言故事和成语典故讲解。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="article-illustrator"
+        data-name="article-illustrator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/article-illustrator/article-illustrator"
+        data-desc="分析文章内容，在需要视觉辅助理解的位置生成插画。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/article-illustrator/article-illustrator" class="card-name" target="_blank">article-illustrator</a>
+      <div class="card-desc">分析文章内容，在需要视觉辅助理解的位置生成插画。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="article-illustrator"
+        data-name="article-illustrator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/article-illustrator"
+        data-desc="分析文章内容，在需要视觉辅助理解的位置生成插画。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/content-creation-publisher/article-illustrator" class="card-name" target="_blank">article-illustrator</a>
+      <div class="card-desc">分析文章内容，在需要视觉辅助理解的位置生成插画。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="multi-agent-meeting"
+        data-name="multi-agent-meeting"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/multi-agent-meeting/multi-agent-meeting"
+        data-desc="模拟多个AI智能体协作开会并进行决策讨论的场景。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/multi-agent-meeting/multi-agent-meeting" class="card-name" target="_blank">multi-agent-meeting</a>
+      <div class="card-desc">模拟多个AI智能体协作开会并进行决策讨论的场景。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="ppt-generator"
+        data-name="ppt-generator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/ppt-generator/ppt-generator"
+        data-desc="基于七角色协作的智能 PPT 生成与优化工具。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/ppt-generator/ppt-generator" class="card-name" target="_blank">ppt-generator</a>
+      <div class="card-desc">基于七角色协作的智能 PPT 生成与优化工具。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="poetry-music-visual"
+        data-name="poetry-music-visual"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/poetry-music-visual/poetry-music-visual"
+        data-desc="为古诗词提供配图与配乐的全流程创作指导；"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/poetry-music-visual/poetry-music-visual" class="card-name" target="_blank">poetry-music-visual</a>
+      <div class="card-desc">为古诗词提供配图与配乐的全流程创作指导；</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-creation-collaborator"
+        data-name="video-creation-collaborator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-creation-collaborator/video-creation-collaborator"
+        data-desc="影品智创多智能体协同视频创作管理工具,"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-creation-collaborator/video-creation-collaborator" class="card-name" target="_blank">video-creation-collaborator</a>
+      <div class="card-desc">影品智创多智能体协同视频创作管理工具,</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="viral-video-copywriting"
+        data-name="viral-video-copywriting"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/viral-video-copywriting/viral-video-copywriting"
+        data-desc="专业的爆款短视频文案创作工具。"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/viral-video-copywriting/viral-video-copywriting" class="card-name" target="_blank">viral-video-copywriting</a>
+      <div class="card-desc">专业的爆款短视频文案创作工具。</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="three-body-video-creator"
+        data-name="three-body-video-creator"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/three-body-video-creator/three-body-video-creator"
+        data-desc="《三体》赛道AI视频创作工具,"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/three-body-video-creator/three-body-video-creator" class="card-name" target="_blank">three-body-video-creator</a>
+      <div class="card-desc">《三体》赛道AI视频创作工具,</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="moltbook"
+        data-name="moltbook"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/moltbook"
+        data-desc="AI Agent的社交网络."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/moltbook" class="card-name" target="_blank">moltbook</a>
+      <div class="card-desc">AI Agent的社交网络.</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="law-to-markdown"
+        data-name="law-to-markdown"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/law-to-markdown"
+        data-desc="将法条/规范文件（."
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/legal-assistant-skills-main/law-to-markdown" class="card-name" target="_blank">law-to-markdown</a>
+      <div class="card-desc">将法条/规范文件（.</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+
+    <div class="card">
+      <input type="checkbox" class="card-checkbox"
+        data-id="video-frame-extractor"
+        data-name="video-frame-extractor"
+        data-url="https://github.com/anbeime/skill/tree/main/skills/video-frame-extractor/video-frame-extractor"
+        data-desc="视频反推工具,"
+        data-category="其他">
+      <a href="https://github.com/anbeime/skill/tree/main/skills/video-frame-extractor/video-frame-extractor" class="card-name" target="_blank">video-frame-extractor</a>
+      <div class="card-desc">视频反推工具,</div>
+      <div class="card-meta">📂 其他</div>
+    </div>
+  </div>
+</section>
+<footer>
+  <p>v3.3 · 英文 description 已翻译为简体中文</p>
+  <p>生成时间: 2026-07-20 17:16</p>
+</footer>
+</div>
+
+<script>
+const STORAGE_KEY = 'b2b-skills-v33.selected';
+const ALL_CHECKBOXES = () => Array.from(document.querySelectorAll('.card-checkbox'));
+function getSelected() { return ALL_CHECKBOXES().filter(cb => cb.checked); }
+function updateUI() {
+  const n = getSelected().length;
+  const badge = document.getElementById('count-badge');
+  badge.textContent = n; badge.dataset.count = n;
+  ['btn-copy-md', 'btn-download-md', 'btn-copy-json']
+    .forEach(id => document.getElementById(id).disabled = n === 0);
+  ALL_CHECKBOXES().forEach(cb => {
+    cb.closest('.card').classList.toggle('selected', cb.checked);
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(getSelected().map(cb => cb.dataset.id))); } catch (e) {}
+}
+function restoreSelection() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const ids = new Set(JSON.parse(raw));
+    ALL_CHECKBOXES().forEach(cb => { if (ids.has(cb.dataset.id)) cb.checked = true; });
+  } catch (e) {}
+}
+document.addEventListener('change', e => { if (e.target.classList.contains('card-checkbox')) updateUI(); });
+document.addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const card = e.target.closest('.card');
+  if (!card) return;
+  const cb = card.querySelector('.card-checkbox');
+  if (!cb) return;
+  cb.checked = !cb.checked; updateUI();
+});
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = true); updateUI();
+});
+document.getElementById('btn-clear').addEventListener('click', () => {
+  ALL_CHECKBOXES().forEach(cb => cb.checked = false); updateUI();
+});
+
+function getSelectedData() {
+  return getSelected().map(cb => ({
+    id: cb.dataset.id, name: cb.dataset.name, url: cb.dataset.url,
+    category: cb.dataset.category, desc: cb.dataset.desc,
+  }));
+}
+function buildMarkdown(data) {
+  const lines = ['# 🎯 B2B 出海精选 Skills (v3.3 中文)', '',
+    `> 共 ${data.length} 个 · ${new Date().toISOString().slice(0,10)}`, ''];
+  const byCat = {};
+  data.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
+  Object.keys(byCat).forEach(cat => {
+    lines.push(`## ${cat}（${byCat[cat].length} 个）`); lines.push('');
+    byCat[cat].forEach(s => {
+      lines.push(`- **${s.name}** — ${s.desc} ([link](${s.url}))`);
+    });
+    lines.push('');
+  });
+  return lines.join('\n');
+}
+function buildJSON(data) {
+  return JSON.stringify({exported_at: new Date().toISOString(), count: data.length,
+    source: 'candidates-v3.3.html', skills: data}, null, 2);
+}
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.toggle('error', isError);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+async function copyToClipboard(text) {
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); document.body.removeChild(ta); return true; }
+    catch (e2) { document.body.removeChild(ta); return false; }
+  }
+}
+function downloadFile(content, filename, mimeType = 'text/plain') {
+  const blob = new Blob([content], {type: mimeType + ';charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+document.getElementById('btn-copy-md').addEventListener('click', async () => {
+  const ok = await copyToClipboard(buildMarkdown(getSelectedData()));
+  showToast(ok ? `✅ 已复制 ${getSelected().length} 个（MD）` : '❌ 复制失败', !ok);
+});
+document.getElementById('btn-download-md').addEventListener('click', () => {
+  downloadFile(buildMarkdown(getSelectedData()), `b2b-skills-${new Date().toISOString().slice(0,10)}.md`);
+  showToast(`⬇️ 已下载 MD`);
+});
+document.getElementById('btn-copy-json').addEventListener('click', async () => {
+  const ok = await copyToClipboard(buildJSON(getSelectedData()));
+  showToast(ok ? '✅ 已复制 JSON' : '❌ 复制失败', !ok);
+});
+restoreSelection(); updateUI();
+</script>
+</body></html>

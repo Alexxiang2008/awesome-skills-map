@@ -52,3 +52,6 @@ output/
 
 # dedup.py 缓存（自动生成）
 .dedup_cache.json
+
+# spec-workflow 工具产物
+.spec-workflow/

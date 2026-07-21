@@ -1,0 +1,385 @@
+{
+  "op7418/Claude-to-IM-skill": {
+    "desc": "Bridge Claude Code / Codex to IM platforms — chat with AI coding agents from Telegram, Discord, or Feishu/Lark.",
+    "fork": false,
+    "full_name": "op7418/Claude-to-IM-skill",
+    "html_url": "https://github.com/op7418/Claude-to-IM-skill",
+    "name": "Claude-to-IM-skill",
+    "stars": 2822,
+    "topics": [
+      "chatbot",
+      "claude",
+      "claude-code",
+      "discord",
+      "feishu",
+      "lark",
+      "skill",
+      "telegram"
+    ],
+    "updated_at": "2026-07-19T12:03:48Z"
+  },
+  "op7418/CodePilot": {
+    "desc": "A multi-model AI agent desktop client — connect any AI provider, extend with MCP & skills, control from your phone. Built with Electron + Next.js.",
+    "fork": false,
+    "full_name": "op7418/CodePilot",
+    "html_url": "https://github.com/op7418/CodePilot",
+    "name": "CodePilot",
+    "stars": 6141,
+    "topics": [
+      "ai",
+      "anthropic",
+      "claude",
+      "claude-code",
+      "desktop-app",
+      "electron",
+      "gui",
+      "nextjs"
+    ],
+    "updated_at": "2026-07-19T11:16:40Z"
+  },
+  "op7418/Document-illustrator-skill": {
+    "desc": "帮你从文档生成对应的多张配图，内置了歸藏精心探索的图片风格，支持 16:9 和 3:4 两种比例，方便发小红书以及推特。",
+    "fork": false,
+    "full_name": "op7418/Document-illustrator-skill",
+    "html_url": "https://github.com/op7418/Document-illustrator-skill",
+    "name": "Document-illustrator-skill",
+    "stars": 572,
+    "topics": [],
+    "updated_at": "2026-07-18T04:15:46Z"
+  },
+  "op7418/guizang-material-illustration": {
+    "desc": "归藏的材质插画 skill：生成带字解释图、图表美化和参考辅助配图。",
+    "fork": false,
+    "full_name": "op7418/guizang-material-illustration",
+    "html_url": "https://github.com/op7418/guizang-material-illustration",
+    "name": "guizang-material-illustration",
+    "stars": 715,
+    "topics": [
+      "agent",
+      "chart-visualization",
+      "chinese",
+      "claude-code",
+      "codex",
+      "data-visualization",
+      "explainer",
+      "illustration",
+      "image-generation",
+      "material-illustration",
+      "skill",
+      "social-media"
+    ],
+    "updated_at": "2026-07-19T11:52:18Z"
+  },
+  "op7418/guizang-ppt-skill": {
+    "desc": "AI-agent Skill for generating polished HTML slide decks: editorial magazine and Swiss layouts, image prompts, social covers, and a WebGL/low-power presentation runtime.",
+    "fork": false,
+    "full_name": "op7418/guizang-ppt-skill",
+    "html_url": "https://github.com/op7418/guizang-ppt-skill",
+    "name": "guizang-ppt-skill",
+    "stars": 21810,
+    "topics": [
+      "ai-agent",
+      "claude-code",
+      "codex",
+      "html-deck",
+      "image-generation",
+      "ppt",
+      "presentation",
+      "skill",
+      "skills",
+      "swiss-design",
+      "web-ppt"
+    ],
+    "updated_at": "2026-07-19T14:52:57Z"
+  },
+  "op7418/guizang-social-card-skill": {
+    "desc": "🪧 Claude Code / Codex skill — generate Xiaohongshu carousels & WeChat 21:9+1:1 cover pairs. Editorial × Swiss visual systems, 28 layouts, 10 themes, single-file HTML → PNG. 小红书图文 + 公众号封面对",
+    "fork": false,
+    "full_name": "op7418/guizang-social-card-skill",
+    "html_url": "https://github.com/op7418/guizang-social-card-skill",
+    "name": "guizang-social-card-skill",
+    "stars": 5198,
+    "topics": [
+      "agent-skill",
+      "ai-agent",
+      "anthropic",
+      "claude-code",
+      "claude-skill",
+      "codex",
+      "editorial-design",
+      "html-template",
+      "image-generation",
+      "playwright",
+      "rednote",
+      "social-cards",
+      "swiss-design",
+      "wechat",
+      "xiaohongshu"
+    ],
+    "updated_at": "2026-07-19T14:50:57Z"
+  },
+  "op7418/Humanizer-zh": {
+    "desc": "Humanizer 的汉化版本，Claude Code Skills，旨在消除文本中 AI 生成的痕迹。",
+    "fork": false,
+    "full_name": "op7418/Humanizer-zh",
+    "html_url": "https://github.com/op7418/Humanizer-zh",
+    "name": "Humanizer-zh",
+    "stars": 13452,
+    "topics": [],
+    "updated_at": "2026-07-19T14:39:24Z"
+  },
+  "op7418/logo-generator-skill": {
+    "desc": "logo-generator-skill",
+    "fork": false,
+    "full_name": "op7418/logo-generator-skill",
+    "html_url": "https://github.com/op7418/logo-generator-skill",
+    "name": "logo-generator-skill",
+    "stars": 1541,
+    "topics": [],
+    "updated_at": "2026-07-19T12:40:41Z"
+  },
+  "op7418/NanoBanana-PPT-Skills": {
+    "desc": "NanoBanana PPT Skills 基于 AI 自动生成高质量 PPT 图片和视频的强大工具，支持智能转场和交互式播放",
+    "fork": false,
+    "full_name": "op7418/NanoBanana-PPT-Skills",
+    "html_url": "https://github.com/op7418/NanoBanana-PPT-Skills",
+    "name": "NanoBanana-PPT-Skills",
+    "stars": 3140,
+    "topics": [],
+    "updated_at": "2026-07-19T12:26:26Z"
+  },
+  "op7418/Youtube-clipper-skill": {
+    "desc": null,
+    "fork": false,
+    "full_name": "op7418/Youtube-clipper-skill",
+    "html_url": "https://github.com/op7418/Youtube-clipper-skill",
+    "name": "Youtube-clipper-skill",
+    "stars": 2069,
+    "topics": [],
+    "updated_at": "2026-07-19T13:49:10Z"
+  },
+  "jimliu/baocut": {
+    "desc": "Open-source Agent Skill that drives the BaoCut macOS app CLI (transcribe · subtitle · translate · cut) from Claude Code, Codex, and other agents",
+    "fork": false,
+    "full_name": "JimLiu/baocut",
+    "html_url": "https://github.com/JimLiu/baocut",
+    "name": "baocut",
+    "stars": 228,
+    "topics": [
+      "agent-skill",
+      "claude-code",
+      "codex",
+      "macos",
+      "skills",
+      "subtitles",
+      "transcription"
+    ],
+    "updated_at": "2026-07-19T14:26:08Z"
+  },
+  "jimliu/baoyu-design": {
+    "desc": "Run Claude Design locally as an Agent Skill — Cursor, Claude Code & more. Produce polished UI mockups, prototypes, decks & wireframes as self-contained HTML, without claude.ai/design. Best with Opus 4.8.",
+    "fork": false,
+    "full_name": "JimLiu/baoyu-design",
+    "html_url": "https://github.com/JimLiu/baoyu-design",
+    "name": "baoyu-design",
+    "stars": 2708,
+    "topics": [
+      "agent-skills",
+      "claude",
+      "claude-code",
+      "claude-design",
+      "cursor",
+      "design",
+      "prototyping",
+      "ui-design"
+    ],
+    "updated_at": "2026-07-19T14:30:57Z"
+  },
+  "jimliu/baoyu-skills": {
+    "desc": null,
+    "fork": false,
+    "full_name": "JimLiu/baoyu-skills",
+    "html_url": "https://github.com/JimLiu/baoyu-skills",
+    "name": "baoyu-skills",
+    "stars": 23848,
+    "topics": [
+      "agent-skills",
+      "claude-skills",
+      "codex-skills",
+      "openclaw-skills"
+    ],
+    "updated_at": "2026-07-19T14:52:25Z"
+  },
+  "jimliu/Illustrated-Agent-Skills": {
+    "desc": "《图解Skill——AI提效实战指南》官方 Repo",
+    "fork": false,
+    "full_name": "JimLiu/Illustrated-Agent-Skills",
+    "html_url": "https://github.com/JimLiu/Illustrated-Agent-Skills",
+    "name": "Illustrated-Agent-Skills",
+    "stars": 594,
+    "topics": [],
+    "updated_at": "2026-07-18T13:26:04Z"
+  },
+  "alchaincyf/darwin-skill": {
+    "desc": "达尔文.skill —— 一个让你的Skill无限进化的系统：评估→改进→测试→保留或回滚 | Autoresearch-inspired autonomous skill optimization for Claude Code. Evaluate, improve, test, keep or revert.",
+    "fork": false,
+    "full_name": "alchaincyf/darwin-skill",
+    "html_url": "https://github.com/alchaincyf/darwin-skill",
+    "name": "darwin-skill",
+    "stars": 4958,
+    "topics": [],
+    "updated_at": "2026-07-19T14:29:54Z"
+  },
+  "alchaincyf/huashu-design": {
+    "desc": "Huashu Design · HTML-native design skill for Claude Code · Claude Code 里 HTML 原生的设计 skill · 高保真原型 / 幻灯片 / 动画 + 20 设计哲学 + 5 维评审 + MP4 导出 · Agent-agnostic",
+    "fork": false,
+    "full_name": "alchaincyf/huashu-design",
+    "html_url": "https://github.com/alchaincyf/huashu-design",
+    "name": "huashu-design",
+    "stars": 21669,
+    "topics": [],
+    "updated_at": "2026-07-19T14:53:32Z"
+  },
+  "alchaincyf/huashu-md-html": {
+    "desc": "md/html 双向流水线 · 三个能力一站式：万物→md / md→精美html / html→md。封装 markitdown + Pandoc + html-to-markdown + trafilatura。4 套反 AI slop 主题。Claude Code skill.",
+    "fork": false,
+    "full_name": "alchaincyf/huashu-md-html",
+    "html_url": "https://github.com/alchaincyf/huashu-md-html",
+    "name": "huashu-md-html",
+    "stars": 850,
+    "topics": [],
+    "updated_at": "2026-07-18T15:25:51Z"
+  },
+  "alchaincyf/huashu-skills": {
+    "desc": "花叔的内容创作 Skills 合集 - AI审校、选题生成、视频大纲、素材搜索等 11 个实用技能",
+    "fork": false,
+    "full_name": "alchaincyf/huashu-skills",
+    "html_url": "https://github.com/alchaincyf/huashu-skills",
+    "name": "huashu-skills",
+    "stars": 1217,
+    "topics": [],
+    "updated_at": "2026-07-19T13:42:35Z"
+  },
+  "alchaincyf/nuwa-skill": {
+    "desc": "你想蒸馏的下一个员工，何必是同事。蒸馏任何人的思维方式——心智模型、决策启发式、表达DNA。Distill how anyone thinks.",
+    "fork": false,
+    "full_name": "alchaincyf/nuwa-skill",
+    "html_url": "https://github.com/alchaincyf/nuwa-skill",
+    "name": "nuwa-skill",
+    "stars": 28288,
+    "topics": [],
+    "updated_at": "2026-07-19T14:55:46Z"
+  },
+  "alchaincyf/steve-jobs-skill": {
+    "desc": "乔布斯.skill — Steve Jobs的认知操作系统。6个心智模型 + 8条决策启发式 + 完整表达DNA。由女娲.skill生成。",
+    "fork": false,
+    "full_name": "alchaincyf/steve-jobs-skill",
+    "html_url": "https://github.com/alchaincyf/steve-jobs-skill",
+    "name": "steve-jobs-skill",
+    "stars": 909,
+    "topics": [],
+    "updated_at": "2026-07-18T15:25:55Z"
+  },
+  "alchaincyf/tramstop-skill": {
+    "desc": "电车站.skill — 人味不是删出来的。Evidence-based de-slop skill: 四层AI味模型+真实素材注入，来自四版本盲测实验",
+    "fork": false,
+    "full_name": "alchaincyf/tramstop-skill",
+    "html_url": "https://github.com/alchaincyf/tramstop-skill",
+    "name": "tramstop-skill",
+    "stars": 22,
+    "topics": [],
+    "updated_at": "2026-07-19T07:20:05Z"
+  },
+  "alchaincyf/x-mentor-skill": {
+    "desc": "X导师.skill — 女娲的第一个「非人类」作品。蒸馏6位顶级X创作者方法论 + 开源算法数据，提炼完整的选题-写作-增长操作手册。Made with 女娲.skill",
+    "fork": false,
+    "full_name": "alchaincyf/x-mentor-skill",
+    "html_url": "https://github.com/alchaincyf/x-mentor-skill",
+    "name": "x-mentor-skill",
+    "stars": 1069,
+    "topics": [],
+    "updated_at": "2026-07-19T04:26:16Z"
+  },
+  "alchaincyf/zhangxuefeng-skill": {
+    "desc": "张雪峰.skill — 张雪峰的认知操作系统。高考志愿/考研/职业规划的实战思维框架。由女娲.skill生成。",
+    "fork": false,
+    "full_name": "alchaincyf/zhangxuefeng-skill",
+    "html_url": "https://github.com/alchaincyf/zhangxuefeng-skill",
+    "name": "zhangxuefeng-skill",
+    "stars": 9952,
+    "topics": [],
+    "updated_at": "2026-07-19T14:37:30Z"
+  },
+  "xiaohuailabs/xiaohu-video-translate": {
+    "desc": "对 AI 说一句话，把外语视频自动配上中文字幕 —— 下载/转写/翻译/润色/烧录一条龙，全程本地，转写零 API 费",
+    "fork": false,
+    "full_name": "xiaohuailabs/xiaohu-video-translate",
+    "html_url": "https://github.com/xiaohuailabs/xiaohu-video-translate",
+    "name": "xiaohu-video-translate",
+    "stars": 618,
+    "topics": [],
+    "updated_at": "2026-07-19T09:11:48Z"
+  },
+  "xiaohuailabs/xiaohu-wechat-format": {
+    "desc": "Claude Code 公众号一键排版+发布技能 | Markdown → 微信兼容 HTML → 推送草稿箱 | 30 套主题 + 可视化画廊",
+    "fork": false,
+    "full_name": "xiaohuailabs/xiaohu-wechat-format",
+    "html_url": "https://github.com/xiaohuailabs/xiaohu-wechat-format",
+    "name": "xiaohu-wechat-format",
+    "stars": 660,
+    "topics": [],
+    "updated_at": "2026-07-19T05:09:29Z"
+  },
+  "joeseesun/qiaomu-anything-to-notebooklm": {
+    "desc": "Claude Skill: Multi-source content processor for NotebookLM. Supports WeChat articles, web pages, YouTube, PDF, Markdown, search queries → Podcast/PPT/MindMap/Quiz etc.",
+    "fork": false,
+    "full_name": "joeseesun/qiaomu-anything-to-notebooklm",
+    "html_url": "https://github.com/joeseesun/qiaomu-anything-to-notebooklm",
+    "name": "qiaomu-anything-to-notebooklm",
+    "stars": 5591,
+    "topics": [
+      "automation",
+      "claude",
+      "mcp",
+      "notebooklm",
+      "skill"
+    ],
+    "updated_at": "2026-07-19T08:04:02Z"
+  },
+  "joeseesun/qiaomu-goal-meta-skill": {
+    "desc": "Turn vague or complex Codex tasks into strong `/goal` commands with outcome, verification, constraints, boundaries, iteration policy, completion evide",
+    "fork": false,
+    "full_name": "joeseesun/qiaomu-goal-meta-skill",
+    "html_url": "https://github.com/joeseesun/qiaomu-goal-meta-skill",
+    "name": "qiaomu-goal-meta-skill",
+    "stars": 782,
+    "topics": [],
+    "updated_at": "2026-07-19T13:53:42Z"
+  },
+  "Alexxiang2008/awesome-skills-map": {
+    "desc": "22 章节 Claude Skills 全景图 + 完整源码",
+    "fork": false,
+    "full_name": "Alexxiang2008/awesome-skills-map",
+    "html_url": "https://github.com/Alexxiang2008/awesome-skills-map",
+    "name": "awesome-skills-map",
+    "stars": 0,
+    "topics": [
+      "agent-skills",
+      "ai-tools",
+      "automation",
+      "awesome-list",
+      "awesome-skills-map",
+      "claude",
+      "claude-code",
+      "claude-skills",
+      "content-creation",
+      "github-watchlist",
+      "meta",
+      "productivity",
+      "skill-map",
+      "skills",
+      "skills-aggregator"
+    ],
+    "updated_at": "2026-07-19T14:44:55Z"
+  }
+}
