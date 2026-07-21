@@ -86,12 +86,14 @@ def enrich_skills(skills, cache, use_cache=True, awesome_repo='Alexxiang2008/awe
             skill = {**skill, 'live_stars': 0, 'is_local': True, 'live_url': url, 'stars_display': '📍 本地'}
         else:
             repo = skill.get('repo', '')
-            if use_cache and repo in cache:
-                data = cache[repo]
+            from _shared import cache_key
+            ck = cache_key('repo', repo)
+            if use_cache and ck in cache:
+                data = cache[ck]
             else:
                 data = fetch_repo_data(repo)
                 if data:
-                    cache[repo] = data
+                    cache[ck] = data
             if data:
                 stars = data.get('stars', 0)
                 skill = {**skill, 'live': data, 'live_stars': stars,

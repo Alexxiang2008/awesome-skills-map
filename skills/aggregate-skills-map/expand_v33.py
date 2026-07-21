@@ -48,6 +48,9 @@ def translate_with_claude_cli(text):
             capture_output=True, text=True, encoding='utf-8', errors='replace',
             timeout=30
         )
+        if r.returncode != 0:
+            print(f"  ⚠️ claude CLI 失败: {r.stderr[:200]}", file=sys.stderr)
+            return text[:50]
         result = r.stdout.strip()
         # 去除可能的引号
         result = re.sub(r'^["""\']|["""\']$', '', result).strip()
@@ -397,11 +400,13 @@ def main():
 
     if args.mode == 'cli':
         # 用 subprocess + 并行调 claude CLI
+        from _shared import cache_key as _ck
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as ex:
             futures = {}
             for c in to_translate:
-                if c['desc'] in cache:
-                    c['desc'] = cache[c['desc']]
+                ck = _ck('desc', c['desc'])
+                if ck in cache:
+                    c['desc'] = cache[ck]
                     c['is_translated'] = True
                     translated += 1
                     continue
@@ -414,8 +419,9 @@ def main():
                     translated_text = future.result()
                     # 保存到缓存
                     old_desc = c['desc']
+                    ck = _ck('desc', old_desc)
                     if is_chinese(translated_text) and len(translated_text) > 0:
-                        cache[old_desc] = translated_text
+                        cache[ck] = translated_text
                         c['desc'] = translated_text
                         c['is_translated'] = True
                         translated += 1
@@ -433,14 +439,16 @@ def main():
         if not api_key:
             print("❌ --mode sdk 需要 ANTHROPIC_API_KEY 环境变量", file=sys.stderr)
             sys.exit(1)
+        from _shared import cache_key as _ck
         for c in to_translate:
-            if c['desc'] in cache:
-                c['desc'] = cache[c['desc']]
+            ck = _ck('desc', c['desc'])
+            if ck in cache:
+                c['desc'] = cache[ck]
                 c['is_translated'] = True
                 continue
             new = translate_with_anthropic_sdk(c['desc'], api_key)
             if is_chinese(new):
-                cache[c['desc']] = new
+                cache[ck] = new
                 c['desc'] = new
                 c['is_translated'] = True
             translated += 1

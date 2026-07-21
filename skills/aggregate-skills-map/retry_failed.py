@@ -28,8 +28,11 @@ def translate_with_claude_cli(text):
         r = subprocess.run(
             ['bash', '-c', cmd],
             capture_output=True, text=True, encoding='utf-8', errors='replace',
-            timeout=60  # 更长 timeout
+            timeout=60
         )
+        if r.returncode != 0:
+            print(f"  ⚠️ claude CLI 失败: {r.stderr[:200]}", file=sys.stderr)
+            return f'[翻译失败] {text[:50]}'
         result = r.stdout.strip()
         result = re.sub(r'^["""\']|["""\']$', '', result).strip()
         # 截短

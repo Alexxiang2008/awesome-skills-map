@@ -139,6 +139,8 @@ def fetch_issue_close_rate(repo):
          '--jq', '{total: .total_count}'],
         capture_output=True, text=True, encoding='utf-8', errors='replace'
     )
+    if result2.returncode != 0:
+        return total, None, None
     try:
         closed = json.loads(result2.stdout).get('total', 0)
         rate = closed / total if total > 0 else 1.0
@@ -295,7 +297,8 @@ def process_skill(skill, cache, use_cache=True, with_llm=False, fast_mode=False)
         }
 
     repo = skill.get('repo', '')
-    cache_key = f"hard:{repo}"
+    from _shared import cache_key as _ck
+    cache_key = _ck('hard', repo)
 
     if use_cache and cache_key in cache:
         cached = cache[cache_key]
