@@ -472,7 +472,7 @@ def main():
     output = '\n'.join(out)
     if args.output:
         Path(args.output).write_text(output, encoding='utf-8')
-        print(f"✅ 已写入 {args.output}", file=sys.stderr)
+        print(ok_msg("已写入 {args.output}")), file=sys.stderr)
     else:
         print(output)
 

@@ -51,5 +51,9 @@
  "Eval-gated LLM fine-tuning lifecycle: LoRA/QLoRA SFT,": "评估门控LLM微调全流程：LoRA/QLoRA SFT",
  "Pre-deployment checks,": "部署前检查",
  "\\\\\\|": "逻辑或运算符",
- "Context persistence,": "上下文持久化"
+ "Context persistence,": "上下文持久化",
+ "desc:HADS — semantic tagging convention for writing documentation that works effici...": "HADS——高效编写有效文档的语义标签规范",
+ "desc:Creates interactive HTML playgrounds — self-contained single-file explorers wi...": "创建交互式HTML游乐场——独立的单文件浏览器",
+ "desc:Guides developers from brand discovery through iterative design to deployment-...": "引导开发者从品牌发现到迭代设计直至部署",
+ "desc:Require a human approval signal before an AI agent can post PR reviews,": "AI代理发布PR评审前需人工批准"
 }

@@ -17,6 +17,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import CSS_VARS
+
 INPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.html'
 OUTPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3-refined.html'
 
@@ -121,82 +123,7 @@ def render_html(filtered, excluded_log, total):
              '<title>🎯 B2B 出海 Skills 精选 v3.1（精细过滤）</title>',
              '<style>']
     # CSS（与 v3 相同，简化版）
-    lines.append('''
-:root { --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1f2530; --bg-card-selected: #1c2c4a;
-  --border: #30363d; --border-selected: #58a6ff; --text: #c9d1d9; --text-muted: #8b949e;
-  --accent: #58a6ff; --success: #3fb950; --tag-bg: #21262d; --toolbar-h: 64px; }
-@media (prefers-color-scheme: light) { :root { --bg: #fff; --bg-card: #f6f8fa; --bg-card-hover: #eaeef2;
-  --bg-card-selected: #dbeafe; --border: #d0d7de; --border-selected: #0969da; --text: #1f2328;
-  --text-muted: #656d76; --accent: #0969da; --success: #1a7f37; --tag-bg: #eaeef2; } }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
-  background: var(--bg); color: var(--text); line-height: 1.6; padding-top: var(--toolbar-h); }
-.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-.toolbar { position: fixed; top: 0; left: 0; right: 0; height: var(--toolbar-h);
-  background: rgba(13,17,23,0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border); display: flex; align-items: center;
-  justify-content: space-between; padding: 0 24px; z-index: 100; gap: 12px; }
-@media (prefers-color-scheme: light) { .toolbar { background: rgba(255,255,255,0.92); } }
-.toolbar-title { font-weight: 600; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
-.count-badge { background: var(--accent); color: white; padding: 3px 10px; border-radius: 12px;
-  font-size: 0.85em; font-weight: 700; min-width: 36px; text-align: center; }
-.count-badge[data-count="0"] { background: var(--text-muted); }
-.toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn { background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
-  padding: 8px 14px; border-radius: 6px; font-size: 0.85em; cursor: pointer;
-  transition: all 0.15s; font-weight: 500; white-space: nowrap; }
-.btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
-.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-.btn.primary:hover { filter: brightness(1.1); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--success); color: white; padding: 12px 24px; border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 200;
-  transition: transform 0.3s ease; font-weight: 500; font-size: 0.9em; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-.toast.error { background: #f85149; }
-header { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
-  border-radius: 16px; margin-bottom: 32px; color: white;
-  box-shadow: 0 8px 32px rgba(31,111,235,0.3); }
-header h1 { font-size: 2.5em; margin-bottom: 12px; }
-header .subtitle { font-size: 1.1em; opacity: 0.95; margin-bottom: 16px; }
-header .stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
-header .stat { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-  padding: 12px 20px; border-radius: 12px; min-width: 100px; }
-header .stat-num { font-size: 1.8em; font-weight: 700; }
-header .stat-label { font-size: 0.85em; opacity: 0.9; }
-.notice { background: var(--bg-card); border-left: 4px solid var(--accent);
-  padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px; }
-.notice-title { font-weight: 600; margin-bottom: 8px; color: var(--accent); }
-.notice ul { padding-left: 24px; color: var(--text-muted); }
-.notice li { margin-bottom: 6px; }
-.category-header { display: flex; align-items: center; gap: 12px; margin: 32px 0 16px;
-  padding-bottom: 8px; border-bottom: 2px solid var(--border); }
-.category-badge { display: inline-block; padding: 6px 14px; border-radius: 6px;
-  background: var(--accent); color: white; font-weight: 700; font-size: 0.9em; }
-.category-count { color: var(--text-muted); font-size: 0.85em; }
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 16px; margin-bottom: 16px; }
-.card { background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px; padding-right: 56px;
-  transition: all 0.2s; position: relative; cursor: pointer; }
-.card:hover { transform: translateY(-2px); background: var(--bg-card-hover);
-  border-color: var(--accent); box-shadow: 0 4px 16px rgba(31,111,235,0.15); }
-.card.selected { background: var(--bg-card-selected); border-color: var(--border-selected);
-  box-shadow: 0 0 0 1px var(--border-selected); }
-.card-checkbox { position: absolute; top: 12px; right: 12px; width: 22px; height: 22px;
-  cursor: pointer; z-index: 5; accent-color: var(--accent); }
-.card-name { font-size: 1.1em; font-weight: 600; color: var(--accent);
-  text-decoration: none; display: inline-block; margin-bottom: 8px; word-break: break-all; }
-.card-name:hover { text-decoration: underline; }
-.card-desc { font-size: 0.92em; color: var(--text); margin-bottom: 12px; line-height: 1.55;
-  min-height: 60px; }
-.card-meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.75em; color: var(--text-muted); }
-footer { text-align: center; padding: 32px 20px; color: var(--text-muted);
-  font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 40px; }
-@media (max-width: 640px) { header h1 { font-size: 1.8em; } .cards { grid-template-columns: 1fr; }
-  .toolbar { padding: 8px 12px; flex-wrap: wrap; } }
-    ''')
+    lines.append(CSS_VARS)
     lines.append('</style></head><body>')
     lines.append('''
 <div class="toolbar">
@@ -419,7 +346,7 @@ def main():
     # 输出 HTML
     html = render_html(filtered, excluded_log, total)
     OUTPUT_HTML.write_text(html, encoding='utf-8')
-    print(f"\n✅ 已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
+    print(ok_msg(f"已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
 
 
 if __name__ == '__main__':

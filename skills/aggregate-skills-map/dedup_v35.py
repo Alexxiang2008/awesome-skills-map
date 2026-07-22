@@ -19,6 +19,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import ok_msg, warn_msg, err_msg
+
 INPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.4.html'
 OUTPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.5.html'
 
@@ -134,7 +136,7 @@ def main():
     remaining = soup.find_all('div', class_='card')
     print(f"  soup 剩余 div: {len(remaining)}", file=sys.stderr)
     OUTPUT_HTML.write_text(str(soup), encoding='utf-8')
-    print(f"\n✅ 已写入 {OUTPUT_HTML}", file=sys.stderr)
+    print(ok_msg(f"已写入 {OUTPUT_HTML}", file=sys.stderr)
 
     # 验证：重新读输出的 HTML 再查（不能用之前的 soup 状态）
     with open(OUTPUT_HTML, encoding='utf-8') as f:

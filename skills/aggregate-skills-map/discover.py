@@ -19,6 +19,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import ok_msg, warn_msg, err_msg
+
 CACHE_FILE = Path(__file__).parent / '.discover_cache.json'
 
 
@@ -272,7 +274,7 @@ def main():
 
     output = '\n'.join(out)
     Path(args.output).write_text(output, encoding='utf-8')
-    print(f"✅ 已写入 {args.output}（入选 {len(qualified)} 个）", file=sys.stderr)
+    print(ok_msg("已写入 {args.output}（入选 {len(qualified)} 个）")), file=sys.stderr)
     print(output)
 
 

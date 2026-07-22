@@ -26,6 +26,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import CSS_VARS
+
 TAXONOMY_FILE = Path(__file__).parent / 'taxonomy.yaml'
 OUTPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-expanded.html'
 
@@ -229,7 +231,7 @@ def expand_collections():
     print(f"🚫 排除（已在 taxonomy）: {total_excluded} 个", file=sys.stderr)
     for reason, count in excluded_breakdown.items():
         print(f"   - {reason}: {count}", file=sys.stderr)
-    print(f"✅ 新候选: {len(filtered)} 个", file=sys.stderr)
+    print(ok_msg("新候选: {len(filtered)} 个")), file=sys.stderr)
 
     return filtered, all_expanded, total_excluded
 
@@ -247,169 +249,7 @@ def render_html(new_skills, all_expanded, excluded_count):
     lines.append('<title>🔬 合集展开的 Claude Skills · awesome-skills-map</title>')
     lines.append('<style>')
     # CSS（与 candidates-overview.html 类似，简化版）
-    lines.append('''
-:root {
-  --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1f2530;
-  --bg-card-selected: #1c2c4a; --border: #30363d; --border-selected: #58a6ff;
-  --text: #c9d1d9; --text-muted: #8b949e; --accent: #58a6ff;
-  --gold: #f0b72f; --silver: #c0c0c0; --bronze: #cd7f32;
-  --success: #3fb950; --tag-bg: #21262d;
-  --tier-1: linear-gradient(135deg, #f0b72f 0%, #d97706 100%);
-  --tier-2: linear-gradient(135deg, #6e7681 0%, #484f58 100%);
-  --tier-3: linear-gradient(135deg, #cd7f32 0%, #6e7681 100%);
-  --toolbar-h: 64px;
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #ffffff; --bg-card: #f6f8fa; --bg-card-hover: #eaeef2;
-    --bg-card-selected: #dbeafe; --border: #d0d7de; --border-selected: #0969da;
-    --text: #1f2328; --text-muted: #656d76; --accent: #0969da;
-    --gold: #bf8700; --silver: #6e7781; --bronze: #9a6700;
-    --success: #1a7f37; --tag-bg: #eaeef2;
-  }
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: var(--bg); color: var(--text); line-height: 1.6;
-  padding-top: var(--toolbar-h);
-}
-.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-.toolbar {
-  position: fixed; top: 0; left: 0; right: 0; height: var(--toolbar-h);
-  background: rgba(13, 17, 23, 0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border); display: flex;
-  align-items: center; justify-content: space-between;
-  padding: 0 24px; z-index: 100; gap: 12px;
-}
-@media (prefers-color-scheme: light) {
-  .toolbar { background: rgba(255, 255, 255, 0.92); }
-}
-.toolbar-title { font-weight: 600; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
-.count-badge {
-  background: var(--accent); color: white; padding: 3px 10px;
-  border-radius: 12px; font-size: 0.85em; font-weight: 700;
-  min-width: 36px; text-align: center;
-}
-.count-badge[data-count="0"] { background: var(--text-muted); }
-.toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn {
-  background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
-  padding: 8px 14px; border-radius: 6px; font-size: 0.85em;
-  cursor: pointer; transition: all 0.15s; font-weight: 500; white-space: nowrap;
-}
-.btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
-.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-.btn.primary:hover { filter: brightness(1.1); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.toast {
-  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--success); color: white; padding: 12px 24px;
-  border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  z-index: 200; transition: transform 0.3s ease; font-weight: 500; font-size: 0.9em;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-.toast.error { background: #f85149; }
-header {
-  text-align: center; padding: 40px 20px;
-  background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
-  border-radius: 16px; margin-bottom: 32px; color: white;
-  box-shadow: 0 8px 32px rgba(31, 111, 235, 0.3);
-}
-header h1 { font-size: 2.5em; margin-bottom: 12px; }
-header .subtitle { font-size: 1.1em; opacity: 0.95; margin-bottom: 16px; }
-header .stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
-header .stat {
-  background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
-  padding: 12px 20px; border-radius: 12px; min-width: 100px;
-}
-header .stat-num { font-size: 1.8em; font-weight: 700; }
-header .stat-label { font-size: 0.85em; opacity: 0.9; }
-.notice {
-  background: var(--bg-card); border-left: 4px solid var(--accent);
-  padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 24px;
-}
-.notice-title { font-weight: 600; margin-bottom: 8px; color: var(--accent); }
-.notice ul { padding-left: 24px; color: var(--text-muted); }
-.notice li { margin-bottom: 6px; }
-.tier { margin-bottom: 40px; }
-.tier-header {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-  padding-bottom: 8px; border-bottom: 2px solid var(--border);
-}
-.tier-badge {
-  display: inline-block; padding: 4px 12px; border-radius: 6px;
-  color: white; font-weight: 700; font-size: 0.9em;
-}
-.tier-badge.t1 { background: var(--tier-1); }
-.tier-badge.t2 { background: var(--tier-2); }
-.tier-badge.t3 { background: var(--tier-3); }
-.tier-title { font-size: 1.3em; font-weight: 600; }
-.cards {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
-}
-.card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px; padding-right: 60px;
-  transition: all 0.2s; position: relative; overflow: hidden; cursor: pointer;
-}
-.card:hover {
-  transform: translateY(-2px); background: var(--bg-card-hover);
-  border-color: var(--accent); box-shadow: 0 4px 16px rgba(31, 111, 235, 0.15);
-}
-.card.selected {
-  background: var(--bg-card-selected); border-color: var(--border-selected);
-  box-shadow: 0 0 0 1px var(--border-selected);
-}
-.card-source {
-  position: absolute; top: 12px; right: 12px;
-  background: var(--tag-bg); color: var(--text-muted);
-  padding: 3px 10px; border-radius: 12px; font-size: 0.75em; pointer-events: none;
-}
-.card.t1 .card-source { background: var(--gold); color: #000; }
-.card.t2 .card-source { background: var(--silver); color: #000; }
-.card.t3 .card-source { background: var(--bronze); color: #000; }
-.card-checkbox {
-  position: absolute; top: 38px; right: 12px; width: 22px; height: 22px;
-  cursor: pointer; z-index: 5; accent-color: var(--accent);
-}
-.card-name {
-  font-size: 1.05em; font-weight: 600; color: var(--accent);
-  text-decoration: none; display: inline-block; margin-bottom: 6px;
-  word-break: break-all;
-}
-.card-name:hover { text-decoration: underline; }
-.card-collection {
-  font-size: 0.8em; color: var(--text-muted);
-  margin-bottom: 8px; font-family: ui-monospace, monospace;
-}
-.card-desc {
-  font-size: 0.9em; color: var(--text); margin-bottom: 12px; line-height: 1.5;
-}
-.card-meta {
-  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px;
-  padding-top: 12px; border-top: 1px solid var(--border);
-  font-size: 0.8em; color: var(--text-muted);
-}
-.card-meta-item strong { color: var(--text); font-weight: 600; }
-.card-tags {
-  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px;
-}
-.tag {
-  background: var(--tag-bg); color: var(--text-muted);
-  padding: 2px 8px; border-radius: 4px; font-size: 0.75em;
-}
-footer {
-  text-align: center; padding: 32px 20px; color: var(--text-muted);
-  font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 40px;
-}
-@media (max-width: 640px) {
-  header h1 { font-size: 1.8em; }
-  .cards { grid-template-columns: 1fr; }
-  .toolbar { padding: 8px 12px; flex-wrap: wrap; }
-}
-    ''')
+    lines.append(CSS_VARS)
     lines.append('</style></head><body>')
 
     # Toolbar
@@ -688,7 +528,7 @@ def main():
     print(f"\n📝 生成 candidates-expanded.html ...", file=sys.stderr)
     html = render_html(new_skills, all_expanded, total_excluded)
     OUTPUT_HTML.write_text(html, encoding='utf-8')
-    print(f"✅ 已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
+    print(ok_msg("已写入 {OUTPUT_HTML}（{len(html)} 字符）")), file=sys.stderr)
 
     # 简明统计
     print(f"\n📊 最终统计:", file=sys.stderr)

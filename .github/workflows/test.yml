@@ -1,0 +1,51 @@
+# .github/workflows/test.yml - CI: 跑 pytest
+
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: pytest
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest beautifulsoup4 pyyaml
+
+      - name: Run tests
+        run: |
+          cd skills/aggregate-skills-map
+          python -m pytest test_shared.py -v --tb=short
+
+      - name: Lint Python (best-effort)
+        run: |
+          cd skills/aggregate-skills-map
+          pip install ruff 2>/dev/null || true
+          ruff check *.py || echo "lint warnings ignored"

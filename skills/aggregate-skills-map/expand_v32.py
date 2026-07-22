@@ -16,6 +16,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import CSS_VARS
+
 INPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3-refined.html'
 OUTPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.2.html'
 
@@ -88,82 +90,7 @@ def render_html(cards):
              '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">',
              '<title>🎯 B2B 出海 Skill 精选 v3.2</title>',
              '<style>']
-    lines.append('''
-:root { --bg: #0d1117; --bg-card: #161b22; --bg-card-hover: #1f2530; --bg-card-selected: #1c2c4a;
-  --border: #30363d; --border-selected: #58a6ff; --text: #c9d1d9; --text-muted: #8b949e;
-  --accent: #58a6ff; --success: #3fb950; --tag-bg: #21262d; --toolbar-h: 64px; }
-@media (prefers-color-scheme: light) { :root { --bg: #fff; --bg-card: #f6f8fa; --bg-card-hover: #eaeef2;
-  --bg-card-selected: #dbeafe; --border: #d0d7de; --border-selected: #0969da; --text: #1f2328;
-  --text-muted: #656d76; --accent: #0969da; --success: #1a7f37; --tag-bg: #eaeef2; } }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: var(--bg); color: var(--text); line-height: 1.55; padding-top: var(--toolbar-h); }
-.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-.toolbar { position: fixed; top: 0; left: 0; right: 0; height: var(--toolbar-h);
-  background: rgba(13,17,23,0.92); backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border); display: flex; align-items: center;
-  justify-content: space-between; padding: 0 24px; z-index: 100; gap: 12px; }
-@media (prefers-color-scheme: light) { .toolbar { background: rgba(255,255,255,0.92); } }
-.toolbar-title { font-weight: 600; font-size: 0.95em; display: flex; align-items: center; gap: 8px; }
-.count-badge { background: var(--accent); color: white; padding: 3px 10px; border-radius: 12px;
-  font-size: 0.85em; font-weight: 700; min-width: 36px; text-align: center; }
-.count-badge[data-count="0"] { background: var(--text-muted); }
-.toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn { background: var(--bg-card); color: var(--text); border: 1px solid var(--border);
-  padding: 8px 14px; border-radius: 6px; font-size: 0.85em; cursor: pointer;
-  transition: all 0.15s; font-weight: 500; white-space: nowrap; }
-.btn:hover { background: var(--bg-card-hover); border-color: var(--accent); }
-.btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
-.btn.primary:hover { filter: brightness(1.1); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--success); color: white; padding: 12px 24px; border-radius: 8px;
-  z-index: 200; transition: transform 0.3s ease; font-weight: 500; font-size: 0.9em; }
-.toast.show { transform: translateX(-50%) translateY(0); }
-.toast.error { background: #f85149; }
-header { text-align: center; padding: 32px 20px; background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
-  border-radius: 16px; margin-bottom: 24px; color: white;
-  box-shadow: 0 8px 32px rgba(31,111,235,0.3); }
-header h1 { font-size: 2.2em; margin-bottom: 8px; }
-header .subtitle { font-size: 1em; opacity: 0.95; margin-bottom: 12px; }
-header .stats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-header .stat { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-  padding: 10px 16px; border-radius: 10px; min-width: 90px; }
-header .stat-num { font-size: 1.5em; font-weight: 700; }
-header .stat-label { font-size: 0.85em; opacity: 0.9; }
-.notice { background: var(--bg-card); border-left: 4px solid var(--accent);
-  padding: 14px 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
-.notice-title { font-weight: 600; margin-bottom: 6px; color: var(--accent); font-size: 0.95em; }
-.notice ul { padding-left: 24px; color: var(--text-muted); font-size: 0.85em; }
-.notice li { margin-bottom: 4px; }
-.cat-header { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px;
-  padding-bottom: 6px; border-bottom: 2px solid var(--border); }
-.cat-badge { display: inline-block; padding: 5px 12px; border-radius: 6px;
-  background: var(--accent); color: white; font-weight: 700; font-size: 0.9em; }
-.cat-count { color: var(--text-muted); font-size: 0.85em; }
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 14px; margin-bottom: 14px; }
-.card { background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px 16px 14px 16px; padding-right: 50px;
-  transition: all 0.2s; position: relative; cursor: pointer;
-  display: flex; flex-direction: column; gap: 6px; min-height: 110px; }
-.card:hover { transform: translateY(-2px); background: var(--bg-card-hover);
-  border-color: var(--accent); box-shadow: 0 4px 16px rgba(31,111,235,0.15); }
-.card.selected { background: var(--bg-card-selected); border-color: var(--border-selected);
-  box-shadow: 0 0 0 1px var(--border-selected); }
-.card-checkbox { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px;
-  cursor: pointer; z-index: 5; accent-color: var(--accent); }
-.card-name { font-size: 1em; font-weight: 600; color: var(--accent);
-  text-decoration: none; display: inline-block; word-break: break-all;
-  padding-right: 20px; }
-.card-name:hover { text-decoration: underline; }
-.card-desc { font-size: 0.88em; color: var(--text); line-height: 1.45; flex: 1; }
-.card-meta { font-size: 0.72em; color: var(--text-muted); }
-footer { text-align: center; padding: 24px 20px; color: var(--text-muted);
-  font-size: 0.85em; border-top: 1px solid var(--border); margin-top: 32px; }
-@media (max-width: 640px) { header h1 { font-size: 1.6em; } .cards { grid-template-columns: 1fr; }
-  .toolbar { padding: 8px 12px; flex-wrap: wrap; } }
-    ''')
+    lines.append(CSS_VARS)
     lines.append('</style></head><body>')
     lines.append('''
 <div class="toolbar">
@@ -372,7 +299,7 @@ def main():
     # 输出 HTML
     html = render_html(cards)
     OUTPUT_HTML.write_text(html, encoding='utf-8')
-    print(f"\n✅ 已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
+    print(ok_msg(f"已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
 
 
 if __name__ == '__main__':

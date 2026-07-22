@@ -49,7 +49,7 @@ def translate_with_claude_cli(text):
             timeout=30
         )
         if r.returncode != 0:
-            print(f"  ⚠️ claude CLI 失败: {r.stderr[:200]}", file=sys.stderr)
+            print(warn_msg("claude CLI 失败: {r.stderr[:200]}")), file=sys.stderr)
             return text[:50]
         result = r.stdout.strip()
         # 去除可能的引号
@@ -61,7 +61,7 @@ def translate_with_claude_cli(text):
     except subprocess.TimeoutExpired:
         return text[:50]
     except Exception as e:
-        print(f"  ⚠️ 翻译异常: {e}", file=sys.stderr)
+        print(warn_msg("翻译异常: {e}")), file=sys.stderr)
         return text[:50]
 
 
@@ -262,20 +262,24 @@ footer { text-align: center; padding: 24px 20px; color: var(--text-muted);
 </div>
 
 <script>
-const STORAGE_KEY = 'b2b-skills-v33.selected';
+
+const STORAGE_KEY = 'b2b-skills.selected';
 const ALL_CHECKBOXES = () => Array.from(document.querySelectorAll('.card-checkbox'));
+
 function getSelected() { return ALL_CHECKBOXES().filter(cb => cb.checked); }
+
 function updateUI() {
   const n = getSelected().length;
   const badge = document.getElementById('count-badge');
   badge.textContent = n; badge.dataset.count = n;
-  ['btn-copy-md', 'btn-download-md', 'btn-copy-json']
+  ['btn-copy-md', 'btn-download-md', 'btn-copy-json', 'btn-download-json']
     .forEach(id => document.getElementById(id).disabled = n === 0);
   ALL_CHECKBOXES().forEach(cb => {
     cb.closest('.card').classList.toggle('selected', cb.checked);
   });
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(getSelected().map(cb => cb.dataset.id))); } catch (e) {}
 }
+
 function restoreSelection() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -284,20 +288,37 @@ function restoreSelection() {
     ALL_CHECKBOXES().forEach(cb => { if (ids.has(cb.dataset.id)) cb.checked = true; });
   } catch (e) {}
 }
-document.addEventListener('change', e => { if (e.target.classList.contains('card-checkbox')) updateUI(); });
+
+document.addEventListener('change', e => {
+  if (e.target.classList && e.target.classList.contains('card-checkbox')) updateUI();
+});
+// ⭐ 关键修复：点 checkbox 时让原生 change 处理，不重复 toggle
 document.addEventListener('click', e => {
-  if (e.target.closest('a')) return;
-  const card = e.target.closest('.card');
+  if (e.target.closest && e.target.closest('a')) return;
+  if (e.target.classList && e.target.classList.contains('card-checkbox')) return;
+  if (e.target.closest && e.target.closest('.card-checkbox-wrap')) return;
+  const card = e.target.closest && e.target.closest('.card');
   if (!card) return;
   const cb = card.querySelector('.card-checkbox');
   if (!cb) return;
-  cb.checked = !cb.checked; updateUI();
+  cb.checked = !cb.checked;
+  updateUI();
 });
+
 document.getElementById('btn-select-all').addEventListener('click', () => {
   ALL_CHECKBOXES().forEach(cb => cb.checked = true); updateUI();
 });
 document.getElementById('btn-clear').addEventListener('click', () => {
   ALL_CHECKBOXES().forEach(cb => cb.checked = false); updateUI();
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+    e.preventDefault(); ALL_CHECKBOXES().forEach(cb => cb.checked = true); updateUI();
+  }
+  if (e.key === 'Escape') {
+    ALL_CHECKBOXES().forEach(cb => cb.checked = false); updateUI();
+  }
 });
 
 function getSelectedData() {
@@ -306,24 +327,27 @@ function getSelectedData() {
     category: cb.dataset.category, desc: cb.dataset.desc,
   }));
 }
+
 function buildMarkdown(data) {
-  const lines = ['# 🎯 B2B 出海精选 Skills (v3.3 中文)', '',
+  const lines = ['# 🎯 我精选的 Skills', '',
     `> 共 ${data.length} 个 · ${new Date().toISOString().slice(0,10)}`, ''];
   const byCat = {};
   data.forEach(s => { (byCat[s.category] = byCat[s.category] || []).push(s); });
   Object.keys(byCat).forEach(cat => {
     lines.push(`## ${cat}（${byCat[cat].length} 个）`); lines.push('');
     byCat[cat].forEach(s => {
-      lines.push(`- **${s.name}** — ${s.desc} ([link](${s.url}))`);
+      lines.push(`- **${s.name}** — ${s.desc.slice(0,100)} ([link](${s.url}))`);
     });
     lines.push('');
   });
-  return lines.join('\\n');
+  return lines.join('\n');
 }
+
 function buildJSON(data) {
   return JSON.stringify({exported_at: new Date().toISOString(), count: data.length,
-    source: 'candidates-v3.3.html', skills: data}, null, 2);
+    skills: data}, null, 2);
 }
+
 function showToast(msg, isError = false) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
@@ -331,6 +355,7 @@ function showToast(msg, isError = false) {
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2200);
 }
+
 async function copyToClipboard(text) {
   try { await navigator.clipboard.writeText(text); return true; }
   catch (e) {
@@ -341,6 +366,7 @@ async function copyToClipboard(text) {
     catch (e2) { document.body.removeChild(ta); return false; }
   }
 }
+
 function downloadFile(content, filename, mimeType = 'text/plain') {
   const blob = new Blob([content], {type: mimeType + ';charset=utf-8'});
   const url = URL.createObjectURL(blob);
@@ -350,19 +376,27 @@ function downloadFile(content, filename, mimeType = 'text/plain') {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
 document.getElementById('btn-copy-md').addEventListener('click', async () => {
   const ok = await copyToClipboard(buildMarkdown(getSelectedData()));
   showToast(ok ? `✅ 已复制 ${getSelected().length} 个（MD）` : '❌ 复制失败', !ok);
 });
 document.getElementById('btn-download-md').addEventListener('click', () => {
-  downloadFile(buildMarkdown(getSelectedData()), `b2b-skills-${new Date().toISOString().slice(0,10)}.md`);
+  downloadFile(buildMarkdown(getSelectedData()), `skills-${new Date().toISOString().slice(0,10)}.md`);
   showToast(`⬇️ 已下载 MD`);
 });
 document.getElementById('btn-copy-json').addEventListener('click', async () => {
   const ok = await copyToClipboard(buildJSON(getSelectedData()));
   showToast(ok ? '✅ 已复制 JSON' : '❌ 复制失败', !ok);
 });
-restoreSelection(); updateUI();
+document.getElementById('btn-download-json').addEventListener('click', () => {
+  downloadFile(buildJSON(getSelectedData()), `skills-${new Date().toISOString().slice(0,10)}.json`, 'application/json');
+  showToast(`⬇️ 已下载 JSON`);
+});
+
+restoreSelection();
+updateUI();
+
 </script>
 </body></html>
 ''')
@@ -400,7 +434,7 @@ def main():
 
     if args.mode == 'cli':
         # 用 subprocess + 并行调 claude CLI
-        from _shared import cache_key as _ck
+        from _shared import cache_key as _ck, JS_INTERACTION
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as ex:
             futures = {}
             for c in to_translate:
@@ -437,7 +471,7 @@ def main():
         # SDK 模式
         api_key = os.environ.get('ANTHROPIC_API_KEY')
         if not api_key:
-            print("❌ --mode sdk 需要 ANTHROPIC_API_KEY 环境变量", file=sys.stderr)
+            print(err_msg("--mode sdk 需要 ANTHROPIC_API_KEY 环境变量")), file=sys.stderr)
             sys.exit(1)
         from _shared import cache_key as _ck
         for c in to_translate:
@@ -459,7 +493,7 @@ def main():
     # 输出 HTML
     html = render_html(cards)
     OUTPUT_HTML.write_text(html, encoding='utf-8')
-    print(f"\n✅ 已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
+    print(ok_msg(f"已写入 {OUTPUT_HTML}（{len(html)} 字符）", file=sys.stderr)
     print(f"📊 翻译完成: {translated} 条", file=sys.stderr)
 
 

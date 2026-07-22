@@ -15,6 +15,8 @@ if sys.platform == 'win32':
     except (AttributeError, OSError):
         pass
 
+from _shared import ok_msg, warn_msg, err_msg
+
 INPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.3.html'
 OUTPUT_HTML = Path(__file__).parent / 'examples' / 'candidates-v3.4.html'
 
@@ -31,7 +33,7 @@ def translate_with_claude_cli(text):
             timeout=60
         )
         if r.returncode != 0:
-            print(f"  ⚠️ claude CLI 失败: {r.stderr[:200]}", file=sys.stderr)
+            print(warn_msg("claude CLI 失败: {r.stderr[:200]}")), file=sys.stderr)
             return f'[翻译失败] {text[:50]}'
         result = r.stdout.strip()
         result = re.sub(r'^["""\']|["""\']$', '', result).strip()
@@ -97,7 +99,7 @@ def main():
     print(f"  本轮重试: {len(failed)} 条", file=sys.stderr)
 
     if not failed:
-        print("✅ 无失败需要重试", file=sys.stderr)
+        print(ok_msg("无失败需要重试")), file=sys.stderr)
         return
 
     # 逐条翻译
@@ -135,7 +137,7 @@ def main():
     )
 
     OUTPUT_HTML.write_text(html, encoding='utf-8')
-    print(f"\n✅ 已写入 {OUTPUT_HTML}", file=sys.stderr)
+    print(ok_msg(f"已写入 {OUTPUT_HTML}", file=sys.stderr)
 
 
 if __name__ == '__main__':
